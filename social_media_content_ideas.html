@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>letsact — 2-Wochen Content-Plan mit Serien</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Public+Sans:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0F2820;
+  --paper: #F2F0E9;
+  --accent: #FF4400;
+  --white: #FFFFFF;
+  --stone: #6B706B;
+  --moss: #2C5545;
+  --reach: #FF4400;
+  --trust: #2C5545;
+  --bind: #0F2820;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Public Sans', sans-serif;
+  background: var(--paper);
+  color: var(--primary);
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: multiply;
+  opacity: 0.3;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* Hero */
+.hero {
+  padding: 80px 0 60px;
+  border-bottom: 2px solid var(--primary);
+}
+
+.hero-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--stone);
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  margin-bottom: 20px;
+}
+
+.hero h1 .outline {
+  -webkit-text-stroke: 1.5px var(--primary);
+  color: transparent;
+}
+
+.hero-desc {
+  font-size: 16px;
+  color: var(--stone);
+  max-width: 600px;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* Series overview */
+.series-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  margin: 32px 0 48px;
+}
+
+.series-chip {
+  background: var(--white);
+  border: 2px solid var(--primary);
+  padding: 16px 14px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.series-chip:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.series-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.series-name span { color: var(--accent); }
+
+.series-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--stone);
+}
+
+/* Week header */
+.week-section {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid rgba(15,40,32,0.1);
+}
+
+.week-header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 12px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--primary);
+}
+
+.week-num {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.week-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.week-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--stone);
+  margin-top: 4px;
+}
+
+/* Post card */
+.post-card {
+  background: var(--white);
+  border: 1px solid rgba(15,40,32,0.12);
+  margin-bottom: 36px;
+  margin-top: 32px;
+  overflow: hidden;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(15,40,32,0.08);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.post-day {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--stone);
+}
+
+.post-tags {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tag-format {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: var(--primary);
+  color: var(--paper);
+  padding: 4px 10px;
+}
+
+.tag-series {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  background: var(--accent);
+  color: var(--white);
+  padding: 4px 10px;
+}
+
+.funnel-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 3px 8px;
+  border: 1px solid;
+}
+
+.funnel-tag.reach { color: var(--accent); border-color: var(--accent); }
+.funnel-tag.trust { color: var(--trust); border-color: var(--trust); }
+.funnel-tag.bind { color: var(--bind); border-color: var(--bind); }
+
+.post-body {
+  padding: 24px;
+}
+
+.post-body h3 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  letter-spacing: -0.3px;
+}
+
+/* Slides */
+.slides-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.slide {
+  background: var(--paper);
+  border: 1px solid rgba(15,40,32,0.1);
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.slide-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.slide-copy {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--primary);
+}
+
+.slide-design {
+  font-size: 11.5px;
+  color: var(--stone);
+  font-style: italic;
+  line-height: 1.5;
+  padding-top: 8px;
+  border-top: 1px solid rgba(15,40,32,0.08);
+}
+
+.slide.hook {
+  border: 2px solid var(--accent);
+  grid-column: 1 / -1;
+}
+
+.slide.cta {
+  background: var(--primary);
+  color: var(--paper);
+  border-color: var(--primary);
+  grid-column: 1 / -1;
+}
+
+.slide.cta .slide-label { color: var(--accent); }
+.slide.cta .slide-copy { color: var(--paper); }
+.slide.cta .slide-design { color: rgba(242,240,233,0.6); border-top-color: rgba(255,255,255,0.1); }
+
+.slide.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Caption + hashtags block */
+.post-meta {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(15,40,32,0.08);
+  background: rgba(15,40,32,0.02);
+}
+
+.meta-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 6px;
+  margin-top: 14px;
+}
+
+.meta-label:first-child { margin-top: 0; }
+
+.caption-text {
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+.hashtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+}
+
+.hashtag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--stone);
+}
+
+.posting-info {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--stone);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(15,40,32,0.08);
+}
+
+/* Stories block */
+.stories-block {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 28px 24px;
+  margin-top: 32px;
+}
+
+.stories-block h4 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.story-item {
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.story-day {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.story-sticker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: rgba(242,240,233,0.5);
+  margin-top: 6px;
+}
+
+/* Section headers */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--accent);
+  margin-bottom: 12px;
+  display: block;
+}
+
+h2 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+
+.lead {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--stone);
+  line-height: 1.7;
+  max-width: 640px;
+}
+
+/* Rationale block */
+.rationale {
+  background: rgba(255,68,0,0.04);
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--stone);
+}
+
+.rationale strong {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Music tip */
+.music-tip {
+  background: var(--moss);
+  color: var(--paper);
+  padding: 14px 18px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.music-tip::before {
+  content: '♫ ';
+  color: var(--accent);
+}
+
+/* Footer */
+.footer {
+  background: var(--primary);
+  color: var(--paper);
+  text-align: center;
+  padding: 60px 32px;
+  margin-top: 64px;
+}
+
+.footer h2 {
+  color: var(--paper);
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.footer p {
+  color: rgba(242,240,233,0.6);
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+@media (max-width: 700px) {
+  .slides-container { grid-template-columns: 1fr; }
+  .slide.hook, .slide.cta, .slide.full-width { grid-column: 1; }
+  .series-grid { grid-template-columns: repeat(2, 1fr); }
+  .week-header { flex-direction: column; gap: 8px; }
+  .container { padding: 0 20px; }
+  .hero { padding: 48px 0 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-meta">Content-Plan — 2 Wochen, 5 Serien, nur Karussells</div>
+  <h1>lets <span class="outline">serien</span> — der plan</h1>
+  <p class="hero-desc">6 Karussell-Posts in 2 Wochen. Jeder Post gehört zu einer wiederkehrenden Serie. Jede Slide mit exaktem Text und Design-Beschreibung. Copy-paste-ready.</p>
+
+  <div class="series-grid">
+    <div class="series-chip">
+      <div class="series-name">lets <span>count</span></div>
+      <div class="series-role">Zahlen + Steuern</div>
+    </div>
+    <div class="series-chip">
+      <div class="series-name">lets <span>talk</span></div>
+      <div class="series-role">Mythen + Meinungen</div>
+    </div>
+    <div class="series-chip">
+      <div class="series-name">lets <span>go</span></div>
+      <div class="series-role">Lokale Guides</div>
+    </div>
+    <div class="series-chip">
+      <div class="series-name">lets <span>meet</span></div>
+      <div class="series-role">NGO-Spotlights</div>
+    </div>
+    <div class="series-chip">
+      <div class="series-name">lets <span>start</span></div>
+      <div class="series-role">Erster Schritt</div>
+    </div>
+  </div>
+</header>
+
+<!-- ==================== WOCHE 1 ==================== -->
+<div class="week-section">
+  <div class="week-header">
+    <div class="week-num">01</div>
+    <div>
+      <div class="week-title">Zahlen, Haltung, Stadt</div>
+      <div class="week-subtitle">lets count → lets talk → lets go</div>
+    </div>
+  </div>
+
+  <!-- POST 1: LETS COUNT -->
+  <div class="post-card">
+    <div class="post-header">
+      <span class="post-day">Montag, 11:00</span>
+      <div class="post-tags">
+        <span class="tag-series">lets count</span>
+        <span class="tag-format">Karussell</span>
+        <span class="funnel-tag reach">Reichweite</span>
+      </div>
+    </div>
+    <div class="post-body">
+      <h3>840€ steuerfrei. Jedes Jahr. Die meisten lassen es liegen.</h3>
+
+      <div class="slides-container">
+        <div class="slide hook">
+          <div class="slide-label">Slide 1 — Hook</div>
+          <div class="slide-copy">"840€ steuerfrei. Jedes Jahr. Die meisten lassen es liegen."</div>
+          <div class="slide-design">Hintergrund: #F2F0E9 (Papier). "840€" in Syne Extrabold, 72pt, Farbe #FF4400. Rest in Public Sans, 18pt, #0F2820. Oben links klein: "lets count" in JetBrains Mono, Uppercase, 8pt, #6B706B. Keine Bilder, nur Typografie. Harte Kanten, kein Verlauf.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 2</div>
+          <div class="slide-copy">"Die Ehrenamtspauschale existiert seit Jahren. Aber die meisten Ehrenamtlichen wissen nichts davon. Oder machen Fehler bei der Steuererklärung."</div>
+          <div class="slide-design">Gleicher Papier-Hintergrund. Text zentriert in Public Sans, 16pt. Keyword "Ehrenamtspauschale" in Syne Bold, orange unterstrichen. Cleanes Text-Layout ohne Schnörkel.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 3</div>
+          <div class="slide-copy">"Was ist das? Du engagierst dich ehrenamtlich bei einem gemeinnützigen Verein? Dann kannst du bis zu 840€ im Jahr steuerfrei als Aufwandsentschädigung bekommen."</div>
+          <div class="slide-design">Papier-BG. Überschrift "Was ist das?" in Syne Bold, 22pt. Body in Public Sans Regular. Rechts unten ein minimalistisches Icon: stilisiertes Steuerformular (Linien + Häkchen), schwarz auf Papier.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 4</div>
+          <div class="slide-copy">"Wer bekommt sie? Jede:r, der sich bei einer gemeinnützigen Organisation engagiert. Auch nebenberuflich. Auch als Student:in. Auch wenn du nur ein paar Stunden im Monat gibst."</div>
+          <div class="slide-design">Papier-BG. "Wer bekommt sie?" in Syne Bold. Drei kurze Zeilen mit jeweils einem kleinen orangen Strich davor (kein Bullet-Point, ein horizontaler Strich). Jede Zeile ein Satz.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 5</div>
+          <div class="slide-copy">"So geht's: Schritt 1 — Organisation muss gemeinnützig sein (§51ff. AO). Schritt 2 — Du bekommst eine Aufwandsentschädigung (auch pauschal). Schritt 3 — Anlage N deiner Steuererklärung, Zeile 26."</div>
+          <div class="slide-design">Papier-BG. Drei Schritte vertikal angeordnet, nummeriert mit "01", "02", "03" in Syne Bold orange. Zwischen den Schritten eine dünne schwarze Linie. Kompakter, übersichtlicher Look.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 6</div>
+          <div class="slide-copy">"Fehler Nr. 1: Pauschale nicht einfordern. Viele Organisationen zahlen sie nicht automatisch. Du musst aktiv fragen. Tipp: Mail-Vorlage an deinen Verein (Beispiel im Kommentar)."</div>
+          <div class="slide-design">Papier-BG. "Fehler Nr. 1" in Syne Bold, orange. Rest Public Sans. Unten ein angedeutetes E-Mail-Fenster (schwarze Outline, minimalistisch). Kein Foto.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 7</div>
+          <div class="slide-copy">"Fehler Nr. 2: Nicht wissen, dass es NOCH EINE gibt. Übungsleiterpauschale: Bis zu 3.000€ steuerfrei. Für Trainer:innen, Dozent:innen, Betreuer:innen in gemeinnützigen Vereinen."</div>
+          <div class="slide-design">"3.000€" in Syne Extrabold, 60pt, orange. Darunter der Kontext in Public Sans. Oben klein: "Bonus". Visueller Wow-Moment durch die große Zahl.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 8</div>
+          <div class="slide-copy">"Auf einen Blick: Ehrenamtspauschale = 840€/Jahr steuerfrei. Übungsleiterpauschale = 3.000€/Jahr steuerfrei. Beides kombinierbar. In der Steuererklärung: Anlage N."</div>
+          <div class="slide-design">Papier-BG. Vier Zeilen, jede mit einem orangen Häkchen davor. Clean, scanbar. Sieht aus wie eine handgeschriebene Checkliste (aber in den Markenfonts). Zusammenfassungs-Charakter.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 9 — Save-Trigger</div>
+          <div class="slide-copy">"Speicher dir diesen Post für deine nächste Steuererklärung. Und schick ihn an die Person, die sich engagiert und das hier noch nicht weiß."</div>
+          <div class="slide-design">Papier-BG. Text in Public Sans, mittig. "Speicher dir diesen Post" in Syne Bold. Unten ein kleines Bookmark-Icon in Orange. Emotionaler, direkter Ton. Viel Weißraum.</div>
+        </div>
+
+        <div class="slide cta">
+          <div class="slide-label">Slide 10 — CTA</div>
+          <div class="slide-copy">"Du suchst noch das passende Ehrenamt? letsact — kostenlose App, 3.000+ Projekte, 2 Minuten bis zum Match. Link in Bio."</div>
+          <div class="slide-design">Hintergrund: #0F2820 (dunkelgrün). letsact-Logo mittig, weiß. Darunter "Link in Bio" in JetBrains Mono, orange. App-Store-Badges angedeutet (iOS + Android Icons). Clean, markenkonform.</div>
+        </div>
+      </div>
+
+      <div class="rationale">
+        <strong>Warum das funktioniert:</strong> Geld-Content hat die höchste Save-Rate auf Instagram. "840€ steuerfrei" stoppt den Scroll, weil es ein konkretes Versprechen ist. Die meisten Ehrenamtlichen wissen das nicht, also ist der Nutzwert real. Slide 7 mit den 3.000€ ist ein zweiter Hook innerhalb des Posts, der die Verweildauer erhöht. Share-Trigger auf Slide 9 ("schick ihn an die Person...") adressiert direkt das stärkste Algorithmus-Signal.
+      </div>
+
+      <div class="music-tip">Musik hinzufügen vor dem Posten — macht das Karussell im Reels-Feed sichtbar. Empfehlung: Ruhiger Lo-Fi oder Ambient-Track, nichts Ablenkenes.</div>
+    </div>
+
+    <div class="post-meta">
+      <div class="meta-label">Caption</div>
+      <div class="caption-text">840€ steuerfrei — und die meisten Ehrenamtlichen lassen es liegen. Slide für Slide erklärt, wie du die Ehrenamtspauschale (und ihren großen Bruder) in deine nächste Steuererklärung packst. Speichern. Weiterschicken. Machen.</div>
+
+      <div class="meta-label">Hashtags (1. Kommentar)</div>
+      <div class="hashtags">
+        <span class="hashtag">#ehrenamt</span>
+        <span class="hashtag">#ehrenamtlich</span>
+        <span class="hashtag">#freiwilligenarbeit</span>
+        <span class="hashtag">#sozialengagiert</span>
+        <span class="hashtag">#volunteerdeutschland</span>
+        <span class="hashtag">#gemeinsamgutestun</span>
+        <span class="hashtag">#steuertipps</span>
+        <span class="hashtag">#ehrenamtspauschale</span>
+        <span class="hashtag">#steuererklärung</span>
+        <span class="hashtag">#genz</span>
+        <span class="hashtag">#impact</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST 2: LETS TALK -->
+  <div class="post-card">
+    <div class="post-header">
+      <span class="post-day">Mittwoch, 18:00</span>
+      <div class="post-tags">
+        <span class="tag-series">lets talk</span>
+        <span class="tag-format">Karussell</span>
+        <span class="funnel-tag reach">Reichweite</span>
+      </div>
+    </div>
+    <div class="post-body">
+      <h3>"Ich hab keine Zeit für Ehrenamt." — 5 ehrliche Übersetzungen.</h3>
+
+      <div class="slides-container">
+        <div class="slide hook">
+          <div class="slide-label">Slide 1 — Hook</div>
+          <div class="slide-copy">"Ich hab keine Zeit für Ehrenamt." — 5 ehrliche Übersetzungen.</div>
+          <div class="slide-design">Papier-BG. Der Satz "Ich hab keine Zeit" in Syne Bold, groß, #0F2820, in Anführungszeichen. Darunter "5 ehrliche Übersetzungen" in Public Sans, kleiner. Oben links: "lets talk" in JetBrains Mono, 8pt, #6B706B. Kein Bild, reine Typografie.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 2</div>
+          <div class="slide-copy">"Der Satz ist der Klassiker. Klingt vernünftig. Ist meistens nicht das echte Problem. Hier sind 5 Dinge, die Leute wirklich meinen — und was dagegen hilft."</div>
+          <div class="slide-design">Papier-BG. Text zentriert, Public Sans Light, 15pt. Ruhige Überleitung. Erzeugt Spannung: "Was meinen sie denn wirklich?"</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 3</div>
+          <div class="slide-copy">"Übersetzung 1: 'Ich weiß nicht wo.' 80% der Menschen die sich nicht engagieren, sagen: Ich finde nichts Passendes. Das Problem ist nicht die Motivation. Es ist der Zugang."</div>
+          <div class="slide-design">Papier-BG. "Übersetzung 1" in JetBrains Mono, 10pt, orange. "Ich weiß nicht wo" in Syne Bold, 24pt. Statistik "80%" in orange hervorgehoben. Clean, kartenartig.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 4</div>
+          <div class="slide-copy">"Übersetzung 2: 'Ich kann nichts Besonderes.' Fakt: Die meisten Ehrenämter brauchen keine Spezial-Skills. Zuhören, Anpacken, Dasein. Das reicht oft."</div>
+          <div class="slide-design">Gleiche Kartenstruktur. "Übersetzung 2" label. "Ich kann nichts Besonderes" in Syne Bold. "Zuhören, Anpacken, Dasein" in orange. Minimal, keine Illustration.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 5</div>
+          <div class="slide-copy">"Übersetzung 3: 'Ich will mich nicht langfristig binden.' Verständlich. Deshalb gibt es Einmal-Aktionen. Cleanup am Samstag, Sortieren in der Kleiderkammer, Nachhilfe für 1 Stunde."</div>
+          <div class="slide-design">Gleiche Kartenstruktur. Drei konkrete Beispiele jeweils mit einem kleinen orangen Strich davor. Fokus auf die Niedrigschwelligkeit.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 6</div>
+          <div class="slide-copy">"Übersetzung 4: 'Bringt eh nichts, was ich alleine mache.' 28 Millionen Deutsche engagieren sich. 87.000 Stunden allein über eine App im letzten Jahr. Es addiert sich."</div>
+          <div class="slide-design">Kartenstruktur. "28 Millionen" und "87.000 Stunden" in Syne Bold, orange. Die Zahlen brechen das Argument visuell. Nüchtern, datenbasiert.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 7</div>
+          <div class="slide-copy">"Übersetzung 5: 'Ich hab's ehrlich gesagt noch nie gemacht und der erste Schritt fühlt sich komisch an.' Das ist der ehrlichste Grund. Und der einfachste zu lösen."</div>
+          <div class="slide-design">Papier-BG. Dieser Slide ist bewusst anders: Mehr Weißraum, der Text fühlt sich persönlicher an. "Der ehrlichste Grund" in Syne Bold. Kein Icon, kein Schnörkel. Ruhe. Das ist der "Ertappt"-Moment.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 8</div>
+          <div class="slide-copy">"Kein Commitment nötig. Kein Bewerbungsschreiben. Kein Monatsabo. Einfach eine App öffnen. Ein Projekt anschauen. Entscheiden, ob es passt."</div>
+          <div class="slide-design">Papier-BG. Drei kurze Sätze vertikal gestapelt. Jeder Satz eine eigene Zeile, Public Sans Light. Bewusst einfach gehalten, keine visuelle Ablenkung. Spiegelt die Einfachheit des Schritts wider.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 9 — Save-Trigger</div>
+          <div class="slide-copy">"Erkennst du dich in einer der 5 Übersetzungen wieder? Schick den Post an die Person, die genau das immer sagt."</div>
+          <div class="slide-design">Papier-BG. "Erkennst du dich wieder?" in Syne Bold. Darunter der Share-CTA in Public Sans. Bookmark-Icon + Send-Icon nebeneinander, beide in Orange.</div>
+        </div>
+
+        <div class="slide cta">
+          <div class="slide-label">Slide 10 — CTA</div>
+          <div class="slide-copy">"Der erste Schritt dauert 2 Minuten. letsact — Link in Bio."</div>
+          <div class="slide-design">Dunkelgrüner Hintergrund. letsact-Logo. "2 Minuten" in Syne Bold, orange. App-Store-Verweis. Minimalistisch.</div>
+        </div>
+      </div>
+
+      <div class="rationale">
+        <strong>Warum das funktioniert:</strong> "lets talk" lebt von Meinungs-Content, der Leute ertappt. Der Post sagt nicht "du bist faul", sondern "ich verstehe, warum du zögerst." Das macht ihn shareable ("Haha, Nummer 5 bist du @freundin"). Slide 7 ist der emotionale Wendepunkt, der den Post von "Tipps-Liste" zu "ehrliches Gespräch" hebt. Das Share-Signal ist das stärkste auf Instagram 2026.
+      </div>
+
+      <div class="music-tip">Empfehlung: Leicht melancholischer Indie-Track — passt zum ehrlichen Ton. Nicht zu fröhlich, nicht zu schwer.</div>
+    </div>
+
+    <div class="post-meta">
+      <div class="meta-label">Caption</div>
+      <div class="caption-text">"Keine Zeit" ist selten das echte Problem. Die 5 Übersetzungen, die dahinterstecken — und was wirklich hilft. Welche Nummer bist du? Sag's in den Kommentaren.</div>
+
+      <div class="meta-label">Hashtags (1. Kommentar)</div>
+      <div class="hashtags">
+        <span class="hashtag">#ehrenamt</span>
+        <span class="hashtag">#ehrenamtlich</span>
+        <span class="hashtag">#freiwilligenarbeit</span>
+        <span class="hashtag">#sozialengagiert</span>
+        <span class="hashtag">#volunteerdeutschland</span>
+        <span class="hashtag">#gemeinsamgutestun</span>
+        <span class="hashtag">#sinnstiftend</span>
+        <span class="hashtag">#genz</span>
+        <span class="hashtag">#gesellschaft</span>
+        <span class="hashtag">#macheinunterschied</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST 3: LETS GO BERLIN -->
+  <div class="post-card">
+    <div class="post-header">
+      <span class="post-day">Freitag, 10:00</span>
+      <div class="post-tags">
+        <span class="tag-series">lets go Berlin</span>
+        <span class="tag-format">Karussell</span>
+        <span class="funnel-tag bind">Bindung</span>
+      </div>
+    </div>
+    <div class="post-body">
+      <h3>"Dieses Wochenende in Berlin: 3 Projekte, die ohne dich nicht stattfinden."</h3>
+
+      <div class="slides-container">
+        <div class="slide hook">
+          <div class="slide-label">Slide 1 — Hook</div>
+          <div class="slide-copy">"Dieses Wochenende in Berlin: 3 Projekte, die ohne dich nicht stattfinden."</div>
+          <div class="slide-design">Papier-BG. "Berlin" in Syne Extrabold, 48pt. Darunter der Rest in Public Sans. Oben links: "lets go" in JetBrains Mono, orange, 8pt. Optional: Dezente Silhouette der Berliner Skyline als Linienzeichnung am unteren Rand (schwarz, 1px Strich).</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 2 — Projekt 1</div>
+          <div class="slide-copy">"🌿 Parkpflege Tempelhofer Feld. Samstag, 10-13 Uhr. Müll sammeln, Beete pflegen, Bäume gießen. Keine Vorkenntnisse. Handschuhe werden gestellt."</div>
+          <div class="slide-design">Papier-BG. Projektname in Syne Bold, 20pt. Darunter vier Zeilen: Was? Wann? Was brauche ich? — jeweils mit kleinem orangen Label in JetBrains Mono ("WAS", "WANN", "SKILLS", "MITBRINGEN"). Kartenartig, wie ein Steckbrief.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 3 — Projekt 1 Detail</div>
+          <div class="slide-copy">"Das Tempelhofer Feld braucht jede Woche Freiwillige, damit es so bleibt wie es ist: offen, grün, für alle. Letzten Monat: 48 Freiwillige, 120 Müllsäcke."</div>
+          <div class="slide-design">Papier-BG. "48 Freiwillige, 120 Müllsäcke" in Syne Bold, orange. Rest in Public Sans Light. Kontext-Slide, der zeigt warum es wichtig ist. Platz für ein Foto (Beschreibung: Wiese mit Müllsäcken, Morgenlicht, keine Gesichter zu erkennen).</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 4 — Projekt 2</div>
+          <div class="slide-copy">"📚 Lernpat:innen Neukölln. Samstag, 14-16 Uhr. Kinder (8-12) bei Hausaufgaben unterstützen. Grundschulniveau reicht. Deutsch oder Mathe."</div>
+          <div class="slide-design">Gleicher Steckbrief-Aufbau wie Slide 2. Andere Farb-Nuance: Hintergrund minimal wärmer (#F5F3EC) um die Projekte visuell zu unterscheiden.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 5 — Projekt 2 Detail</div>
+          <div class="slide-copy">"Die Kids haben oft niemanden zuhause, der helfen kann. 2 Stunden am Samstag können den Unterschied zwischen 'Versetzung gefährdet' und 'Geschafft' machen."</div>
+          <div class="slide-design">Papier-BG. Der Kontrast "'Versetzung gefährdet' und 'Geschafft'" in Syne Bold. Emotionaler Slide. Platz für eine Illustration: Zwei Sprechblasen, eine mit Fragezeichen, eine mit Ausrufezeichen.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 6 — Projekt 3</div>
+          <div class="slide-copy">"🐾 Tierheim Berlin-Lichtenberg. Sonntag, 9-12 Uhr. Hunde ausführen, Katzen sozialisieren, Gehege reinigen. Tierliebe reicht."</div>
+          <div class="slide-design">Gleicher Steckbrief-Aufbau. Drittes Projekt. Platz für ein Symbolbild: Pfote-Icon oder Hundeleine-Silhouette, minimalistisch schwarz.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 7</div>
+          <div class="slide-copy">"Kein Bock rauszugehen? 2 Remote-Projekte von der Couch: Online-Nachhilfe für Geflüchtete (1h/Woche, flexibel). Social Media für eine kleine NGO (Posts gestalten, 2-3h/Woche)."</div>
+          <div class="slide-design">Papier-BG. "Von der Couch" in Syne Bold. Zwei Remote-Projekte als Mini-Karten nebeneinander, jeweils mit Laptop-Icon. Zeigt: Es geht auch ohne Anfahrt.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 8</div>
+          <div class="slide-copy">"5 Projekte. 5 verschiedene Arten, dieses Wochenende was zu verändern. Keins davon braucht mehr als 3 Stunden."</div>
+          <div class="slide-design">Papier-BG. Zusammenfassung. "Keins davon braucht mehr als 3 Stunden" in Syne Bold, orange. Viel Weißraum. Simpel.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 9 — Kommentar-Trigger</div>
+          <div class="slide-copy">"Welche Nummer spricht dich an? Kommentier 1, 2, 3, 4 oder 5. Wir verlinken dich direkt zum Projekt."</div>
+          <div class="slide-design">Papier-BG. Die Zahlen 1-5 groß nebeneinander in Syne Bold, orange. Darunter der CTA in Public Sans. Aktivierung: Die Kommentar-Aufforderung ist konkret und einfach.</div>
+        </div>
+
+        <div class="slide cta">
+          <div class="slide-label">Slide 10 — CTA</div>
+          <div class="slide-copy">"Alle Projekte in Berlin und 40+ anderen Städten. letsact App — kostenlos. Link in Bio."</div>
+          <div class="slide-design">Dunkelgrüner Hintergrund. letsact-Logo. "40+ Städte" in orange. App-Store-Icons.</div>
+        </div>
+      </div>
+
+      <div class="rationale">
+        <strong>Warum das funktioniert:</strong> Lokaler Nutzwert ist das Arbeitstier-Format. Jede Woche wiederholbar mit neuer Stadt. Kommentar-Trigger ("Welche Nummer?") ist niedrigschwellig und treibt das Algorithmus-Signal. Die Mischung aus Vor-Ort + Remote zeigt: Es gibt keine Ausrede. Projekte direkt aus der App = minimaler Recherche-Aufwand.
+      </div>
+
+      <div class="music-tip">Empfehlung: Upbeat, urban — passt zum Berlin-Vibe. Trending Audio wenn verfügbar.</div>
+    </div>
+
+    <div class="post-meta">
+      <div class="meta-label">Caption</div>
+      <div class="caption-text">Dieses Wochenende in Berlin: 5 Projekte, die dich brauchen. Von Tempelhofer Feld bis Couch. Welche Nummer? Kommentier — wir verlinken dich.</div>
+
+      <div class="meta-label">Hashtags (1. Kommentar)</div>
+      <div class="hashtags">
+        <span class="hashtag">#ehrenamt</span>
+        <span class="hashtag">#ehrenamtlich</span>
+        <span class="hashtag">#freiwilligenarbeit</span>
+        <span class="hashtag">#volunteerdeutschland</span>
+        <span class="hashtag">#gemeinsamgutestun</span>
+        <span class="hashtag">#berlintipps</span>
+        <span class="hashtag">#berlinleben</span>
+        <span class="hashtag">#tierschutz</span>
+        <span class="hashtag">#nachhaltigkeit</span>
+        <span class="hashtag">#impact</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORIES WOCHE 1 -->
+  <div class="stories-block">
+    <h4>Stories — Woche 1</h4>
+    <div class="stories-grid">
+      <div class="story-item">
+        <div class="story-day">Montag</div>
+        Umfrage: "Wusstest du, dass du als Ehrenamtliche:r 840€ steuerfrei bekommst?" [Ja klar / Wait, was?!]
+        <div class="story-sticker">→ Sticker: Umfrage</div>
+      </div>
+      <div class="story-item">
+        <div class="story-day">Dienstag</div>
+        "Eine Organisation, die ihr kennen solltet:" — 3 Slides Mini-Portrait einer NGO aus der App. Name, Was sie machen, Warum sie Freiwillige brauchen.
+        <div class="story-sticker">→ Sticker: Link zur NGO in der App</div>
+      </div>
+      <div class="story-item">
+        <div class="story-day">Mittwoch</div>
+        Teaser: "Neues Karussell draußen. Welche der 5 Übersetzungen bist du?" + Verweis auf Feed.
+        <div class="story-sticker">→ Sticker: Post-Verlinkung</div>
+      </div>
+      <div class="story-item">
+        <div class="story-day">Donnerstag</div>
+        "Ehrenamt-Mythos der Woche: 'Nur was für Rentner.' — Fakt: 61% der letsact-Nutzer:innen sind unter 35."
+        <div class="story-sticker">→ Sticker: Quiz (Wie alt sind die meisten Ehrenamtlichen? [Ü50 / U35 / Egal])</div>
+      </div>
+      <div class="story-item">
+        <div class="story-day">Freitag</div>
+        "Berlin-Guide ist live! Welches Projekt machst du? Schreib uns eine DM — wir helfen beim Anmelden."
+        <div class="story-sticker">→ Sticker: Frage ("Welches Projekt?")</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== WOCHE 2 ==================== -->
+<div class="week-section">
+  <div class="week-header">
+    <div class="week-num">02</div>
+    <div>
+      <div class="week-title">Menschen, Anfang, Stadt</div>
+      <div class="week-subtitle">lets meet → lets start → lets go</div>
+    </div>
+  </div>
+
+  <!-- POST 4: LETS MEET -->
+  <div class="post-card">
+    <div class="post-header">
+      <span class="post-day">Montag, 11:00</span>
+      <div class="post-tags">
+        <span class="tag-series">lets meet</span>
+        <span class="tag-format">Karussell</span>
+        <span class="funnel-tag trust">Vertrauen</span>
+      </div>
+    </div>
+    <div class="post-body">
+      <h3>"Jeder kennt die Tafel. Aber kennst du diese drei?"</h3>
+
+      <div class="slides-container">
+        <div class="slide hook">
+          <div class="slide-label">Slide 1 — Hook</div>
+          <div class="slide-copy">"Jeder kennt die Tafel. Aber kennst du diese drei?"</div>
+          <div class="slide-design">Papier-BG. "diese drei?" in Syne Extrabold, 40pt. Rest in Public Sans. Oben links: "lets meet" in JetBrains Mono, orange. Neugier-Hook: Was kommt als nächstes?</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 2 — Org 1 Name</div>
+          <div class="slide-copy">"EinDollarBrille e.V. Sie bauen Brillen für 1 Dollar. Für Menschen, die sich keine leisten können. 1 Milliarde Menschen weltweit sehen schlecht — weil eine Brille fehlt."</div>
+          <div class="slide-design">Papier-BG. "EinDollarBrille" in Syne Bold, 24pt. "1 Milliarde" in orange. Einfaches Icon: Brillen-Silhouette, schwarz. Steckbrief-Format: WAS / FÜR WEN / WARUM in JetBrains Mono Labels.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 3 — Org 1 Detail</div>
+          <div class="slide-copy">"Du kannst helfen: Biegeworkshops (Brillen selber biegen — ja, wirklich), Fundraising, Social Media. Alles remote möglich. Ab 2h/Monat."</div>
+          <div class="slide-design">Papier-BG. "Ab 2h/Monat" in Syne Bold, orange. Drei Engagement-Möglichkeiten aufgelistet mit orangen Strichen. Call-to-action-Charakter: "So kannst DU mitmachen."</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 4 — Org 2 Name</div>
+          <div class="slide-copy">"Über den Tellerrand e.V. Kochen mit Geflüchteten. Keine Charity-Gala. Ein Tisch, verschiedene Rezepte, echte Gespräche."</div>
+          <div class="slide-design">Papier-BG. "Über den Tellerrand" in Syne Bold. "Ein Tisch, verschiedene Rezepte, echte Gespräche" als drei vertikale Zeilen. Warm, einladend. Optional: Illustration eines gedeckten Tisches (Linienzeichnung).</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 5 — Org 2 Detail</div>
+          <div class="slide-copy">"Du kannst helfen: Kochevents organisieren (mehrere Städte), Sprachpatenschaften, Community-Abende begleiten. Ideal für: Menschen, die gerne kochen und reden."</div>
+          <div class="slide-design">Gleiche Kartenstruktur. "Ideal für: Menschen, die gerne kochen und reden" in Syne Bold. Matching-Logik: Zeigt der Zielgruppe, ob DAS hier zu IHNEN passt.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 6 — Org 3 Name</div>
+          <div class="slide-copy">"Cleanup Network e.V. Müll sammeln. Klingt langweilig? 15.000 Freiwillige in 2024. 200+ Aktionen im Jahr. Community, die was bewegt."</div>
+          <div class="slide-design">Papier-BG. "15.000 Freiwillige" in Syne Bold, orange. "Klingt langweilig?" als provokanter Einstieg in Public Sans Italic. Bricht die Erwartung.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 7 — Org 3 Detail</div>
+          <div class="slide-copy">"Du kannst helfen: Eigenen Cleanup organisieren (Toolkit vorhanden), bei bestehenden Aktionen mitmachen, Social Media dokumentieren. Perfekt für: Leute, die lieber draußen sind als am Schreibtisch."</div>
+          <div class="slide-design">Gleiche Kartenstruktur. "Perfekt für:" zeigt wieder das Matching. Oben rechts klein: "Verfügbar in der letsact App" in JetBrains Mono. Hier taucht letsact erstmals auf (Slide 7).</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 8</div>
+          <div class="slide-copy">"3 Organisationen. 3 komplett verschiedene Wege, etwas zu verändern. Brillen biegen, zusammen kochen, Müll sammeln. Was passt zu dir?"</div>
+          <div class="slide-design">Papier-BG. Zusammenfassung mit den drei Orga-Namen nebeneinander in Syne Bold. Dazwischen Trennstriche. Überblicks-Slide.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 9 — Kommentar-Trigger</div>
+          <div class="slide-copy">"Welche Organisation beeindruckt dich am meisten? Kommentier den Namen. Und wenn du eine kennst, die hier fehlt — sag's uns."</div>
+          <div class="slide-design">Papier-BG. "Kommentier den Namen" in Syne Bold. Doppelter CTA: Kommentar + Community-Input. Generiert Engagement und Content-Ideen gleichzeitig.</div>
+        </div>
+
+        <div class="slide cta">
+          <div class="slide-label">Slide 10 — CTA</div>
+          <div class="slide-copy">"Alle drei und 2.500+ weitere Organisationen. letsact App — kostenlos. Link in Bio."</div>
+          <div class="slide-design">Dunkelgrüner Hintergrund. "2.500+" in Syne Bold, orange, 48pt. letsact-Logo. App-Store-Icons.</div>
+        </div>
+      </div>
+
+      <div class="rationale">
+        <strong>Warum das funktioniert:</strong> Win-Win-Win. NGOs bekommen Sichtbarkeit (stärkt eure Partnerschaften). Follower entdecken Neues. Ihr bekommt Saves ("Merk ich mir") und Kommentare ("Die kannte ich nicht!"). Beliebig wiederholbar mit anderen Organisationen. Die Matching-Logik ("Perfekt für: ...") hilft der Zielgruppe, sich selbst zu erkennen.
+      </div>
+
+      <div class="music-tip">Empfehlung: Feel-good Acoustic oder Soft Pop — warm, menschlich, passt zum "Meet"-Thema.</div>
+    </div>
+
+    <div class="post-meta">
+      <div class="meta-label">Caption</div>
+      <div class="caption-text">Jeder kennt die großen Namen. Hier sind drei Organisationen, die du wahrscheinlich noch nicht auf dem Schirm hast — und die dich gerade brauchen. Welche beeindruckt dich?</div>
+
+      <div class="meta-label">Hashtags (1. Kommentar)</div>
+      <div class="hashtags">
+        <span class="hashtag">#ehrenamt</span>
+        <span class="hashtag">#ehrenamtlich</span>
+        <span class="hashtag">#freiwilligenarbeit</span>
+        <span class="hashtag">#sozialengagiert</span>
+        <span class="hashtag">#volunteerdeutschland</span>
+        <span class="hashtag">#gemeinsamgutestun</span>
+        <span class="hashtag">#sozialegerechtigkeit</span>
+        <span class="hashtag">#inklusion</span>
+        <span class="hashtag">#klimaschutz</span>
+        <span class="hashtag">#inspiration</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST 5: LETS START -->
+  <div class="post-card">
+    <div class="post-header">
+      <span class="post-day">Mittwoch, 18:00</span>
+      <div class="post-tags">
+        <span class="tag-series">lets start</span>
+        <span class="tag-format">Karussell</span>
+        <span class="funnel-tag trust">Vertrauen</span>
+      </div>
+    </div>
+    <div class="post-body">
+      <h3>"Mein erstes Ehrenamt hat 47 Minuten gedauert. Danach war ich ein anderer Mensch. Nee, Quatsch. Aber ich hab's nochmal gemacht."</h3>
+
+      <div class="slides-container">
+        <div class="slide hook">
+          <div class="slide-label">Slide 1 — Hook</div>
+          <div class="slide-copy">"Mein erstes Ehrenamt hat 47 Minuten gedauert. Danach war ich ein anderer Mensch."</div>
+          <div class="slide-design">Papier-BG. "47 Minuten" in Syne Extrabold, 56pt, orange. Rest in Public Sans, 16pt. Oben links: "lets start" in JetBrains Mono, 8pt. Hook lebt vom konkreten Detail (47 Minuten, nicht "unter einer Stunde").</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 2 — Spoiler</div>
+          <div class="slide-copy">"Nee, Quatsch. Ich war kein anderer Mensch. Aber ich hab was gemerkt: Es ist nicht so weird, wie ich dachte."</div>
+          <div class="slide-design">Papier-BG. "Nee, Quatsch." in Syne Bold, groß. Bricht die Erwartung. Der Ton ist ehrlich, nicht kitschig. Kein Bild, nur Text. Die Enttäuschung der Erwartung IST der Hook für den Rest.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 3 — Vorher</div>
+          <div class="slide-copy">"Was ich vorher dachte: Ehrenamt = lange Verpflichtung. Ehrenamt = Bewerbungsgespräch. Ehrenamt = Leute die viel engagierter sind als ich. Spoiler: Nichts davon stimmte."</div>
+          <div class="slide-design">Papier-BG. Vier Annahmen, jede durchgestrichen (Linie durch den Text, orange). "Spoiler: Nichts davon stimmte" am Ende in Syne Bold. Visuell: Erwartungen werden wortwörtlich gecancelt.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 4 — Der Schritt</div>
+          <div class="slide-copy">"Hab eine App runtergeladen. 'Tierschutz' als Interesse. 3 Projekte in meiner Nähe. Eins war am Samstag. Hab draufgeklickt. Fertig."</div>
+          <div class="slide-design">Papier-BG. Jeder Satz eine eigene Zeile. Schritt-für-Schritt, fast wie Code. JetBrains Mono für die einzelnen Schritte, um den "So einfach war's"-Effekt zu verstärken. Kein Schnörkel.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 5 — Die Erfahrung</div>
+          <div class="slide-copy">"Samstag, 10 Uhr. Tierheim. Ich hab 47 Minuten lang Hunde ausgeführt. Einen davon hieß Bernd. Bernd war ziemlich gut drauf. Ich danach auch."</div>
+          <div class="slide-design">Papier-BG. "Bernd" in Syne Bold (der Hund als Charakter). Der Humor ist subtil und menschlich. Platz für eine kleine Illustration: Hundepfote oder Leine, Linienzeichnung, schwarz.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 6 — Die Überraschung</div>
+          <div class="slide-copy">"Was mich überrascht hat: Niemand hat gefragt, warum ich da bin. Niemand hat einen Lebenslauf gewollt. Ich bin aufgetaucht, hab geholfen, und bin wieder gegangen."</div>
+          <div class="slide-design">Papier-BG. "Niemand hat einen Lebenslauf gewollt" in Syne Bold. Die Überraschung ist die Normalität. Kein großes Drama, kein Weltrettungs-Moment. Genau das macht es glaubwürdig.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 7 — Was blieb</div>
+          <div class="slide-copy">"Hab ich danach die Welt gerettet? Nein. Hab ich nächste Woche nochmal Bernd ausgeführt? Ja. Mach ich's immer noch? Manchmal. Wenn mein Kalender es hergibt."</div>
+          <div class="slide-design">Papier-BG. Ehrlicher Ton. Kein Pathos. "Manchmal. Wenn mein Kalender es hergibt." in Public Sans Light — spiegelt die Realität der Zielgruppe. Hier taucht die Marke noch nicht auf.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 8 — Das Takeaway</div>
+          <div class="slide-copy">"Das Schwierigste am Ehrenamt ist nicht das Ehrenamt. Es ist der Moment, in dem du zum ersten Mal auf 'Anmelden' klickst."</div>
+          <div class="slide-design">Papier-BG. Zentriert. "auf 'Anmelden' klickst" in Syne Bold, orange. Viel Weißraum. Das ist der Satz, den Leute screenshotten und teilen.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 9 — Community</div>
+          <div class="slide-copy">"Wie war euer erstes Mal? Erzählt's in den Kommentaren. Oder schickt den Post an jemanden, der den Schubs braucht."</div>
+          <div class="slide-design">Papier-BG. Doppelter CTA: Kommentar + Share. "Den Schubs braucht" in Syne Bold. Bookmark-Icon + Send-Icon in Orange.</div>
+        </div>
+
+        <div class="slide cta">
+          <div class="slide-label">Slide 10 — CTA</div>
+          <div class="slide-copy">"Dein erster Schritt dauert 2 Minuten. letsact App — kostenlos. Link in Bio. Bernd wartet."</div>
+          <div class="slide-design">Dunkelgrüner Hintergrund. letsact-Logo. "Bernd wartet." in Public Sans Italic, klein — Callback zum Hund, bringt zum Schmunzeln. Menschlicher Closer.</div>
+        </div>
+      </div>
+
+      <div class="rationale">
+        <strong>Warum das funktioniert:</strong> "lets start" adressiert die psychologische Hürde. Die Geschichte ist bewusst un-heroisch: 47 Minuten, ein Hund namens Bernd, kein Weltrettungs-Moment. Das ist genau der Ton, der Gen Z glaubwürdig findet. Der Anti-Pathos macht den Post shareable, weil er sich anfühlt wie eine DM von einer Freundin, nicht wie eine Kampagne. Slide 8 ist der Screenshot-Moment. Der Bernd-Callback auf Slide 10 ist ein Detail, das hängenbleibt.
+      </div>
+
+      <div class="music-tip">Empfehlung: Warm, Indie-Folk oder Lo-Fi — persönlich, nicht poliert. Passt zum "echte Geschichte"-Vibe.</div>
+    </div>
+
+    <div class="post-meta">
+      <div class="meta-label">Caption</div>
+      <div class="caption-text">47 Minuten. Ein Hund namens Bernd. Mein erstes Ehrenamt war kein großer Moment. Es war ein kleiner. Und genau deshalb hab ich's nochmal gemacht.</div>
+
+      <div class="meta-label">Hashtags (1. Kommentar)</div>
+      <div class="hashtags">
+        <span class="hashtag">#ehrenamt</span>
+        <span class="hashtag">#ehrenamtlich</span>
+        <span class="hashtag">#freiwilligenarbeit</span>
+        <span class="hashtag">#sozialengagiert</span>
+        <span class="hashtag">#volunteerdeutschland</span>
+        <span class="hashtag">#gemeinsamgutestun</span>
+        <span class="hashtag">#tierschutz</span>
+        <span class="hashtag">#sinnstiftend</span>
+        <span class="hashtag">#genz</span>
+        <span class="hashtag">#macheinunterschied</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- POST 6: LETS GO MÜNCHEN -->
+  <div class="post-card">
+    <div class="post-header">
+      <span class="post-day">Freitag, 10:00</span>
+      <div class="post-tags">
+        <span class="tag-series">lets go München</span>
+        <span class="tag-format">Karussell</span>
+        <span class="funnel-tag bind">Bindung</span>
+      </div>
+    </div>
+    <div class="post-body">
+      <h3>"Dieses Wochenende in München: 3 Projekte, für die du kein:e Held:in sein musst."</h3>
+
+      <div class="slides-container">
+        <div class="slide hook">
+          <div class="slide-label">Slide 1 — Hook</div>
+          <div class="slide-copy">"Dieses Wochenende in München: 3 Projekte, für die du kein:e Held:in sein musst."</div>
+          <div class="slide-design">Papier-BG. "München" in Syne Extrabold, 48pt. Oben links: "lets go" in JetBrains Mono, orange. Optional: Dezente Münchner Skyline (Frauenkirche) als Linienzeichnung am unteren Rand.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 2 — Projekt 1</div>
+          <div class="slide-copy">"🍞 Münchner Tafel — Lebensmittel sortieren. Samstag, 8-11 Uhr, Großmarkthalle. Einfach kommen, Handschuhe anziehen, loslegen."</div>
+          <div class="slide-design">Steckbrief-Format wie bei Berlin. Labels: WAS / WANN / WO / SKILLS. Clean, scanbar.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 3 — Projekt 1 Detail</div>
+          <div class="slide-copy">"Die Tafel versorgt 30.000 Münchner:innen mit Lebensmitteln, die sonst weggeworfen würden. Jede Stunde Sortieren = 40 Mahlzeiten, die ankommen."</div>
+          <div class="slide-design">"30.000" und "40 Mahlzeiten" in Syne Bold, orange. Konkreter Impact pro Stunde — macht den Beitrag greifbar.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 4 — Projekt 2</div>
+          <div class="slide-copy">"🌊 Isar-Cleanup Flaucher. Sonntag, 10-12 Uhr. Müll sammeln am Flaucher. Treffpunkt: Braunauer Eisenbahnbrücke. Müllsäcke und Zangen werden gestellt."</div>
+          <div class="slide-design">Steckbrief. Ortsbezug "Flaucher" ist für Münchner:innen sofort erkennbar. Konkreter Treffpunkt.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 5 — Projekt 2 Detail</div>
+          <div class="slide-copy">"Nach dem Sommer sieht die Isar am Flaucher aus wie nach einem Festival. 2 Stunden am Sonntagmorgen, und du siehst den Unterschied beim Nachhausegehen."</div>
+          <div class="slide-design">"Du siehst den Unterschied beim Nachhausegehen" in Syne Bold. Emotional-konkretes Bild, das Münchner:innen kennen.</div>
+        </div>
+
+        <div class="slide">
+          <div class="slide-label">Slide 6 — Projekt 3</div>
+          <div class="slide-copy">"📖 Lesepat:innen Hasenbergl. Mittwochs, 15-16:30 Uhr. Grundschulkindern vorlesen und beim Lesen helfen. Einzige Qualifikation: Du kannst Deutsch lesen."</div>
+          <div class="slide-design">Steckbrief. "Einzige Qualifikation: Du kannst Deutsch lesen" in Syne Bold — niedrigschwellig, mit einem Augenzwinkern.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 7 — Remote</div>
+          <div class="slide-copy">"Keine Lust rauszugehen? 2 Remote-Optionen: Übersetzen für eine Münchner Geflüchteten-Initiative (Englisch oder Arabisch, 1h/Woche). Grafik-Design für einen lokalen Sportverein (flexibel, eigener Zeitplan)."</div>
+          <div class="slide-design">Papier-BG. Zwei Mini-Karten. Remote-Optionen zeigen Bandbreite.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 8</div>
+          <div class="slide-copy">"5 Projekte. Isar, Tafel, Klassenzimmer, Couch. Du entscheidest, wie München dieses Wochenende ein bisschen besser wird."</div>
+          <div class="slide-design">Papier-BG. Zusammenfassung. "Du entscheidest" in Syne Bold, orange.</div>
+        </div>
+
+        <div class="slide full-width">
+          <div class="slide-label">Slide 9 — Kommentar-Trigger</div>
+          <div class="slide-copy">"Welche Nummer? Kommentier — wir verlinken dich direkt zum Projekt. Und sag uns: Welche Stadt soll nächste Woche dran sein?"</div>
+          <div class="slide-design">Zahlen 1-5 groß in orange. Doppelter CTA: Projekt wählen + nächste Stadt bestimmen. Community-Einbindung.</div>
+        </div>
+
+        <div class="slide cta">
+          <div class="slide-label">Slide 10 — CTA</div>
+          <div class="slide-copy">"München, Berlin, Hamburg und 40+ weitere Städte. letsact App — kostenlos. Link in Bio."</div>
+          <div class="slide-design">Dunkelgrüner Hintergrund. Städte-Namen klein aufgelistet. letsact-Logo. App-Store-Icons.</div>
+        </div>
+      </div>
+
+      <div class="rationale">
+        <strong>Warum das funktioniert:</strong> München ist euer Heimatstandort. Die Projekte (Tafel, Isar-Cleanup, Lesepat:innen) sind lokal verankert und für Münchner:innen sofort greifbar. "Welche Stadt nächste Woche?" auf Slide 9 gibt der Community Mitbestimmung und liefert euch gleichzeitig Daten, welche Städte eure Follower interessieren.
+      </div>
+
+      <div class="music-tip">Empfehlung: Bayerisch-urban oder entspannter Deep House — Münchner Vibe, nicht zu Volksfest.</div>
+    </div>
+
+    <div class="post-meta">
+      <div class="meta-label">Caption</div>
+      <div class="caption-text">München, dein Wochenende hat Platz für Impact. 5 Projekte, von Tafel bis Couch. Welche Nummer machst du? Kommentier — und sag uns, welche Stadt als nächstes dran ist.</div>
+
+      <div class="meta-label">Hashtags (1. Kommentar)</div>
+      <div class="hashtags">
+        <span class="hashtag">#ehrenamt</span>
+        <span class="hashtag">#ehrenamtlich</span>
+        <span class="hashtag">#freiwilligenarbeit</span>
+        <span class="hashtag">#volunteerdeutschland</span>
+        <span class="hashtag">#gemeinsamgutestun</span>
+        <span class="hashtag">#münchen</span>
+        <span class="hashtag">#münchentipps</span>
+        <span class="hashtag">#nachhaltigkeit</span>
+        <span class="hashtag">#isarcleanup</span>
+        <span class="hashtag">#impact</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORIES WOCHE 2 -->
+  <div class="stories-block">
+    <h4>Stories — Woche 2</h4>
+    <div class="stories-grid">
+      <div class="story-item">
+        <div class="story-day">Montag</div>
+        Quiz: "Wie viele gemeinnützige Organisationen gibt es in Deutschland?" [~5.000 / ~30.000 / ~600.000] (Antwort: über 600.000)
+        <div class="story-sticker">→ Sticker: Quiz</div>
+      </div>
+      <div class="story-item">
+        <div class="story-day">Dienstag</div>
+        Rückblick: "Euer meistgespeicherter Post letzte Woche war der Steuer-Post. Verständlich. 840€ halt." + Screenshot der Analytics (Save-Zahl).
+        <div class="story-sticker">→ Sticker: Umfrage ("Habt ihr ihn gespeichert?" [Ja / Mach ich jetzt])</div>
+      </div>
+      <div class="story-item">
+        <div class="story-day">Mittwoch</div>
+        Teaser: "Neues Karussell über den schwierigsten Moment im Ehrenamt. Es ist nicht das, was ihr denkt." → Feed-Verweis.
+        <div class="story-sticker">→ Sticker: Post-Verlinkung</div>
+      </div>
+      <div class="story-item">
+        <div class="story-day">Donnerstag</div>
+        "Fun Fact: Ehrenamtliche sind im Schnitt glücklicher als Nicht-Ehrenamtliche. Nicht weil sie bessere Menschen sind. Sondern weil Helfen Dopamin ausschüttet."
+        <div class="story-sticker">→ Sticker: Emoji-Slider (🧠 "Wusstest du das?")</div>
+      </div>
+      <div class="story-item">
+        <div class="story-day">Freitag</div>
+        "München-Guide ist live! Welche Stadt nächste Woche?" + Abstimmung: Hamburg / Köln / Frankfurt / Leipzig
+        <div class="story-sticker">→ Sticker: Umfrage (4 Städte)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="section-label" style="color: var(--accent);">Nächste Schritte</span>
+  <h2>Woche 3 und 4 folgen demselben System.</h2>
+  <p>lets count + lets talk + lets go + lets meet + lets start. Neue Themen, gleiche Strukturen. Die Serien werden zur Gewohnheit — für euch beim Erstellen und für die Follower beim Konsumieren.</p>
+</div>
+
+</body>
+</html>
