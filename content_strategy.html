@@ -1,0 +1,3781 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>letsact — Instagram Content-Strategie 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Public+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0F2820;
+  --paper: #F2F0E9;
+  --accent: #FF4400;
+  --white: #FFFFFF;
+  --stone: #6B706B;
+  --moss: #2C5545;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'Public Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--primary);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 180px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 999;
+  mix-blend-mode: multiply;
+}
+
+/* ── PROGRESS BAR ── */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--accent);
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 280px;
+  height: 100vh;
+  background: var(--primary);
+  color: var(--paper);
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid var(--accent);
+  transition: transform 0.3s ease;
+}
+
+#sidebar::-webkit-scrollbar { width: 3px; }
+#sidebar::-webkit-scrollbar-track { background: var(--primary); }
+#sidebar::-webkit-scrollbar-thumb { background: var(--accent); }
+
+.sidebar-header {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid rgba(242,240,233,0.12);
+}
+
+.sidebar-logo {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--paper);
+  letter-spacing: -0.5px;
+}
+
+.sidebar-logo span {
+  color: var(--accent);
+}
+
+.sidebar-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(242,240,233,0.4);
+  margin-top: 6px;
+}
+
+.sidebar-phase {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 2px 8px;
+  margin-top: 10px;
+}
+
+nav { padding: 16px 0 24px; flex: 1; }
+
+.nav-section-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(242,240,233,0.3);
+  padding: 16px 24px 6px;
+}
+
+nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 24px;
+  text-decoration: none;
+  color: rgba(242,240,233,0.6);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 400;
+  border-left: 2px solid transparent;
+  transition: all 0.15s ease;
+  line-height: 1.3;
+}
+
+nav a:hover, nav a.active {
+  color: var(--paper);
+  border-left-color: var(--accent);
+  background: rgba(255,68,0,0.08);
+  padding-left: 26px;
+}
+
+nav a .nav-num {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent);
+  min-width: 18px;
+}
+
+.sidebar-footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(242,240,233,0.1);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(242,240,233,0.25);
+}
+
+/* ── MOBILE TOGGLE ── */
+#menu-toggle {
+  display: none;
+  position: fixed;
+  bottom: 24px; right: 24px;
+  width: 48px; height: 48px;
+  background: var(--accent);
+  border: none;
+  cursor: pointer;
+  z-index: 200;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+#menu-toggle span { display: block; width: 20px; height: 2px; background: white; }
+
+/* ── MAIN CONTENT ── */
+main {
+  margin-left: 280px;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 80px 64px 64px;
+  border-bottom: 2px solid var(--primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1.0;
+  letter-spacing: -2px;
+  max-width: 700px;
+  margin-bottom: 24px;
+}
+
+.hero h1 .outline {
+  -webkit-text-stroke: 2px var(--primary);
+  color: transparent;
+}
+
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--stone);
+  max-width: 520px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--primary);
+  border: 2px solid var(--primary);
+  max-width: 640px;
+}
+
+.hero-stat {
+  background: var(--paper);
+  padding: 20px 24px;
+  position: relative;
+}
+
+.hero-stat .num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 28px;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.hero-stat .label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--stone);
+}
+
+/* ── SECTION WRAPPER ── */
+section {
+  padding: 72px 64px;
+  border-bottom: 2px solid var(--primary);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.section-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  padding: 4px 10px;
+  border: 1px solid var(--accent);
+  white-space: nowrap;
+  margin-top: 6px;
+}
+
+.section-title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -1.5px;
+}
+
+.section-subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--stone);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+/* ── TYPOGRAPHY ── */
+h3 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  margin-bottom: 16px;
+  margin-top: 40px;
+}
+
+h3:first-child { margin-top: 0; }
+
+h4 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.2px;
+  margin-bottom: 10px;
+  margin-top: 28px;
+}
+
+p {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+.lead {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--primary);
+  margin-bottom: 32px;
+  max-width: 640px;
+}
+
+/* ── LABEL / TAG ── */
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 3px 10px;
+  border: 1px solid currentColor;
+}
+
+.tag-accent { color: var(--accent); border-color: var(--accent); }
+.tag-primary { color: var(--primary); border-color: var(--primary); }
+.tag-stone { color: var(--stone); border-color: var(--stone); }
+.tag-reach { background: var(--primary); color: var(--paper); }
+.tag-trust { background: var(--moss); color: var(--paper); }
+.tag-bind { background: var(--accent); color: white; }
+
+/* ── STAT CARDS ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  background: var(--primary);
+  border: 2px solid var(--primary);
+  margin: 32px 0;
+}
+
+.stat-card {
+  background: var(--paper);
+  padding: 24px 20px;
+}
+
+.stat-card .big-num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 40px;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-card .stat-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--stone);
+  margin-bottom: 6px;
+}
+
+.stat-card .stat-desc {
+  font-size: 12px;
+  color: var(--primary);
+  line-height: 1.4;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--white);
+  border: 2px solid var(--primary);
+  padding: 28px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.card-tab {
+  position: absolute;
+  top: -1px; left: 24px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  background: var(--accent);
+  color: white;
+  transform: translateY(-100%);
+}
+
+.card h4 { margin-top: 0; }
+
+/* ── GRID 2 ── */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+/* ── SWOT TABLE ── */
+.swot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--primary);
+  border: 2px solid var(--primary);
+  margin: 32px 0;
+}
+
+.swot-cell {
+  background: var(--paper);
+  padding: 28px;
+}
+
+.swot-cell.strengths { background: var(--primary); color: var(--paper); }
+.swot-cell.threats { background: #1a0a00; color: rgba(242,240,233,0.85); }
+
+.swot-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 14px;
+}
+
+.swot-label.s { color: var(--accent); }
+.swot-label.w { color: var(--stone); }
+.swot-label.o { color: var(--moss); }
+.swot-label.t { color: var(--accent); }
+
+.swot-cell ul { list-style: none; padding: 0; }
+.swot-cell ul li {
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 5px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.swot-cell ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.swot-cell.strengths ul li::before,
+.swot-cell.threats ul li::before {
+  color: var(--accent);
+}
+
+/* ── TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid var(--primary);
+  font-size: 13px;
+  margin: 24px 0;
+}
+
+.data-table th {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: var(--primary);
+  color: var(--paper);
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 400;
+}
+
+.data-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(15,40,32,0.12);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(255,68,0,0.04); }
+
+/* ── KPI TABLE ── */
+.kpi-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--primary);
+  margin-bottom: 1px;
+}
+
+.kpi-row.header {
+  background: var(--primary);
+}
+
+.kpi-cell {
+  background: var(--paper);
+  padding: 14px 18px;
+  font-size: 13px;
+}
+
+.kpi-row.header .kpi-cell {
+  background: var(--primary);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.kpi-metric {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ── CONTENT PILLARS ── */
+.pillar-card {
+  border: 2px solid var(--primary);
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pillar-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--primary);
+}
+
+.pillar-header {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pillar-name {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+}
+
+.pillar-series {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.pillar-body {
+  padding: 24px;
+  background: var(--paper);
+}
+
+.pillar-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+/* ── WEEK PLAN ── */
+.week-block {
+  border: 2px solid var(--primary);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.week-header {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.week-num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 48px;
+  line-height: 1;
+  color: var(--accent);
+  -webkit-text-stroke: 1px var(--accent);
+}
+
+.week-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.week-subtitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(242,240,233,0.5);
+  margin-top: 4px;
+}
+
+.week-funnel-logic {
+  background: rgba(255,68,0,0.08);
+  border-left: 3px solid var(--accent);
+  padding: 16px 20px;
+  margin: 0 28px 28px;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--primary);
+}
+
+.week-funnel-logic strong {
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── POST CARD ── */
+.post-card {
+  margin: 0 28px 28px;
+  border: 2px solid var(--primary);
+  background: var(--white);
+}
+
+.post-card-header {
+  background: var(--paper);
+  border-bottom: 2px solid var(--primary);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.post-day {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.3px;
+}
+
+.post-meta {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.post-card-body { padding: 20px; }
+
+.post-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: -0.3px;
+  margin-bottom: 16px;
+  line-height: 1.3;
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+}
+
+/* ── SLIDE TABLE ── */
+.slide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  margin: 16px 0;
+}
+
+.slide-table th {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  background: var(--primary);
+  color: rgba(242,240,233,0.7);
+  padding: 8px 14px;
+  text-align: left;
+  font-weight: 400;
+}
+
+.slide-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(15,40,32,0.1);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.slide-table tr:last-child td { border-bottom: none; }
+
+.slide-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+  width: 100px;
+}
+
+.slide-highlight {
+  background: rgba(255,68,0,0.05);
+  font-weight: 600;
+}
+
+/* ── REEL CARD ── */
+.reel-card {
+  background: var(--primary);
+  color: var(--paper);
+  border: 2px solid var(--primary);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.reel-card .reel-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.reel-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 16px 0;
+}
+
+.reel-beat {
+  display: flex;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(242,240,233,0.1);
+  align-items: flex-start;
+}
+
+.reel-beat:last-child { border-bottom: none; }
+
+.reel-time {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  min-width: 70px;
+  margin-top: 2px;
+}
+
+.reel-text {
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgba(242,240,233,0.85);
+}
+
+/* ── STORY ROW ── */
+.stories-block {
+  margin: 0 28px 28px;
+  background: rgba(44,85,69,0.06);
+  border: 1px solid rgba(44,85,69,0.3);
+  padding: 20px;
+}
+
+.stories-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--moss);
+  margin-bottom: 14px;
+}
+
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+.story-item {
+  background: var(--white);
+  border: 1px solid rgba(15,40,32,0.15);
+  padding: 12px 10px;
+  font-size: 11.5px;
+  line-height: 1.4;
+}
+
+.story-day {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.story-type {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 4px;
+}
+
+/* ── WHY BOX ── */
+.why-box {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 18px 22px;
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.why-box strong {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+/* ── CAPTION BOX ── */
+.caption-box {
+  border: 1px solid rgba(15,40,32,0.2);
+  padding: 14px 18px;
+  margin-top: 12px;
+  background: rgba(15,40,32,0.03);
+}
+
+.caption-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--stone);
+  margin-bottom: 6px;
+}
+
+.caption-text {
+  font-size: 12.5px;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--primary);
+  margin: 0;
+}
+
+/* ── HASHTAG CLOUD ── */
+.hashtag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.hashtag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  letter-spacing: 0.05em;
+  transition: all 0.15s ease;
+}
+
+.hashtag:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.hashtag.theme { border-color: var(--moss); color: var(--moss); }
+.hashtag.reach { border-color: var(--stone); color: var(--stone); }
+.hashtag.delete { border-color: rgba(255,68,0,0.3); color: rgba(255,68,0,0.5); text-decoration: line-through; }
+
+/* ── HOOK FORMULAS ── */
+.hook-card {
+  border: 2px solid var(--primary);
+  overflow: hidden;
+  margin-bottom: 16px;
+  transition: transform 0.2s ease;
+}
+
+.hook-card:hover { transform: translateX(4px); }
+
+.hook-header {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hook-num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 32px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.hook-type {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgba(242,240,233,0.6);
+}
+
+.hook-name {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.hook-body { padding: 20px; }
+
+.hook-formula {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--paper);
+  padding: 10px 16px;
+  border-left: 3px solid var(--accent);
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.hook-example {
+  font-style: italic;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--primary);
+  margin-bottom: 8px;
+  line-height: 1.6;
+  border-left: 3px solid rgba(15,40,32,0.15);
+  padding-left: 12px;
+}
+
+.hook-why {
+  font-size: 12.5px;
+  color: var(--stone);
+  line-height: 1.6;
+}
+
+/* ── CAROUSEL TEMPLATE ── */
+.carousel-template {
+  border: 2px solid var(--primary);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.carousel-header {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.carousel-letter {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 48px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.carousel-slides {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--primary);
+}
+
+.carousel-slide {
+  background: var(--paper);
+  padding: 14px;
+  text-align: center;
+}
+
+.slide-n {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.slide-desc {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--primary);
+}
+
+/* ── TIMING GRID ── */
+.timing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--primary);
+  border: 2px solid var(--primary);
+  margin: 24px 0;
+}
+
+.timing-cell {
+  background: var(--paper);
+  padding: 20px;
+  text-align: center;
+}
+
+.timing-day {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--stone);
+  margin-bottom: 8px;
+}
+
+.timing-time {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 26px;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.timing-reason {
+  font-size: 11px;
+  color: var(--stone);
+  line-height: 1.4;
+}
+
+/* ── RISK CARD ── */
+.risk-card {
+  border: 2px solid var(--primary);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.risk-header {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.risk-num {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 36px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.risk-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.risk-body { padding: 24px; }
+
+.risk-counter {
+  background: rgba(44,85,69,0.08);
+  border-left: 3px solid var(--moss);
+  padding: 16px 18px;
+  margin-top: 14px;
+}
+
+.risk-counter-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--moss);
+  margin-bottom: 6px;
+}
+
+/* ── BLOCKQUOTE ── */
+blockquote {
+  border-left: 4px solid var(--accent);
+  padding: 16px 20px;
+  margin: 24px 0;
+  background: rgba(255,68,0,0.04);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+blockquote cite {
+  display: block;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--stone);
+  margin-top: 8px;
+}
+
+/* ── FINAL SECTION ── */
+.final-section {
+  background: var(--primary);
+  color: var(--paper);
+  padding: 80px 64px;
+  border-bottom: none;
+}
+
+.final-section .section-title { color: var(--paper); }
+.final-section p { color: rgba(242,240,233,0.75); }
+
+.final-question {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(20px, 2.5vw, 30px);
+  letter-spacing: -0.8px;
+  line-height: 1.35;
+  color: var(--paper);
+  max-width: 640px;
+  margin: 32px 0;
+  padding: 28px;
+  border: 2px solid rgba(242,240,233,0.15);
+}
+
+.final-question span { color: var(--accent); }
+
+.closing-line {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(18px, 2vw, 24px);
+  letter-spacing: -0.5px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(242,240,233,0.15);
+  color: var(--paper);
+}
+
+/* ── COMPETITOR TABLE SPECIAL ── */
+.comp-winner {
+  background: rgba(255,68,0,0.06) !important;
+  font-weight: 600;
+}
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-toggle {
+  display: flex;
+  margin: 0 24px 16px;
+  border: 1px solid rgba(242,240,233,0.2);
+  overflow: hidden;
+}
+.lang-toggle button {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: rgba(242,240,233,0.45);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 9px 0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.lang-toggle button.active {
+  background: var(--accent);
+  color: white;
+}
+.lang-toggle button:hover:not(.active) {
+  color: var(--paper);
+  background: rgba(255,68,0,0.15);
+}
+
+/* ── BILINGUAL BLOCK VISIBILITY ── */
+.en-only { display: none; }
+.de-only { display: block; }
+html.lang-en .en-only { display: block; }
+html.lang-en .de-only { display: none; }
+html.lang-en table.en-only { display: table; }
+html.lang-en table.de-only { display: none; }
+html.lang-en .en-only.grid-2 { display: grid; }
+html.lang-en .de-only.grid-2 { display: none; }
+html.lang-en .en-only.grid-3 { display: grid; }
+html.lang-en .de-only.grid-3 { display: none; }
+html.lang-en .en-only.stat-grid { display: grid; }
+html.lang-en .de-only.stat-grid { display: none; }
+html.lang-en .en-only.swot-grid { display: grid; }
+html.lang-en .de-only.swot-grid { display: none; }
+html.lang-en .en-only.week-block { display: block; }
+html.lang-en .de-only.week-block { display: none; }
+html.lang-en .en-only.pillar-card { display: block; }
+html.lang-en .de-only.pillar-card { display: none; }
+html.lang-en .en-only.hook-card { display: block; }
+html.lang-en .de-only.hook-card { display: none; }
+
+/* ── SCROLL REVEAL ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  main { margin-left: 0; }
+  #menu-toggle { display: flex; }
+  section { padding: 48px 32px; }
+  .hero { padding: 64px 32px 48px; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .story-grid { grid-template-columns: repeat(3, 1fr); }
+  .carousel-slides { grid-template-columns: repeat(5, 1fr); }
+  .timing-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+  section { padding: 40px 20px; }
+  .hero { padding: 48px 20px 40px; }
+  .week-block .post-card,
+  .week-block .stories-block,
+  .week-block .week-funnel-logic { margin-left: 16px; margin-right: 16px; }
+  .story-grid { grid-template-columns: 1fr 1fr; }
+  .carousel-slides { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">lets<span>act</span></div>
+    <div class="sidebar-meta" data-i18n="sidebar.meta">Instagram Strategie 2026</div>
+    <div class="sidebar-phase" data-i18n="sidebar.phase">Phase 3 von 4</div>
+  </div>
+  <nav>
+    <div class="nav-section-label" data-i18n="nav.s1">Grundlagen</div>
+    <a href="#exec"><span class="nav-num">01</span> <span data-i18n="nav.exec">Executive Summary</span></a>
+    <a href="#audience"><span class="nav-num">02</span> <span data-i18n="nav.audience">Zielgruppe & Markt</span></a>
+    <a href="#swot"><span class="nav-num">03</span> <span data-i18n="nav.swot">SWOT & Wettbewerb</span></a>
+    <a href="#kpis"><span class="nav-num">04</span> <span data-i18n="nav.kpis">Ziele & KPIs</span></a>
+
+    <div class="nav-section-label" data-i18n="nav.s2">Strategie</div>
+    <a href="#pillars"><span class="nav-num">05</span> <span data-i18n="nav.pillars">Content-Säulen & Serien</span></a>
+    <a href="#analysis"><span class="nav-num">06</span> <span data-i18n="nav.analysis">Strategische Analyse</span></a>
+
+    <div class="nav-section-label" data-i18n="nav.s3">4-Wochen-Plan</div>
+    <a href="#week1"><span class="nav-num">W1</span> <span data-i18n="nav.w1">Neustart</span></a>
+    <a href="#week2"><span class="nav-num">W2</span> <span data-i18n="nav.w2">Wert liefern</span></a>
+    <a href="#week3"><span class="nav-num">W3</span> <span data-i18n="nav.w3">Emotion</span></a>
+    <a href="#week4"><span class="nav-num">W4</span> <span data-i18n="nav.w4">System</span></a>
+
+    <div class="nav-section-label">Playbook</div>
+    <a href="#playbook"><span class="nav-num">08</span> <span data-i18n="nav.playbook">Umsetzungs-Playbook</span></a>
+    <a href="#reality"><span class="nav-num">09</span> <span data-i18n="nav.reality">Reality Check</span></a>
+    <a href="#blog"><span class="nav-num">10</span> <span data-i18n="nav.blog">Blog & Newsletter</span></a>
+  </nav>
+
+  <div class="lang-toggle">
+    <button data-lang="de" class="active" onclick="setLang('de')">DE</button>
+    <button data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+
+  <div class="sidebar-footer">@letsact_app &nbsp;·&nbsp; München 2026</div>
+</aside>
+
+<button id="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- MAIN -->
+<main>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow" data-i18n="hero.eyebrow">Instagram Content-Strategie · Erstellt März 2026 · @letsact_app</div>
+  <h1 data-i18n="hero.h1">Von Vereins-<br>newsletter zu<br><span class="outline">Relevanz</span></h1>
+  <p class="hero-sub" data-i18n="hero.sub">Ein 4-Wochen-Plan, der den @letsact_app-Account zum relevantesten Ehrenamt-Account für junge Menschen in Deutschland macht.</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num">3×</div>
+      <div class="label" data-i18n="hero.stat1">Posts/Woche</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">5</div>
+      <div class="label" data-i18n="hero.stat2">Content-Serien</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">12</div>
+      <div class="label" data-i18n="hero.stat3">Feed-Posts</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">4W</div>
+      <div class="label" data-i18n="hero.stat4">Algorithmus-Reset</div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────────────────────────────
+     SECTION 1: EXECUTIVE SUMMARY
+     ────────────────────────────────────────── -->
+<section id="exec">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div>
+      <div class="section-title" data-i18n="s1.title">Executive Summary<br>& Markenidentität</div>
+      <div class="section-subtitle" data-i18n="s1.sub">Was letsact ist, was es verspricht, und warum Instagram der richtige Kanal ist.</div>
+    </div>
+  </div>
+
+  <p class="lead">letsact ist Deutschlands führende Ehrenamt-App — eine kostenlose Plattform, die über 100.000 registrierte Nutzer mit 2.500+ gemeinnützigen Organisationen verbindet.</p>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-label">Registrierte Nutzer</div>
+      <div class="big-num">100K+</div>
+      <div class="stat-desc">Stand 2024, aktiv wachsend</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">NGO-Partner</div>
+      <div class="big-num">2.500+</div>
+      <div class="stat-desc">Zertifizierte gemeinnützige Organisationen</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Aktive Projekte</div>
+      <div class="big-num">3.000+</div>
+      <div class="stat-desc">Jederzeit zugänglich in der App</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">App Store Rating</div>
+      <div class="big-num">4.8★</div>
+      <div class="stat-desc">iOS, kostenlos</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Downloads</div>
+      <div class="big-num">150K+</div>
+      <div class="stat-desc">Gesamt 2024</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Ehrenamtsstunden</div>
+      <div class="big-num">87K</div>
+      <div class="stat-desc">Vermittelt 2023 — Rekordjahr</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:32px">
+    <div class="card">
+      <div class="card-tab">Mission</div>
+      <h4 style="margin-top:8px">„Menschen befähigen, schnell &amp; einfach Gutes zu tun"</h4>
+      <p style="font-size:13px;margin:0">Jeder dritte Deutsche möchte sich freiwillig engagieren, findet aber keinen einfachen Zugang. letsact schließt diese Lücke digital und mobil — direkt vor der Haustür, mit wenigen Klicks zum ersten Projekt.</p>
+    </div>
+    <div class="card">
+      <div class="card-tab">Vision</div>
+      <h4 style="margin-top:8px">„Connecting people globally to do more good"</h4>
+      <p style="font-size:13px;margin:0">Eine Welt mit mehr Mitgefühl, Teilhabe und Verantwortung. Der Instagram-Account ist die Einladung an der Tür — der erste Kontaktpunkt für junge Menschen, die noch nicht wissen, dass sie Teil von etwas sein könnten.</p>
+    </div>
+  </div>
+
+  <h3>Die USPs von letsact</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h4>👥 Junge Zielgruppe</h4>
+      <p style="font-size:13px;margin:0">61% der Nutzer sind 18–34 Jahre alt. Kein anderer Player im DACH-Raum ist so klar auf diese Demografik ausgerichtet. Das ist der Algorithmus-Vorteil auf Instagram.</p>
+    </div>
+    <div class="card">
+      <h4>🏛️ Gemeinnützige Struktur</h4>
+      <p style="font-size:13px;margin:0">Als eingetragener Verein (letsact e.V., VR 208540) authentisch und glaubwürdig — kein Startup das Ehrenamt monetarisiert. Die Gründer stehen in Forbes 30 under 30.</p>
+    </div>
+  </div>
+
+  <h3>Das strategische Kernziel</h3>
+  <blockquote>
+    Den @letsact_app-Account vom Vereins-Newsletter zum relevantesten Ehrenamt-Account für junge Menschen in Deutschland machen. Content der für sich selbst einsteht — nicht weil letsact bekannt ist, sondern weil der Content nützlich, ehrlich und teilbar ist.
+  </blockquote>
+
+  <h3>Kanal-Strategie</h3>
+  <div class="grid-3">
+    <div class="card" style="border-top:3px solid var(--accent)">
+      <div class="card-tab">Primär</div>
+      <h4 style="margin-top:12px">📸 Instagram</h4>
+      <p style="font-size:13px;margin:0">Hauptkanal. Fokus auf Reels (Reichweite), Karussells (Vertrauen) und Stories (Bindung). Alle Ressourcen und dieser Plan sind auf Instagram ausgerichtet.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--moss)">
+      <div class="card-tab">Sekundär</div>
+      <h4 style="margin-top:12px">💼 LinkedIn</h4>
+      <p style="font-size:13px;margin:0">B2B-Ansprache: NGO-Partner gewinnen, Kooperationen, Förderinstitutionen, Social Entrepreneurship Community. Content-Ton professioneller, Zielgruppe älter.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--stone)">
+      <div class="card-tab">Zukunft</div>
+      <h4 style="margin-top:12px">💬 WhatsApp-Kanal</h4>
+      <p style="font-size:13px;margin:0">In Planung. Direkter Community-Kanal für lokale Engagement-Guides und Projekt-Updates. Hohe Öffnungsrate, starke Bindung. Sinnvoll sobald Instagram-Community steht.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 2: AUDIENCE
+     ────────────────────────────────────────── -->
+<section id="audience">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div>
+      <div class="section-title" data-i18n="s2.title">Zielgruppe &amp;<br>Marktanalyse</div>
+      <div class="section-subtitle" data-i18n="s2.sub">Wer letsact nutzt, was sie wirklich denken, und wie Content sie erreicht.</div>
+    </div>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Merkmal</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td class="kpi-metric">Alter</td><td>18–34 Jahre (61% der aktuellen Nutzer) · Ø 25–35</td></tr>
+      <tr><td class="kpi-metric">Geografie</td><td>Urbane Ballungsräume: Berlin, München, Hamburg, Köln, Frankfurt</td></tr>
+      <tr><td class="kpi-metric">Interessen</td><td>Nachhaltigkeit, Klimaschutz, Social Impact, Community, Mental Health</td></tr>
+      <tr><td class="kpi-metric">Verhalten</td><td>Digital-nativ, mobile-first, kurze Aufmerksamkeitsspanne, sinngetrieben</td></tr>
+      <tr><td class="kpi-metric">Content-Präferenz</td><td>Kurzformate, visuell ansprechend, identitätsspiegelnd</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Die psychografische Kernspannung</h3>
+  <blockquote>
+    „Ich will etwas verändern, aber ich weiß nicht wie. Und ich habe das Gefühl, ich habe nicht genug Zeit."
+    <cite>— Das unausgesprochene Mantra der Zielgruppe. Jeder Post muss hier ansetzen.</cite>
+  </blockquote>
+
+  <h3>3 Nutzer-Segmente</h3>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-tab">Segment A — 35%</div>
+      <h4 style="margin-top:12px">Der Impulsgeber</h4>
+      <p style="font-size:12.5px;color:var(--stone);margin-bottom:8px">22–30, urban, sozial engagiert in der Einstellung, noch nicht in der Tat.</p>
+      <p style="font-size:12.5px;margin:0"><strong>Hindernisse:</strong> Weiß nicht wo anfangen · Fühlt sich nicht kompetent genug · Fürchtet Commitment</p>
+    </div>
+    <div class="card">
+      <div class="card-tab">Segment B — 40%</div>
+      <h4 style="margin-top:12px">Der Gelegenheits-Volunteer</h4>
+      <p style="font-size:12.5px;color:var(--stone);margin-bottom:8px">Hat sich schon einmal engagiert, macht es aber nicht regelmäßig.</p>
+      <p style="font-size:12.5px;margin:0"><strong>Braucht:</strong> Inspiration · Konkrete Möglichkeiten · Niedrigschwelligen Wiedereinstieg</p>
+    </div>
+    <div class="card">
+      <div class="card-tab">Segment C — 25%</div>
+      <h4 style="margin-top:12px">Der aktive Changemaker</h4>
+      <p style="font-size:12.5px;color:var(--stone);margin-bottom:8px">Engagiert sich regelmäßig, nutzt letsact aktiv als Tool.</p>
+      <p style="font-size:12.5px;margin:0"><strong>Braucht:</strong> Community · Neue Organisationen entdecken · Soziale Anerkennung</p>
+    </div>
+  </div>
+
+  <h3>Das gesellschaftliche Problem</h3>
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card">
+      <div class="stat-label">Deutsche wollen helfen</div>
+      <div class="big-num">1/3</div>
+      <div class="stat-desc">Jeder dritte Deutsche möchte sich ehrenamtlich engagieren — findet aber keinen einfachen Zugang</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Engagieren sich bereits</div>
+      <div class="big-num">28M</div>
+      <div class="stat-desc">28 Millionen Deutsche engagieren sich freiwillig — das ist die positive Nachricht</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">NGOs ohne digitale Reichweite</div>
+      <div class="big-num">600K+</div>
+      <div class="stat-desc">Gemeinnützige Organisationen in Deutschland — die meisten unsichtbar für junge Menschen</div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 3: SWOT
+     ────────────────────────────────────────── -->
+<section id="swot">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div>
+      <div class="section-title" data-i18n="s3.title">Wettbewerbs-<br>analyse &amp; SWOT</div>
+      <div class="section-subtitle" data-i18n="s3.sub">Wo letsact steht, wer die Konkurrenten sind, und was den echten Vorteil ausmacht.</div>
+    </div>
+  </div>
+
+  <h3>DACH-Competitive Landscape</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Plattform</th>
+        <th>Typ</th>
+        <th>NGO-Partner</th>
+        <th>Nutzer</th>
+        <th>Instagram-Fokus / USP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="comp-winner">
+        <td><strong>letsact</strong></td>
+        <td>Non-profit (e.V.)</td>
+        <td>2.500+</td>
+        <td>100.000+</td>
+        <td>App-zentriert, Mobile-First, junge Zielgruppe</td>
+      </tr>
+      <tr>
+        <td>GoVolunteer</td>
+        <td>Non-profit</td>
+        <td>3.500+</td>
+        <td>120.000+</td>
+        <td>Geflüchteten-Integration, Beansprucht Marktführerschaft</td>
+      </tr>
+      <tr>
+        <td>vostel.de</td>
+        <td>Social Enterprise</td>
+        <td>2.168</td>
+        <td>60.000+</td>
+        <td>Berlin-fokussiert, Multilingual</td>
+      </tr>
+      <tr>
+        <td>betterplace.org</td>
+        <td>Non-profit</td>
+        <td>40.000+</td>
+        <td>Größte</td>
+        <td>Reine Geldspenden (Zeitspenden eingestellt)</td>
+      </tr>
+      <tr>
+        <td>youvo.org</td>
+        <td>Non-profit</td>
+        <td>769</td>
+        <td>9.179</td>
+        <td>Kreative & IT-Fachkräfte, Skilled Volunteering</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>SWOT-Analyse</h3>
+  <div class="swot-grid">
+    <div class="swot-cell strengths">
+      <div class="swot-label s">Stärken</div>
+      <ul>
+        <li>Mobile-first App mit 4.8 Sternen im App Store</li>
+        <li>Forbes 30 under 30 Gründer — starkes Narrativ</li>
+        <li>Apple App of the Day (Earth Day 2022)</li>
+        <li>Emotionale DHDL-Story als Marken-Anker</li>
+        <li>Gemeinnütziger Status schafft Vertrauen</li>
+        <li>61%-junger Nutzerstamm — Instagram-nativer Algorithmusvorteil</li>
+      </ul>
+    </div>
+    <div class="swot-cell">
+      <div class="swot-label w">Schwächen</div>
+      <ul>
+        <li>Abhängigkeit von Fördergeldern und Spenden</li>
+        <li>Lange Posting-Pausen (bis zu 87 Tage) haben Algorithmus-Relevanz zerstört</li>
+        <li>Content kommuniziert wie Vereins-Newsletter, nicht wie Zielgruppen-Stimme</li>
+        <li>Keine konsistenten Content-Serien etabliert</li>
+        <li>Kein regelmäßiger Community-Aufbau in DMs und Kommentaren</li>
+      </ul>
+    </div>
+    <div class="swot-cell">
+      <div class="swot-label o">Chancen</div>
+      <ul>
+        <li>Wachsende gesellschaftliche Sensibilität für Social Impact bei Gen Z</li>
+        <li>KI-Trends als Content-Anker (App vs. ChatGPT)</li>
+        <li>Steuer-Content (Ehrenamtspauschale) hat extrem hohe Save-Raten</li>
+        <li>Lokale Guides mit App-Daten als wiederholbares Format</li>
+        <li>Partnerschafts-Content mit 2.500+ NGOs als inexhaustible Quelle</li>
+      </ul>
+    </div>
+    <div class="swot-cell threats">
+      <div class="swot-label t">Risiken</div>
+      <ul>
+        <li>GoVolunteer beansprucht ebenfalls Marktführerschaft</li>
+        <li>Algorithmus-Veränderungen können organische Reichweite einbrechen lassen</li>
+        <li>betterplace.org hat höhere allgemeine Markenbekanntheit</li>
+        <li>Ehrenamt-Markt insgesamt fragmentiert, kein klares Mindshare</li>
+        <li>Content-Ermüdung wenn Serien nicht frisch gehalten werden</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 4: KPIs
+     ────────────────────────────────────────── -->
+<section id="kpis">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div>
+      <div class="section-title" data-i18n="s4.title">Ziele &amp;<br>KPIs</div>
+      <div class="section-subtitle" data-i18n="s4.sub">Messbare Ziele für 4 Wochen und 3 Monate. Was Erfolg konkret bedeutet.</div>
+    </div>
+  </div>
+
+  <h3>Primäre Ziele — 4-Wochen-Horizont</h3>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-tab">Ziel 1</div>
+      <h4 style="margin-top:12px">Algorithmus-Reset</h4>
+      <p style="font-size:13px;margin:0">Konsistentes 3×/Woche Posting etablieren. Nach 4 Wochen pausenlosem Content ist der Algorithmus neu kalibriert und spielt den Account wieder aktiv an Nicht-Follower aus.</p>
+    </div>
+    <div class="card">
+      <div class="card-tab">Ziel 2</div>
+      <h4 style="margin-top:12px">Save-Rate aufbauen</h4>
+      <p style="font-size:13px;margin:0">Mindestens 2 Karussells pro Woche mit konkretem Nutzwert. Saves sind 2026 das stärkste Qualitätssignal für den Instagram-Algorithmus.</p>
+    </div>
+    <div class="card">
+      <div class="card-tab">Ziel 3</div>
+      <h4 style="margin-top:12px">Community-Signal</h4>
+      <p style="font-size:13px;margin:0">Durch Kommentar-Trigger und Story-Interaktionen wöchentlich 50+ Kommentare und 30+ DMs generieren. Interaktion ist Vertrauen ist Reichweite.</p>
+    </div>
+  </div>
+
+  <h3>KPIs pro Woche — Tracking-Tabelle</h3>
+  <div style="border:2px solid var(--primary);overflow:hidden;margin:24px 0">
+    <div class="kpi-row header">
+      <div class="kpi-cell">KPI</div>
+      <div class="kpi-cell">Woche 1 — Ziel</div>
+      <div class="kpi-cell">Woche 4 — Ziel</div>
+      <div class="kpi-cell">Messung</div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-cell"><strong>Save-Rate</strong></div>
+      <div class="kpi-cell">&gt;2% pro Karussell</div>
+      <div class="kpi-cell">&gt;4% pro Karussell</div>
+      <div class="kpi-cell">Instagram Insights</div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-cell"><strong>Reel-Reichweite</strong></div>
+      <div class="kpi-cell">Baseline messen</div>
+      <div class="kpi-cell">+50% vs. Baseline</div>
+      <div class="kpi-cell">Instagram Insights</div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-cell"><strong>Kommentare</strong></div>
+      <div class="kpi-cell">20+ pro Woche</div>
+      <div class="kpi-cell">60+ pro Woche</div>
+      <div class="kpi-cell">Manuell zählen</div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-cell"><strong>Story-Completion</strong></div>
+      <div class="kpi-cell">&gt;40%</div>
+      <div class="kpi-cell">&gt;60%</div>
+      <div class="kpi-cell">Instagram Insights</div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-cell"><strong>Follower-Wachstum</strong></div>
+      <div class="kpi-cell">+50–100</div>
+      <div class="kpi-cell">+150–300</div>
+      <div class="kpi-cell">Insights vergleichen</div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-cell"><strong>Profil-Besuche</strong></div>
+      <div class="kpi-cell">Baseline</div>
+      <div class="kpi-cell">+80% vs. Baseline</div>
+      <div class="kpi-cell">Instagram Insights</div>
+    </div>
+  </div>
+
+  <h3>Mittelfristige Ziele — 3-Monats-Horizont</h3>
+  <div class="grid-2">
+    <div class="card"><h4>Engagement</h4><p style="font-size:13px;margin:0">Durchschnittliche Engagement-Rate von aktuell ~0.5% auf <strong>2–3%</strong> steigern. Benchmark für vergleichbare NGO-Accounts in DACH.</p></div>
+    <div class="card"><h4>Wachstum</h4><p style="font-size:13px;margin:0"><strong>+1.000 Follower</strong> organisch in 3 Monaten. Durch Reichweiten-Reels und geteilte Karussells — kein Paid-Budget nötig.</p></div>
+    <div class="card"><h4>Serien-Etablierung</h4><p style="font-size:13px;margin:0"><strong>5 wiederkehrende Content-Serien</strong> die Follower erwarten und aktiv teilen. Serien schaffen Erwartungen = Bindung.</p></div>
+    <div class="card"><h4>NGO-Reichweite</h4><p style="font-size:13px;margin:0"><strong>10+ NGO-Partner</strong> aktiv in Story-Content einbinden. Win-Win: NGOs bekommen Sichtbarkeit, letsact stärkt Partnerschaften.</p></div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 5: PILLARS
+     ────────────────────────────────────────── -->
+<section id="pillars">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div>
+      <div class="section-title" data-i18n="s5.title">Content-Säulen<br>&amp; Serien</div>
+      <div class="section-subtitle" data-i18n="s5.sub">5 wiederkehrende Serien, jede mit eigenem Format, Zweck und Algorithmus-Logik.</div>
+    </div>
+  </div>
+
+  <p class="lead">Serien erfüllen zwei Funktionen gleichzeitig: Für den Algorithmus schaffen sie Nutzungsgewohnheiten, die die Auslieferungsrate erhöhen. Für die Community schaffen sie Erwartungen — einen Grund, zu folgen und zu bleiben.</p>
+
+  <div class="pillar-card">
+    <div class="pillar-header">
+      <div>
+        <div class="pillar-series">Serie 01</div>
+        <div class="pillar-name">lets count</div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-reach">Reichweite</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(242,240,233,0.4);margin-top:4px">Montag · Karussell</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-meta">
+        <span class="tag tag-primary">Zahlen + Fakten</span>
+        <span class="tag tag-primary">Steuer-Tipps</span>
+        <span class="tag tag-primary">Statistiken</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:12px">Datengetriebener Content der überrascht. Die Ehrenamtspauschale (840€ steuerfrei), 28 Mio Deutsche die sich engagieren, 87.000 vermittelte Stunden — echte Zahlen die Scroll-Stopper sind.</p>
+      <p style="font-size:12px;color:var(--stone);margin:0"><strong>Share-Trigger:</strong> „Schick das an die Person, die das noch nicht weiß" · <strong>Design:</strong> Große Zahlen, Papier-Hintergrund, keine Bilder · <strong>Hauptziel:</strong> Saves durch Nutzwert</p>
+    </div>
+  </div>
+
+  <div class="pillar-card">
+    <div class="pillar-header">
+      <div>
+        <div class="pillar-series">Serie 02</div>
+        <div class="pillar-name">lets talk</div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-reach">Reichweite</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(242,240,233,0.4);margin-top:4px">Mittwoch · Karussell</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-meta">
+        <span class="tag tag-primary">Mythen entlarven</span>
+        <span class="tag tag-primary">Ehrliche Perspektiven</span>
+        <span class="tag tag-primary">Innere Hindernisse</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:12px">Meinungs-Content der Leute ertappt — aber nicht beschämt. „Ich hab keine Zeit" — 5 ehrliche Übersetzungen. Der Post sagt nicht „du bist faul", sondern „ich verstehe warum du zögerst." Genau das macht ihn teilbar.</p>
+      <p style="font-size:12px;color:var(--stone);margin:0"><strong>Share-Trigger:</strong> „Welche Nummer bist du? @freundin" · <strong>Design:</strong> Durchgestrichener Text für falsche Annahmen · <strong>Hauptziel:</strong> Shares durch Identifikation</p>
+    </div>
+  </div>
+
+  <div class="pillar-card">
+    <div class="pillar-header">
+      <div>
+        <div class="pillar-series">Serie 03</div>
+        <div class="pillar-name">lets go</div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-bind">Bindung</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(242,240,233,0.4);margin-top:4px">Freitag · Karussell</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-meta">
+        <span class="tag tag-primary">Lokale Guides</span>
+        <span class="tag tag-primary">Wochenend-Projekte</span>
+        <span class="tag tag-primary">Stadt für Stadt</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:12px">Das Arbeitstier-Format. Jede Woche eine neue Stadt, gleiche Struktur. 3 Projekte vor Ort + 2 Remote-Alternativen. Inhalte kommen direkt aus der App — 30 Minuten Recherche, hoher Nutzwert, wiederholbar bis in die Ewigkeit.</p>
+      <p style="font-size:12px;color:var(--stone);margin:0"><strong>Kommentar-Trigger:</strong> „Welche Nummer? Kommentier — wir verlinken dich." · <strong>Design:</strong> Steckbrief-Karten pro Projekt · <strong>Hauptziel:</strong> Kommentare + App-Downloads</p>
+    </div>
+  </div>
+
+  <div class="pillar-card">
+    <div class="pillar-header">
+      <div>
+        <div class="pillar-series">Serie 04</div>
+        <div class="pillar-name">lets meet</div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-trust">Vertrauen</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(242,240,233,0.4);margin-top:4px">Montag · Karussell</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-meta">
+        <span class="tag tag-primary">NGO-Spotlights</span>
+        <span class="tag tag-primary">Unbekannte Organisationen</span>
+        <span class="tag tag-primary">Matching-Logik</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:12px">Win-Win-Win-Format. NGOs bekommen Sichtbarkeit (stärkt Partnerschaften). Follower entdecken etwas Neues. letsact bekommt Saves und Kommentare. Die Matching-Logik („Perfekt für: Menschen die gerne kochen") hilft der Zielgruppe sich selbst zu erkennen.</p>
+      <p style="font-size:12px;color:var(--stone);margin:0"><strong>Kommentar-Trigger:</strong> „Welche beeindruckt dich? Kommentier den Namen." · <strong>Design:</strong> Org-Steckbriefe mit Matching-Label · <strong>Hauptziel:</strong> Saves + Partnerschaft-Stärkung</p>
+    </div>
+  </div>
+
+  <div class="pillar-card">
+    <div class="pillar-header">
+      <div>
+        <div class="pillar-series">Serie 05</div>
+        <div class="pillar-name">lets start</div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-trust">Vertrauen</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(242,240,233,0.4);margin-top:4px">Freitag · Karussell / Reel</div>
+      </div>
+    </div>
+    <div class="pillar-body">
+      <div class="pillar-meta">
+        <span class="tag tag-primary">Erste-Schritt-Geschichten</span>
+        <span class="tag tag-primary">Anti-heroischer Ton</span>
+        <span class="tag tag-primary">Ehrlicher Humor</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:12px">Die psychologische Hürde direkt ansprechen. Bewusst un-heroisch: 47 Minuten, ein Hund namens Bernd, kein Weltrettungs-Moment. Gen Z traut dem Unvollkommenen mehr als dem Perfekten. Der Ton ist eine DM von einer Freundin, nicht eine Kampagne.</p>
+      <p style="font-size:12px;color:var(--stone);margin:0"><strong>Share-Trigger:</strong> „Den Schubs braucht" · <strong>Design:</strong> Persönlicher Briefcharakter, kein Design-Overload · <strong>Hauptziel:</strong> Shares durch Anti-Pathos</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 6: STRATEGIC ANALYSIS
+     ────────────────────────────────────────── -->
+<section id="analysis">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div>
+      <div class="section-title" data-i18n="s6.title">Strategische<br>Analyse</div>
+      <div class="section-subtitle" data-i18n="s6.sub">Was gerade schiefläuft, warum es schiefläuft, und die 3 Hebel die das ändern.</div>
+    </div>
+  </div>
+
+  <h3>Die 3 Kern-Diagnosen</h3>
+
+  <div class="card" style="border-left:4px solid var(--accent)">
+    <h4>Problem 1 — Framing ist falsch</h4>
+    <p style="font-size:13px;margin-bottom:8px">Wenn im ersten Satz „wir" oder „letsact" steht, ist der Post falsch geframt. Die Zielgruppe interessiert sich nicht für Partnerschafts-Ankündigungen. Sie interessiert sich für sich selbst.</p>
+    <div style="display:flex;gap:16px;margin-top:12px">
+      <div style="flex:1;background:rgba(255,68,0,0.08);padding:12px;border:1px solid rgba(255,68,0,0.2);font-size:12px;text-decoration:line-through;color:var(--stone)">"Wir freuen uns unsere neue Partnerschaft mit XY bekanntzugeben..."</div>
+      <div style="flex:1;background:rgba(44,85,69,0.08);padding:12px;border:1px solid rgba(44,85,69,0.3);font-size:12px;font-weight:600">"Du willst was verändern, aber dein Kalender sagt nein..."</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:4px solid var(--accent)">
+    <h4>Problem 2 — Hook-Qualität</h4>
+    <p style="font-size:13px;margin:0">Die ersten 1–2 Sekunden entscheiden über alles. Aktuell: Emoji-Ketten oder Ankündigungen. Das Gegenteil funktioniert: Provokation, Überraschung, eine Frage die die Zielgruppe persönlich betrifft. Der Hook entscheidet ob ein Reel 500 oder 50.000 Menschen erreicht.</p>
+  </div>
+
+  <div class="card" style="border-left:4px solid var(--accent)">
+    <h4>Problem 3 — Konsistenz bricht zusammen</h4>
+    <p style="font-size:13px;margin:0">Der Algorithmus bestraft Pausen. Posting-Lücken von 87 Tagen zerstören die Follower-Relevanz aufgebaut über Monate. 3 Posts/Woche, jede Woche, schlägt 15 Posts im Dezember gefolgt von 3 Monaten Stille. Dieser Plan ist bewusst auf Durchhaltbarkeit ausgelegt.</p>
+  </div>
+
+  <h3>Die 3 Wachstums-Hebel</h3>
+
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;gap:20px">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:48px;color:var(--accent);line-height:1;min-width:60px">01</div>
+      <div>
+        <h4 style="margin-top:4px">Von „Über uns" zu „Für dich"</h4>
+        <p style="font-size:13px;margin-bottom:8px"><strong>Algorithmische Begründung:</strong> Instagram zeigt Inhalte an Nicht-Follower auf Basis von Saves und Shares — nicht auf Basis von Likes. Content der Wert liefert (gespeichert weil man ihn braucht) oder emotional triggert (geteilt weil man jemanden erkennt) wird ausgespielt. Organisationsnachrichten erfüllen keines dieser Kriterien.</p>
+        <p style="font-size:13px;margin:0"><strong>Praxis-Test:</strong> Vor jedem Post-Entwurf: <em>„Würde eine 25-Jährige das ihrer besten Freundin schicken?"</em> Wenn nein — Post umschreiben oder verwerfen.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;gap:20px">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:48px;color:var(--accent);line-height:1;min-width:60px">02</div>
+      <div>
+        <h4 style="margin-top:4px">Karussells als Save-Machine</h4>
+        <p style="font-size:13px;margin-bottom:8px"><strong>Algorithmische Begründung:</strong> Karussells haben drei Eigenschaften die kein anderes Format kombiniert: Hohe Verweildauer (mehrere Slides), hohe Save-Rate (Referenz-Content), und sie landen erneut im Feed wenn Follower nicht bis zur letzten Slide gescrollt haben.</p>
+        <p style="font-size:13px;margin:0"><strong>Sofortmaßnahme:</strong> Single-Image-Posts sofort einstellen (Ø 9 Likes, kein algorithmischer Vorteil). Alle Ressourcen auf Karussells mit klarem Nutzwert oder Ertappt-Momenten.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;align-items:flex-start;gap:20px">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:48px;color:var(--accent);line-height:1;min-width:60px">03</div>
+      <div>
+        <h4 style="margin-top:4px">Lokale Guides als Arbeitstier</h4>
+        <p style="font-size:13px;margin-bottom:8px"><strong>Algorithmische Begründung:</strong> Standortbasierter Content hat höhere Engagement-Rate weil er direkt umsetzbar ist. „3 Projekte in Berlin dieses Wochenende" ist der konkreteste Beweis für den App-Nutzen.</p>
+        <p style="font-size:13px;margin:0"><strong>Workflow:</strong> Jeden Freitag. App öffnen → Stadt + diese Woche aktiv filtern → 3 spannendste Projekte → 20 Minuten Recherche. Immer wiederholbar, immer neuer Nutzwert.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Format-Empfehlung — Sofortmaßnahmen</h3>
+  <div class="grid-3">
+    <div class="card" style="border-top:3px solid #cc0000">
+      <h4 style="color:#cc0000">🚫 Sofort streichen</h4>
+      <p style="font-size:13px;margin:0"><strong>Single Image Posts</strong> — Ø 9 Likes, kein algorithmischer Vorteil gegenüber Karussells, keine Saves, keine Shares. Ab sofort keine Einzelbilder im Feed.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--accent)">
+      <h4>📈 Maximal ausbauen</h4>
+      <p style="font-size:13px;margin:0"><strong>Karussells (1–2×/Woche)</strong> — Performen doppelt so gut wie Einzelbilder bei bisher schwachen Inhalten. Mit besseren Hooks das größte Potenzial im gesamten Account.</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--moss)">
+      <h4>🎯 Gezielt einsetzen</h4>
+      <p style="font-size:13px;margin:0"><strong>Reels (1×/Woche)</strong> — Ohne Gesicht machbar: Text-on-Screen, B-Roll, Screen-Recordings. Qualität vor Quantität — ein guter Reel schlägt drei mittelmäßige.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 7: WEEK 1
+     ────────────────────────────────────────── -->
+<section id="week1">
+  <div class="section-header">
+    <div class="section-num">07</div>
+    <div>
+      <div class="section-title" data-i18n="s7.title">4-Wochen<br>Content-Plan</div>
+      <div class="section-subtitle" data-i18n="s7.sub">Jeder Post mit Thema, Format, Hook, Slides und Funnel-Logik.</div>
+    </div>
+  </div>
+
+  <!-- POSTING RHYTHM -->
+  <h3>Posting-Rhythmus</h3>
+  <table class="data-table" style="margin-bottom:40px">
+    <thead>
+      <tr><th>Tag</th><th>Format</th><th>Funnel-Stufe</th><th>Zeitaufwand</th><th>Serie</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Montag</strong></td><td>Karussell</td><td><span class="tag tag-reach" style="font-size:8px">Reichweite</span></td><td>~2h</td><td>lets count oder lets meet</td></tr>
+      <tr><td><strong>Mittwoch</strong></td><td>Reel</td><td><span class="tag tag-reach" style="font-size:8px">Reichweite</span></td><td>~2h</td><td>Frei / themenabhängig</td></tr>
+      <tr><td><strong>Freitag</strong></td><td>Karussell</td><td><span class="tag tag-bind" style="font-size:8px">Bindung</span></td><td>~1.5h</td><td>lets go oder lets talk / lets start</td></tr>
+      <tr><td><strong>Täglich</strong></td><td>Stories (3–5 Slides)</td><td><span class="tag tag-bind" style="font-size:8px">Bindung</span></td><td>~30min</td><td>Frei</td></tr>
+    </tbody>
+  </table>
+
+  <div class="week-block">
+    <div class="week-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(242,240,233,0.4);margin-bottom:4px">Woche</div>
+        <div style="display:flex;align-items:baseline;gap:16px">
+          <div class="week-num">01</div>
+          <div>
+            <div class="week-title">Neustart</div>
+            <div class="week-subtitle">Algorithmus-Signal setzen</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-reach">Reichweite-Fokus</div>
+      </div>
+    </div>
+
+    <div class="week-funnel-logic">
+      <strong>Funnel-Logik der Woche</strong>
+      Woche 1 fokussiert auf Reichweite. Der Algorithmus muss merken, dass dieser Account wieder lebt und relevanten Content liefert. Deshalb starten wir mit Themen, die breite Resonanz haben — nicht mit Nischen-Ehrenamt-Content der nur bestehende Follower anspricht.
+    </div>
+
+    <!-- MONTAG -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Montag · 11:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Karussell</span>
+          <span class="tag tag-reach" style="font-size:8px">Reichweite</span>
+          <span class="tag" style="font-size:8px;color:var(--accent);border-color:var(--accent)">lets count</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„840€ steuerfrei. Jedes Jahr. Die meisten lassen es liegen."</div>
+        <table class="slide-table">
+          <thead>
+            <tr><th width="110">Slide</th><th>Text / Inhalt</th><th width="200">Design-Hinweis</th></tr>
+          </thead>
+          <tbody>
+            <tr class="slide-highlight">
+              <td class="slide-num">01 — Hook</td>
+              <td>„840€ steuerfrei. Jedes Jahr. Die meisten lassen es liegen."</td>
+              <td>„840€" in 72pt, Signal Orange. „lets count" oben links in Mono-Uppercase</td>
+            </tr>
+            <tr>
+              <td class="slide-num">02</td>
+              <td>„Die Ehrenamtspauschale existiert seit Jahren. Aber die meisten Ehrenamtlichen wissen nichts davon. Oder machen Fehler bei der Steuererklärung."</td>
+              <td>„Ehrenamtspauschale" fett, orange unterstrichen</td>
+            </tr>
+            <tr>
+              <td class="slide-num">03</td>
+              <td>„Was ist das? Du engagierst dich bei einem gemeinnützigen Verein? Dann kannst du bis zu 840€ im Jahr steuerfrei als Aufwandsentschädigung bekommen."</td>
+              <td>Icon: Stilisiertes Steuerformular, schwarz auf Papier</td>
+            </tr>
+            <tr>
+              <td class="slide-num">04</td>
+              <td>„Wer bekommt sie? Jede:r, der sich bei einer gemeinnützigen Organisation engagiert. Auch nebenberuflich. Auch als Student:in. Auch wenn du nur ein paar Stunden im Monat gibst."</td>
+              <td>3 Zeilen mit orangen Strichen (keine Bullet-Points)</td>
+            </tr>
+            <tr>
+              <td class="slide-num">05</td>
+              <td>„So geht's: 01 — Organisation muss gemeinnützig sein (§51ff. AO). 02 — Du bekommst eine Aufwandsentschädigung. 03 — Anlage N deiner Steuererklärung, Zeile 26."</td>
+              <td>01/02/03 in orange, Schritte vertikal mit Trennlinie</td>
+            </tr>
+            <tr>
+              <td class="slide-num">06</td>
+              <td>„Fehler Nr. 1: Pauschale nicht einfordern. Viele Organisationen zahlen sie nicht automatisch. Du musst aktiv fragen."</td>
+              <td>„Fehler Nr. 1" orange fett. E-Mail-Icon angedeutet</td>
+            </tr>
+            <tr class="slide-highlight">
+              <td class="slide-num">07 — 2. Hook</td>
+              <td>„Fehler Nr. 2: Die Übungsleiterpauschale. Bis zu 3.000€ steuerfrei. Für Trainer:innen, Dozent:innen, Betreuer:innen in gemeinnützigen Vereinen."</td>
+              <td>„3.000€" in 60pt orange — zweiter Wow-Moment. Hält Verweildauer</td>
+            </tr>
+            <tr>
+              <td class="slide-num">08</td>
+              <td>„Auf einen Blick: ✓ 840€/Jahr steuerfrei. ✓ 3.000€/Jahr steuerfrei (Übungsleiter). ✓ Beides kombinierbar. ✓ Anlage N, Steuererklärung."</td>
+              <td>Checklisten-Style. Scanbar. Sieht aus wie handgeschriebene Notiz</td>
+            </tr>
+            <tr class="slide-highlight">
+              <td class="slide-num">09 — Save</td>
+              <td>„Speicher dir diesen Post für deine nächste Steuererklärung. Und schick ihn an die Person, die sich engagiert und das hier noch nicht weiß."</td>
+              <td>Bookmark-Icon in orange. Doppelter Sharing-CTA</td>
+            </tr>
+            <tr>
+              <td class="slide-num">10 — CTA</td>
+              <td>„Du suchst noch das passende Ehrenamt? letsact — kostenlose App, 3.000+ Projekte, 2 Minuten bis zum Match. Link in Bio."</td>
+              <td>Dunkelgrüner Hintergrund. letsact-Logo weiß. App-Store-Badges</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="caption-box">
+          <div class="caption-label">Caption</div>
+          <p class="caption-text">„840€ steuerfrei — und die meisten Ehrenamtlichen lassen es liegen. Slide für Slide erklärt, wie du die Ehrenamtspauschale in deine nächste Steuererklärung packst. Speichern. Weiterschicken. Machen."</p>
+        </div>
+        <div style="margin-top:12px">
+          <div style="font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--stone);margin-bottom:6px">Hashtags (1. Kommentar)</div>
+          <div class="hashtag-cloud">
+            <span class="hashtag">#ehrenamt</span><span class="hashtag">#ehrenamtlich</span><span class="hashtag">#freiwilligenarbeit</span><span class="hashtag">#sozialengagiert</span><span class="hashtag">#volunteerdeutschland</span><span class="hashtag">#gemeinsamgutestun</span><span class="hashtag theme">#steuertipps</span><span class="hashtag theme">#ehrenamtspauschale</span><span class="hashtag theme">#steuererklärung</span><span class="hashtag theme">#genz</span><span class="hashtag reach">#impact</span>
+          </div>
+        </div>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          Geld-Content hat die höchste Save-Rate auf Instagram — weil Menschen die Information wirklich brauchen und nicht nochmal suchen wollen. „840€ steuerfrei" stoppt den Scroll weil es ein konkretes Versprechen ist. Slide 7 mit den 3.000€ ist ein zweiter Hook innerhalb des Posts, der die Verweildauer erhöht und mehr Karussell-Plays erzwingt. Der Share-Trigger auf Slide 9 adressiert direkt Shares — 2026 das stärkste Algorithmus-Signal.
+        </div>
+      </div>
+    </div>
+
+    <!-- MITTWOCH W1 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Mittwoch · 18:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Reel</span>
+          <span class="tag tag-reach" style="font-size:8px">Reichweite</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„28 Millionen Deutsche machen das. Du wahrscheinlich nicht."</div>
+        <div class="reel-card">
+          <div class="reel-label">Reel-Timeline · Text-on-Screen + B-Roll · 15 Sek · kein Gesicht nötig</div>
+          <div class="reel-timeline">
+            <div class="reel-beat"><div class="reel-time">0–2 Sek</div><div class="reel-text"><strong style="color:var(--accent)">HOOK:</strong> „28 Millionen Deutsche machen das. Du wahrscheinlich nicht."</div></div>
+            <div class="reel-beat"><div class="reel-time">3–5 Sek</div><div class="reel-text">„Ehrenamt klingt nach Samstag im Altenheim. Ist es nicht."</div></div>
+            <div class="reel-beat"><div class="reel-time">5–10 Sek</div><div class="reel-text">Schnelle Cuts B-Roll: Tierschutz · Coding für NGOs · Cleanup · Mentoring · Kinder-Nachhilfe</div></div>
+            <div class="reel-beat"><div class="reel-time">10–15 Sek</div><div class="reel-text">„Du kannst in 30 Min von der Couch aus einen Unterschied machen."</div></div>
+            <div class="reel-beat"><div class="reel-time">End-Screen</div><div class="reel-text">„Wie? Link in Bio." + letsact-Logo</div></div>
+          </div>
+        </div>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          Provokanter Hook erzeugt Curiosity Gap — der Widerspruchsimpuls zwingt zum Weiterschauen. Wer sagt „Du wahrscheinlich nicht" zu 28 Millionen, wartet auf die Auflösung. 15 Sekunden maximieren die Watch-Through-Rate, das wichtigste Reel-Ranking-Signal von 2026. B-Roll + Text ist ohne Kamera-Person und ohne teures Equipment produzierbar.
+        </div>
+      </div>
+    </div>
+
+    <!-- FREITAG W1 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Freitag · 10:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Karussell</span>
+          <span class="tag tag-trust" style="font-size:8px">Vertrauen</span>
+          <span class="tag" style="font-size:8px;color:var(--accent);border-color:var(--accent)">lets start</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Mein erstes Ehrenamt hat 47 Minuten gedauert. Danach war ich ein anderer Mensch."</div>
+        <table class="slide-table">
+          <thead>
+            <tr><th width="110">Slide</th><th>Text / Inhalt</th><th width="200">Design / Ton</th></tr>
+          </thead>
+          <tbody>
+            <tr class="slide-highlight">
+              <td class="slide-num">01 — Hook</td>
+              <td>„Mein erstes Ehrenamt hat 47 Minuten gedauert. Danach war ich ein anderer Mensch."</td>
+              <td>„47 Minuten" in 56pt orange. Konkretes Detail schlägt runde Zahlen</td>
+            </tr>
+            <tr class="slide-highlight">
+              <td class="slide-num">02 — Subvert</td>
+              <td>„Nee, Quatsch. Ich war kein anderer Mensch. Aber ich hab was gemerkt: Es ist nicht so weird, wie ich dachte."</td>
+              <td>„Nee, Quatsch." groß fett. Bricht die Erwartung — das IST der Hook für den Rest</td>
+            </tr>
+            <tr>
+              <td class="slide-num">03 — Vorher</td>
+              <td>Vier Annahmen, je durchgestrichen: „Lange Verpflichtung." / „Bewerbungsgespräch." / „Alle sind engagierter als ich." / „Klingt langweilig." → „Spoiler: Nichts davon stimmte."</td>
+              <td>Durchgestrichener Text in orange — Erwartungen werden wortwörtlich gecancelt</td>
+            </tr>
+            <tr>
+              <td class="slide-num">04 — Schritt</td>
+              <td>„App runtergeladen. 'Tierschutz' als Interesse. 3 Projekte in meiner Nähe. Eins war am Samstag. Draufgeklickt. Fertig."</td>
+              <td>Jeder Satz eine Zeile. Code-Stil in JetBrains Mono — „So einfach war's"</td>
+            </tr>
+            <tr>
+              <td class="slide-num">05 — Erfahrung</td>
+              <td>„Samstag, 10 Uhr. Tierheim. Ich hab 47 Minuten lang Hunde ausgeführt. Einen davon hieß Bernd. Bernd war ziemlich gut drauf. Ich danach auch."</td>
+              <td>„Bernd" in Syne Bold — der Hund als Charakter. Subtiler Humor. Hundeleine-Illustration</td>
+            </tr>
+            <tr>
+              <td class="slide-num">06 — Überraschung</td>
+              <td>„Was mich überrascht hat: Niemand hat gefragt warum ich da bin. Niemand hat einen Lebenslauf gewollt. Ich bin aufgetaucht, hab geholfen, und bin wieder gegangen."</td>
+              <td>„Niemand hat einen Lebenslauf gewollt" fett. Die Überraschung ist die Normalität</td>
+            </tr>
+            <tr>
+              <td class="slide-num">07 — Was blieb</td>
+              <td>„Hab ich die Welt gerettet? Nein. Hab ich nächste Woche nochmal Bernd ausgeführt? Ja. Mach ich's immer noch? Manchmal. Wenn mein Kalender es hergibt."</td>
+              <td>„Manchmal. Wenn mein Kalender es hergibt." in Light — spiegelt Zielgruppen-Realität</td>
+            </tr>
+            <tr class="slide-highlight">
+              <td class="slide-num">08 — Screenshot-Moment</td>
+              <td>„Das Schwierigste am Ehrenamt ist nicht das Ehrenamt. Es ist der Moment, in dem du zum ersten Mal auf 'Anmelden' klickst."</td>
+              <td>Zentriert. „auf 'Anmelden' klickst" orange. Viel Weißraum. DIESER Satz wird geteilt</td>
+            </tr>
+            <tr>
+              <td class="slide-num">09 — Community</td>
+              <td>„Wie war euer erstes Mal? Erzählt's in den Kommentaren. Oder schickt den Post an jemanden, der den Schubs braucht."</td>
+              <td>Bookmark + Send-Icon in orange nebeneinander. Doppelter Share-CTA</td>
+            </tr>
+            <tr>
+              <td class="slide-num">10 — CTA</td>
+              <td>„Dein erster Schritt dauert 2 Minuten. letsact App — kostenlos. Link in Bio. Bernd wartet."</td>
+              <td>Dunkelgrüner BG. „Bernd wartet." kursiv klein — Callback. Hinterbleibt im Gedächtnis</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          Anti-Pathos macht den Post shareable weil er sich wie eine DM anfühlt, nicht wie eine Kampagne. Gen Z traut dem Unvollkommenen mehr als dem Perfekten. Die durchgestrichenen Erwartungen auf Slide 3 sind visuell einzigartig und erzeugen hohes Karussell-Engagement. Slide 8 ist der Screenshot-Moment — ein Satz der auf eigene Hand viral geht. Der Bernd-Callback auf Slide 10 ist ein Detail das hängenbleibt.
+        </div>
+      </div>
+    </div>
+
+    <!-- STORIES W1 -->
+    <div class="stories-block">
+      <div class="stories-label">Stories — Woche 1 · Täglich 3–5 Slides · Interaktions-Signal erneuern</div>
+      <div class="story-grid">
+        <div class="story-item">
+          <div class="story-day">Montag</div>
+          <div class="story-type">Umfrage</div>
+          „Wusstest du, dass du als Ehrenamtliche:r 840€ steuerfrei bekommst?" [Ja klar / Wait, was?!]
+        </div>
+        <div class="story-item">
+          <div class="story-day">Dienstag</div>
+          <div class="story-type">Mini-Portrait</div>
+          „Eine Organisation die ihr kennen solltet:" — 3 Slides: Name · Was sie machen · Warum sie Freiwillige brauchen
+        </div>
+        <div class="story-item">
+          <div class="story-day">Mittwoch</div>
+          <div class="story-type">Feed-Teaser</div>
+          „Neues Karussell draußen. Welche der 5 Übersetzungen bist du?" + Verweis auf Feed-Post
+        </div>
+        <div class="story-item">
+          <div class="story-day">Donnerstag</div>
+          <div class="story-type">Quiz</div>
+          „Ehrenamt-Mythos: 'Nur was für Rentner.' — Fakt: 61% der letsact-Nutzer:innen sind unter 35." [Wie alt sind die meisten? Ü50 / U35]
+        </div>
+        <div class="story-item">
+          <div class="story-day">Freitag</div>
+          <div class="story-type">Frage-Sticker</div>
+          „lets start-Post ist live! Wie war dein erstes Mal? Schreib uns eine DM."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WEEK 2 ── -->
+  <div class="week-block" id="week2">
+    <div class="week-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(242,240,233,0.4);margin-bottom:4px">Woche</div>
+        <div style="display:flex;align-items:baseline;gap:16px">
+          <div class="week-num">02</div>
+          <div>
+            <div class="week-title">Wert liefern</div>
+            <div class="week-subtitle">Save-Rate aufbauen</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-trust">Vertrauen-Fokus</div>
+      </div>
+    </div>
+
+    <div class="week-funnel-logic">
+      <strong>Funnel-Logik der Woche</strong>
+      Karussells mit konkretem Nutzwert, die Menschen abspeichern weil sie die Info später brauchen. Der Algorithmus registriert: „Dieser Account produziert Content den Leute behalten wollen." Das ist der Schritt vom Reichweiten-Account zum Vertrauens-Account.
+    </div>
+
+    <!-- MONTAG W2 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Montag · 11:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Karussell</span>
+          <span class="tag tag-reach" style="font-size:8px">Reichweite</span>
+          <span class="tag" style="font-size:8px;color:var(--accent);border-color:var(--accent)">lets talk</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Ich hab keine Zeit für Ehrenamt." — 5 ehrliche Übersetzungen.</div>
+        <table class="slide-table">
+          <thead><tr><th width="110">Slide</th><th>Text / Inhalt</th><th width="180">Besonderheit</th></tr></thead>
+          <tbody>
+            <tr class="slide-highlight"><td class="slide-num">01 — Hook</td><td>„Ich hab keine Zeit für Ehrenamt." — 5 ehrliche Übersetzungen.</td><td>Der Satz in Anführungszeichen, groß. Macht sofort neugierig</td></tr>
+            <tr><td class="slide-num">02</td><td>„Der Satz ist der Klassiker. Klingt vernünftig. Ist meistens nicht das echte Problem. Hier sind 5 Dinge, die Leute wirklich meinen — und was dagegen hilft."</td><td>Ruhige Überleitung. Baut Spannung auf</td></tr>
+            <tr><td class="slide-num">03</td><td>„Übersetzung 1: 'Ich weiß nicht wo.' 80% der Menschen die sich nicht engagieren sagen: Ich finde nichts Passendes. Das Problem ist nicht die Motivation. Es ist der Zugang."</td><td>„80%" orange hervorgehoben. Karten-Format</td></tr>
+            <tr><td class="slide-num">04</td><td>„Übersetzung 2: 'Ich kann nichts Besonderes.' Fakt: Die meisten Ehrenämter brauchen keine Spezial-Skills. Zuhören, Anpacken, Dasein. Das reicht oft."</td><td>„Zuhören, Anpacken, Dasein" orange</td></tr>
+            <tr><td class="slide-num">05</td><td>„Übersetzung 3: 'Ich will mich nicht langfristig binden.' Verständlich. Deshalb gibt es Einmal-Aktionen. Cleanup am Samstag, Sortieren, Nachhilfe für 1 Stunde."</td><td>3 konkrete Beispiele mit orange Strichen</td></tr>
+            <tr><td class="slide-num">06</td><td>„Übersetzung 4: 'Bringt eh nichts, was ich alleine mache.' 28 Millionen Deutsche engagieren sich. 87.000 Stunden allein über letsact im letzten Jahr. Es addiert sich."</td><td>„28 Millionen" + „87.000 Stunden" brechen das Argument visuell</td></tr>
+            <tr class="slide-highlight"><td class="slide-num">07 — Ertappt</td><td>„Übersetzung 5: 'Ich hab's ehrlich gesagt noch nie gemacht und der erste Schritt fühlt sich komisch an.' Das ist der ehrlichste Grund. Und der einfachste zu lösen."</td><td>Mehr Weißraum. Fühlt sich persönlicher an. DER Moment im Post</td></tr>
+            <tr><td class="slide-num">08</td><td>„Kein Commitment nötig. Kein Bewerbungsschreiben. Kein Monatsabo. Einfach eine App öffnen. Ein Projekt anschauen. Entscheiden ob es passt."</td><td>3 kurze Sätze vertikal. Einfachheit spiegelt Einfachheit</td></tr>
+            <tr class="slide-highlight"><td class="slide-num">09 — Share</td><td>„Erkennst du dich in einer der 5 Übersetzungen wieder? Schick den Post an die Person, die genau das immer sagt."</td><td>Doppelter CTA: Kommentar + Share. Bookmark + Send-Icon</td></tr>
+            <tr><td class="slide-num">10 — CTA</td><td>„Der erste Schritt dauert 2 Minuten. letsact — Link in Bio."</td><td>Dunkelgrün. letsact-Logo. „2 Minuten" orange</td></tr>
+          </tbody>
+        </table>
+        <div class="caption-box">
+          <div class="caption-label">Caption</div>
+          <p class="caption-text">„'Keine Zeit' ist selten das echte Problem. Die 5 Übersetzungen, die dahinterstecken — und was wirklich hilft. Welche Nummer bist du? Sag's in den Kommentaren."</p>
+        </div>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          „lets talk" lebt von Meinungs-Content, der Leute ertappt — aber nicht beschämt. Der Post sagt nicht „du bist faul", sondern „ich verstehe warum du zögerst." Das macht ihn shareable: „Haha, Nummer 5 bist du @freundin." Slide 7 ist der emotionale Wendepunkt der den Post von Tipps-Liste zu ehrlichem Gespräch hebt. Shares sind 2026 das stärkste Algorithmus-Signal.
+        </div>
+      </div>
+    </div>
+
+    <!-- MITTWOCH W2 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Mittwoch · 18:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Reel</span>
+          <span class="tag tag-reach" style="font-size:8px">Reichweite</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Ehrenamt finden in unter 2 Minuten. Kein Witz."</div>
+        <div class="reel-card">
+          <div class="reel-label">Reel-Timeline · Screen-Recording-Style · 20 Sek · POV-Format · Trending Audio</div>
+          <div class="reel-timeline">
+            <div class="reel-beat"><div class="reel-time">Hook</div><div class="reel-text"><strong style="color:var(--accent)">HOOK:</strong> „Ehrenamt finden in unter 2 Minuten. Kein Witz."</div></div>
+            <div class="reel-beat"><div class="reel-time">Screen-Recording</div><div class="reel-text">App öffnen → „Tierschutz" als Interesse eingeben → Durch Projekte scrollen</div></div>
+            <div class="reel-beat"><div class="reel-time">Text-Overlay 1</div><div class="reel-text">„Okay, Tierschutz in Berlin... 14 Projekte. Nice."</div></div>
+            <div class="reel-beat"><div class="reel-time">Text-Overlay 2</div><div class="reel-text">„Das hier ist 10 Min von mir. Samstag passt."</div></div>
+            <div class="reel-beat"><div class="reel-time">End</div><div class="reel-text">„Von Couch Potato zu Changemaker. Der Link der fehlt: Bio."</div></div>
+          </div>
+        </div>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          Produktdemo als Content, nicht als Werbung. Das POV-Format ist der Zielgruppe vertraut — sie kennen „Person findet etwas"-Screenrecordings von anderen Apps. Zeigt die letsact App ohne Ad-Gefühl. Die Echtzeit-Kommentare in den Text-Overlays erzeugen Identifikation: „Genau so würde ich auch reagieren."
+        </div>
+      </div>
+    </div>
+
+    <!-- FREITAG W2 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Freitag · 10:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Karussell</span>
+          <span class="tag tag-bind" style="font-size:8px">Bindung</span>
+          <span class="tag" style="font-size:8px;color:var(--accent);border-color:var(--accent)">lets go · Berlin</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Dieses Wochenende in Berlin: 3 Projekte, die ohne dich nicht stattfinden."</div>
+        <table class="slide-table">
+          <thead><tr><th width="110">Slide</th><th>Inhalt</th><th width="200">Details</th></tr></thead>
+          <tbody>
+            <tr class="slide-highlight"><td class="slide-num">01 — Hook</td><td>„Dieses Wochenende in Berlin: 3 Projekte, die ohne dich nicht stattfinden."</td><td>„Berlin" in 48pt. Dezente Skyline-Silhouette als Linienzeichnung</td></tr>
+            <tr><td class="slide-num">02 — Proj. 1</td><td>🌿 Parkpflege Tempelhofer Feld. Sa, 10–13 Uhr. Müll sammeln, Beete pflegen. Labels: WAS / WANN / WO / SKILLS / MITBRINGEN</td><td>Steckbrief-Format wie Mini-Visitenkarte</td></tr>
+            <tr><td class="slide-num">03 — Detail 1</td><td>„48 Freiwillige, 120 Müllsäcke letzten Monat. Das Tempelhofer Feld braucht jede Woche Freiwillige damit es bleibt: offen, grün, für alle."</td><td>„48 Freiwillige, 120 Müllsäcke" orange fett</td></tr>
+            <tr><td class="slide-num">04 — Proj. 2</td><td>📚 Lernpat:innen Neukölln. Sa, 14–16 Uhr. Kinder (8–12) bei Hausaufgaben unterstützen. Grundschulniveau reicht. Deutsch oder Mathe.</td><td>Leicht wärmerer Hintergrund für visuelle Differenzierung</td></tr>
+            <tr><td class="slide-num">05 — Detail 2</td><td>„2 Stunden am Samstag können den Unterschied zwischen 'Versetzung gefährdet' und 'Geschafft' machen."</td><td>Kontrast in Anführungszeichen — emotionaler Moment</td></tr>
+            <tr><td class="slide-num">06 — Proj. 3</td><td>🐾 Tierheim Berlin-Lichtenberg. So, 9–12 Uhr. Hunde ausführen, Katzen sozialisieren. Tierliebe reicht.</td><td>Pfote-Icon oder Hundeleine-Silhouette, minimalistisch</td></tr>
+            <tr><td class="slide-num">07 — Remote</td><td>„Kein Bock rauszugehen? 2 Remote-Projekte von der Couch: Online-Nachhilfe für Geflüchtete (1h/Woche, flexibel). Social Media für eine kleine NGO (Posts gestalten, 2–3h/Woche)."</td><td>Laptop-Icons für die Remote-Optionen. Keine Ausrede mehr</td></tr>
+            <tr><td class="slide-num">08</td><td>„5 Projekte. 5 verschiedene Arten dieses Wochenende was zu verändern. Keins davon braucht mehr als 3 Stunden."</td><td>„Keins davon braucht mehr als 3 Stunden" orange fett</td></tr>
+            <tr class="slide-highlight"><td class="slide-num">09 — Kommentar</td><td>„Welche Nummer spricht dich an? Kommentier 1, 2, 3, 4 oder 5. Wir verlinken dich direkt zum Projekt."</td><td>Zahlen 1–5 groß in orange. Konkreter, niedrigschwelliger Aufruf</td></tr>
+            <tr><td class="slide-num">10 — CTA</td><td>„Alle Projekte in Berlin und 40+ anderen Städten. letsact App — kostenlos. Link in Bio."</td><td>Dunkelgrün. „40+ Städte" orange.</td></tr>
+          </tbody>
+        </table>
+        <div class="caption-box">
+          <div class="caption-label">Caption</div>
+          <p class="caption-text">„Dieses Wochenende in Berlin: 5 Projekte, die dich brauchen. Von Tempelhofer Feld bis Couch. Welche Nummer? Kommentier — wir verlinken dich."</p>
+        </div>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          Lokaler Nutzwert ist das Arbeitstier-Format. Jede Woche wiederholbar mit neuer Stadt — immer neuer Nutzwert, immer gleiche Struktur. Kommentar-Trigger (Welche Nummer 1–5?) ist so niedrigschwellig dass sogar passive Follower kommentieren. Die Remote-Option auf Slide 7 entfernt die letzte Ausrede. Projekte kommen direkt aus der App = minimaler Recherche-Aufwand.
+        </div>
+      </div>
+    </div>
+
+    <!-- STORIES W2 -->
+    <div class="stories-block">
+      <div class="stories-label">Stories — Woche 2 · Täglich 3–5 Slides</div>
+      <div class="story-grid">
+        <div class="story-item">
+          <div class="story-day">Montag</div>
+          <div class="story-type">Quiz</div>
+          „Wie viele gemeinnützige Organisationen gibt es in Deutschland?" [~5.000 / ~30.000 / ~600.000]
+        </div>
+        <div class="story-item">
+          <div class="story-day">Dienstag</div>
+          <div class="story-type">Repost + Kommentar</div>
+          Beitrag einer NGO-Partnerin mit kurzer eigener Einordnung + Link zur Organisation in der App
+        </div>
+        <div class="story-item">
+          <div class="story-day">Mittwoch</div>
+          <div class="story-type">Feed-Teaser</div>
+          Verweis auf Reel + Frage: „Was hat euch an der App überrascht?"
+        </div>
+        <div class="story-item">
+          <div class="story-day">Donnerstag</div>
+          <div class="story-type">Mini-Portrait</div>
+          „Eine Organisation die ihr kennen solltet:" — 3 Slides (Name, Was sie machen, Warum Freiwillige)
+        </div>
+        <div class="story-item">
+          <div class="story-day">Freitag</div>
+          <div class="story-type">Frage-Sticker</div>
+          „Berlin-Guide ist live! Welches Projekt machst du? Schreibt uns eine DM — wir helfen beim Anmelden."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WEEK 3 ── -->
+  <div class="week-block" id="week3">
+    <div class="week-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(242,240,233,0.4);margin-bottom:4px">Woche</div>
+        <div style="display:flex;align-items:baseline;gap:16px">
+          <div class="week-num">03</div>
+          <div>
+            <div class="week-title">Emotion wecken</div>
+            <div class="week-subtitle">Shares treiben</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-reach">Share-Fokus</div>
+      </div>
+    </div>
+
+    <div class="week-funnel-logic">
+      <strong>Funnel-Logik der Woche</strong>
+      Shares sind 2026 das stärkste Algorithmus-Signal. Ein Post der 50 Mal per DM weitergeleitet wird, schlägt einen Post mit 500 Likes in jeder Algorithmus-Metrik. Woche 3 fokussiert auf emotional triggernden Content, der geteilt wird weil er etwas in der Zielgruppe berührt.
+    </div>
+
+    <!-- MONTAG W3 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Montag · 11:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Karussell</span>
+          <span class="tag tag-reach" style="font-size:8px">Reichweite</span>
+          <span class="tag" style="font-size:8px;color:var(--accent);border-color:var(--accent)">lets count · emotional</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„1 Stunde. 84 Millionen Menschen. Was wäre möglich?"</div>
+        <table class="slide-table">
+          <thead><tr><th width="110">Slide</th><th>Text / Inhalt</th></tr></thead>
+          <tbody>
+            <tr class="slide-highlight"><td class="slide-num">01 — Hook</td><td>„1 Stunde. 84 Millionen Menschen. Was wäre möglich?"</td></tr>
+            <tr><td class="slide-num">02</td><td>„84 Mio Stunden/Monat. 1 Milliarde Stunden/Jahr."</td></tr>
+            <tr><td class="slide-num">03–07</td><td>Konkrete Hochrechnungen aus letsact-Daten: X Tonnen Müll gesammelt, Y Kinder tutoriert, Z Mahlzeiten verteilt. Jede Slide eine Zahl mit Kontext.</td></tr>
+            <tr><td class="slide-num">08</td><td>„Klingt utopisch? 28 Millionen tun es bereits."</td></tr>
+            <tr class="slide-highlight"><td class="slide-num">09</td><td>„Die Frage ist nicht ob du Zeit hast. Die Frage ist, was du mit einer Stunde verändern willst."</td></tr>
+            <tr><td class="slide-num">10 — CTA</td><td>letsact-Branding + Link in Bio</td></tr>
+          </tbody>
+        </table>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          Was-wäre-wenn-Szenarien mit echten Zahlen machen Abstraktes greifbar. Hochrechnungen auf Basis realer letsact-Daten sind glaubwürdig und überraschend. Positives Weltbild macht den Post shareable — Menschen teilen gerne Inhalte die zeigen, dass die Welt besser werden kann.
+        </div>
+      </div>
+    </div>
+
+    <!-- MITTWOCH W3 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Mittwoch · 18:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Reel</span>
+          <span class="tag tag-reach" style="font-size:8px">Reichweite</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Ich hab KI gefragt, welches Ehrenamt zu mir passt."</div>
+        <div class="reel-card">
+          <div class="reel-label">Reel-Timeline · Screen-Recording ChatGPT + letsact-Vergleich · 25 Sek · Trend-Thema KI</div>
+          <div class="reel-timeline">
+            <div class="reel-beat"><div class="reel-time">Hook</div><div class="reel-text"><strong style="color:var(--accent)">HOOK:</strong> „Ich hab KI gefragt welches Ehrenamt zu mir passt."</div></div>
+            <div class="reel-beat"><div class="reel-time">Screen 1</div><div class="reel-text">ChatGPT-Antwort — generisch, vage, keine konkreten Orte oder Zeiten</div></div>
+            <div class="reel-beat"><div class="reel-time">Cut</div><div class="reel-text">„Okay. Jetzt das Gleiche mit letsact."</div></div>
+            <div class="reel-beat"><div class="reel-time">Screen 2</div><div class="reel-text">letsact App — konkretes Projekt, genaue Adresse, Zeitaufwand, Ansprechperson, Anmeldebutton</div></div>
+            <div class="reel-beat"><div class="reel-time">End</div><div class="reel-text">„KI kann viel. Aber nicht das." + CTA</div></div>
+          </div>
+        </div>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          KI als Trend-Thema erhöht die organische Reichweite — der Algorithmus schiebt KI-Content an mehr Menschen aus. Überraschender Angle: letsact gewinnt einen direkten Vergleich mit ChatGPT. Hohe Chance auf Shares weil es eine genuine Überraschung liefert. Zeigt die App ohne plumbe Werbung.
+        </div>
+      </div>
+    </div>
+
+    <!-- FREITAG W3 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Freitag · 10:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Karussell</span>
+          <span class="tag tag-bind" style="font-size:8px">Bindung</span>
+          <span class="tag" style="font-size:8px;color:var(--accent);border-color:var(--accent)">lets go · München</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Dieses Wochenende in München: 3 Projekte, für die du kein:e Held:in sein musst."</div>
+        <table class="slide-table">
+          <thead><tr><th width="110">Slide</th><th>Inhalt</th><th width="200">Details</th></tr></thead>
+          <tbody>
+            <tr class="slide-highlight"><td class="slide-num">01 — Hook</td><td>„Dieses Wochenende in München: 3 Projekte, für die du kein:e Held:in sein musst."</td><td>„München" 48pt. Frauenkirche-Silhouette als Linienzeichnung</td></tr>
+            <tr><td class="slide-num">02 — Proj. 1</td><td>🍞 Münchner Tafel — Lebensmittel sortieren. Sa, 8–11 Uhr, Großmarkthalle. WAS / WANN / WO / SKILLS</td><td>Steckbrief-Format</td></tr>
+            <tr><td class="slide-num">03 — Detail 1</td><td>„Die Tafel versorgt 30.000 Münchner:innen mit Lebensmitteln die sonst weggeworfen würden. Jede Stunde Sortieren = 40 Mahlzeiten die ankommen."</td><td>„30.000" + „40 Mahlzeiten" orange — Impact pro Stunde greifbar</td></tr>
+            <tr><td class="slide-num">04 — Proj. 2</td><td>🌊 Isar-Cleanup Flaucher. So, 10–12 Uhr. Treffpunkt: Braunauer Eisenbahnbrücke. Müllsäcke und Zangen werden gestellt.</td><td>Ortsbezug „Flaucher" sofort erkennbar für Münchner</td></tr>
+            <tr><td class="slide-num">05 — Detail 2</td><td>„2 Stunden am Sonntagmorgen, und du siehst den Unterschied beim Nachhausegehen."</td><td>„Du siehst den Unterschied beim Nachhausegehen" — konkretes Bild</td></tr>
+            <tr><td class="slide-num">06 — Proj. 3</td><td>📖 Lesepat:innen Hasenbergl. Mi, 15–16:30 Uhr. Grundschulkindern vorlesen. „Einzige Qualifikation: Du kannst Deutsch lesen."</td><td>Augenzwinkern im Subtext</td></tr>
+            <tr><td class="slide-num">07 — Remote</td><td>„Keine Lust rauszugehen? Übersetzen für Münchner Geflüchteten-Initiative (Englisch/Arabisch, 1h/Woche). Grafik-Design für lokalen Sportverein (flexibel)."</td><td>Remote-Optionen = letzte Ausrede entfernt</td></tr>
+            <tr><td class="slide-num">08</td><td>„5 Projekte. Isar, Tafel, Klassenzimmer, Couch. Du entscheidest wie München dieses Wochenende besser wird."</td><td>„Du entscheidest" orange fett</td></tr>
+            <tr class="slide-highlight"><td class="slide-num">09 — Trigger</td><td>„Welche Nummer? Kommentier — wir verlinken dich. Und: Welche Stadt soll nächste Woche dran sein?"</td><td>Doppelter CTA: Projekt + nächste Stadt. Community Mitbestimmung</td></tr>
+            <tr><td class="slide-num">10 — CTA</td><td>„München, Berlin, Hamburg und 40+ weitere Städte. letsact App — kostenlos. Link in Bio."</td><td>Städte-Namen klein aufgelistet. Breite sichtbar machen</td></tr>
+          </tbody>
+        </table>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          München ist der Heimatstandort von letsact — die Projekte (Tafel, Isar-Cleanup, Lesepaten) sind lokal verankert und für Münchner:innen sofort greifbar. „Welche Stadt nächste Woche?" auf Slide 9 gibt der Community Mitbestimmung und liefert gleichzeitig Daten welche Städte die Follower interessieren.
+        </div>
+      </div>
+    </div>
+
+    <!-- STORIES W3 -->
+    <div class="stories-block">
+      <div class="stories-label">Stories — Woche 3 · Täglich 3–5 Slides</div>
+      <div class="story-grid">
+        <div class="story-item">
+          <div class="story-day">Montag</div>
+          <div class="story-type">Umfrage</div>
+          „Was habt ihr am Wochenende gemacht?" [Ehrenamt / Netflix / Beides / Was ist Wochenende?]
+        </div>
+        <div class="story-item">
+          <div class="story-day">Dienstag</div>
+          <div class="story-type">Feedback-Repost</div>
+          Screenshot einer App-Store-Bewertung (4–5 Sterne) mit kurzer eigener Kommentierung
+        </div>
+        <div class="story-item">
+          <div class="story-day">Mittwoch</div>
+          <div class="story-type">Reel-Teaser</div>
+          Verweis auf KI vs. letsact Reel + „Was denkt ihr, wer gewinnt?"
+        </div>
+        <div class="story-item">
+          <div class="story-day">Donnerstag</div>
+          <div class="story-type">Mythos-Slide</div>
+          „Ehrenamt-Mythos der Woche: 'Nur was für Rentner.' — Fakt: 61% der letsact-Nutzer:innen sind unter 35." + Quiz
+        </div>
+        <div class="story-item">
+          <div class="story-day">Freitag</div>
+          <div class="story-type">Abstimmung</div>
+          „München-Guide ist live! Welche Stadt nächste Woche?" [Hamburg / Köln / Frankfurt / Leipzig]
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WEEK 4 ── -->
+  <div class="week-block" id="week4">
+    <div class="week-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(242,240,233,0.4);margin-bottom:4px">Woche</div>
+        <div style="display:flex;align-items:baseline;gap:16px">
+          <div class="week-num">04</div>
+          <div>
+            <div class="week-title">System verfestigen</div>
+            <div class="week-subtitle">Wiederkehrende Formate</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div class="tag tag-bind">System-Fokus</div>
+      </div>
+    </div>
+
+    <div class="week-funnel-logic">
+      <strong>Funnel-Logik der Woche</strong>
+      Woche 4 wiederholt bewusst die Formate aus Woche 1–3 und etabliert sie als Serien. Der Algorithmus belohnt Accounts bei denen Follower wissen was sie erwarten können. Für die Community entstehen Gewohnheiten — „lets meet am Montag, lets go am Freitag." Das ist der Schritt vom Content-Account zum Must-Follow.
+    </div>
+
+    <!-- MONTAG W4 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Montag · 11:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Karussell</span>
+          <span class="tag tag-reach" style="font-size:8px">Reichweite</span>
+          <span class="tag" style="font-size:8px;color:var(--accent);border-color:var(--accent)">lets meet</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Jeder kennt UNICEF. Aber kennst du diese drei?"</div>
+        <table class="slide-table">
+          <thead><tr><th width="110">Slide</th><th>Inhalt</th><th width="200">Matching-Logik</th></tr></thead>
+          <tbody>
+            <tr class="slide-highlight"><td class="slide-num">01 — Hook</td><td>„Jeder kennt UNICEF. Aber kennst du diese drei?"</td><td>Neugier-Hook der Erwartung schafft</td></tr>
+            <tr><td class="slide-num">02–03 — Org 1</td><td>EinDollarBrille e.V. Was? Für wen? „1 Milliarde Menschen sehen schlecht weil eine Brille fehlt." Wie helfen: Biegeworkshops, Fundraising, Social Media. Ab 2h/Monat.</td><td>„1 Milliarde" orange. „Ab 2h/Monat" macht Einstieg greifbar</td></tr>
+            <tr><td class="slide-num">04–05 — Org 2</td><td>Über den Tellerrand e.V. Kochen mit Geflüchteten. „Ein Tisch, verschiedene Rezepte, echte Gespräche." Ideal für: Menschen, die gerne kochen und reden.</td><td>„Ideal für: Menschen, die gerne kochen" — Matching-Label</td></tr>
+            <tr><td class="slide-num">06–07 — Org 3</td><td>Cleanup Network e.V. „Klingt langweilig? 15.000 Freiwillige in 2024." Perfekt für: Leute, die lieber draußen sind als am Schreibtisch.</td><td>„Klingt langweilig?" als provokanter Einstieg. Erwartung brechen</td></tr>
+            <tr><td class="slide-num">08</td><td>„3 Organisationen. 3 komplett verschiedene Wege etwas zu verändern. Brillen biegen, zusammen kochen, Müll sammeln. Was passt zu dir?"</td><td>Übersicht. Alle Org-Namen nebeneinander in Syne Bold</td></tr>
+            <tr class="slide-highlight"><td class="slide-num">09 — Trigger</td><td>„Welche Organisation beeindruckt dich am meisten? Kommentier den Namen. Und wenn du eine kennst die hier fehlt — sag's uns."</td><td>Doppelter CTA: Kommentar + Community-Input generieren</td></tr>
+            <tr><td class="slide-num">10 — CTA</td><td>„Alle drei und 2.500+ weitere Organisationen. letsact App — kostenlos. Link in Bio."</td><td>„2.500+" in 48pt orange. letsact-Logo</td></tr>
+          </tbody>
+        </table>
+        <div class="caption-box">
+          <div class="caption-label">Caption</div>
+          <p class="caption-text">„Jeder kennt die großen Namen. Hier sind drei Organisationen, die du wahrscheinlich noch nicht auf dem Schirm hast — und die dich gerade brauchen. Welche beeindruckt dich?"</p>
+        </div>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          Win-Win-Win-Format. NGOs bekommen Sichtbarkeit (stärkt Partnerschaften, öffnet Ko-Promotions). Follower entdecken etwas Neues (Save-Trigger: „Merk ich mir"). letsact bekommt Saves und Kommentare. Die Matching-Logik („Perfekt für: ...") hilft der Zielgruppe sich selbst zu erkennen — und erhöht die Klick-Wahrscheinlichkeit.
+        </div>
+      </div>
+    </div>
+
+    <!-- MITTWOCH W4 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Mittwoch · 18:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Reel</span>
+          <span class="tag tag-reach" style="font-size:8px">Reichweite</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Eine Person. 4 Stunden pro Woche. 1 Jahr. Das ist passiert:"</div>
+        <div class="reel-card">
+          <div class="reel-label">Reel-Timeline · Text-on-Screen + emotionale Musik + B-Roll · 25–30 Sek · Keine reale Person nötig</div>
+          <div class="reel-timeline">
+            <div class="reel-beat"><div class="reel-time">Hook</div><div class="reel-text"><strong style="color:var(--accent)">HOOK:</strong> „Eine Person. 4 Stunden pro Woche. 1 Jahr. Das ist passiert:"</div></div>
+            <div class="reel-beat"><div class="reel-time">Mitte — Aufbau</div><div class="reel-text">Situation vorher (konkrete Ausgangslage: Name der Tätigkeit, Ort)</div></div>
+            <div class="reel-beat"><div class="reel-time">Mitte — Handlung</div><div class="reel-text">Was konkret getan (z.B. Lesenachhilfe in Neukölln, Tierschutz München, Isar-Cleanup)</div></div>
+            <div class="reel-beat"><div class="reel-time">Ende — Ergebnis</div><div class="reel-text">Konkretes messbares Ergebnis: X Kinder, Y kg Müll, Z Mahlzeiten</div></div>
+            <div class="reel-beat"><div class="reel-time">Closer</div><div class="reel-text">„Es beginnt mit einer Entscheidung." + CTA</div></div>
+          </div>
+        </div>
+        <div class="why-box">
+          <strong>Warum das algorithmisch funktioniert</strong>
+          Einzelgeschichten schlagen abstrakte Statistiken in der Emotional-Response. Das Format baut auf der bewährten Struktur „vorher/nachher" auf — das stärkste Erzählprinzip im Kurzformat. Emotionaler Content wird geteilt. Text + Bilder + Musik braucht kein Gesicht und kein teures Equipment.
+        </div>
+      </div>
+    </div>
+
+    <!-- FREITAG W4 -->
+    <div class="post-card">
+      <div class="post-card-header">
+        <div class="post-day">Freitag · 10:00 Uhr</div>
+        <div class="post-meta">
+          <span class="tag tag-stone" style="font-size:8px">Karussell</span>
+          <span class="tag tag-bind" style="font-size:8px">Bindung</span>
+          <span class="tag" style="font-size:8px;color:var(--accent);border-color:var(--accent)">lets go · Community-Wahl</span>
+        </div>
+      </div>
+      <div class="post-card-body">
+        <div class="post-title">„Dieses Wochenende in [Stadt aus Community-Abstimmung]: Eure Stadt. Eure Projekte."</div>
+        <p style="font-size:13px;color:var(--stone)">Gleiche Struktur wie Woche 2 (Berlin) und Woche 3 (München). Die Stadt kommt aus der Community-Abstimmung von Woche 3. Inhalte direkt aus der App gefiltert. Dieses Format wird zum wöchentlichen Arbeitstier — identische Struktur, immer neuer Nutzwert, minimaler Aufwand.</p>
+        <div class="why-box">
+          <strong>Das lets go-Format als System</strong>
+          Durch die Community-Abstimmung über die nächste Stadt entsteht Partizipation und Vorfreude. Follower die für eine Stadt gestimmt haben, warten aktiv auf den Guide und teilen ihn in lokalen Gruppen. Die Serie kann so ohne Ideenaufwand bis ins Unendliche weitergeführt werden.
+        </div>
+      </div>
+    </div>
+
+    <!-- STORIES W4 -->
+    <div class="stories-block">
+      <div class="stories-label">Stories — Woche 4 · System-Etablierung</div>
+      <div class="story-grid">
+        <div class="story-item">
+          <div class="story-day">Montag</div>
+          <div class="story-type">Abstimmung</div>
+          „Welche Stadt soll in 2 Wochen dran sein?" [4 Optionen aus Community-Wahl der Vorwoche]
+        </div>
+        <div class="story-item">
+          <div class="story-day">Dienstag</div>
+          <div class="story-type">Transparenz</div>
+          „Unser meistgespeicherter Post war der 840€-Post. Danke. 🙏" + Save-Zahl zeigen. Community fühlt sich gesehen.
+        </div>
+        <div class="story-item">
+          <div class="story-day">Mittwoch</div>
+          <div class="story-type">Reel-Teaser</div>
+          Verweis auf Jahres-Geschichten-Reel + Frage: „Hättet ihr gedacht dass das in 4 Stunden/Woche möglich ist?"
+        </div>
+        <div class="story-item">
+          <div class="story-day">Donnerstag</div>
+          <div class="story-type">Fun Fact</div>
+          „Ehrenamtliche sind im Schnitt glücklicher als Nicht-Ehrenamtliche. Nicht weil sie bessere Menschen sind. Sondern weil Helfen Dopamin ausschüttet." + Emoji-Slider
+        </div>
+        <div class="story-item">
+          <div class="story-day">Freitag</div>
+          <div class="story-type">Community</div>
+          „Was wollt ihr als nächstes sehen?" → Frage-Sticker. Community bestimmt Monat 2.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 8: PLAYBOOK
+     ────────────────────────────────────────── -->
+<section id="playbook">
+  <div class="section-header">
+    <div class="section-num">08</div>
+    <div>
+      <div class="section-title" data-i18n="s8.title">Umsetzungs-<br>Playbook</div>
+      <div class="section-subtitle" data-i18n="s8.sub">Formeln, Vorlagen und Systeme die für jede Woche wiederverwendbar sind.</div>
+    </div>
+  </div>
+
+  <h3>5 Reel-Hook-Formeln für die Nische</h3>
+  <p style="color:var(--stone);font-size:13px;margin-bottom:24px">Alle Formeln funktionieren ohne Gesicht. Text-on-Screen + B-Roll reicht. Die Formel steht, der Inhalt wechselt wöchentlich.</p>
+
+  <div class="hook-card">
+    <div class="hook-header">
+      <div class="hook-num">01</div>
+      <div>
+        <div class="hook-type">Formel</div>
+        <div class="hook-name">Die Provokation</div>
+      </div>
+    </div>
+    <div class="hook-body">
+      <div class="hook-formula">[Kontraintuitive Aussage]. [kurze Pause]. [Erklärung die überrascht].</div>
+      <div class="hook-example">„28 Millionen Deutsche machen das. Du wahrscheinlich nicht."<br>„Ehrenamt ist nicht für Menschen mit viel Zeit. Es ist für Menschen mit dem richtigen Tool."</div>
+      <div class="hook-why">Erzeugt sofortigen Widerspruchsimpuls. Die Person muss weiterschauen um den Satz zu verstehen und zu entscheiden ob sie zustimmt oder widerspricht. Beide Reaktionen führen zur höheren Watch-Through-Rate.</div>
+    </div>
+  </div>
+
+  <div class="hook-card">
+    <div class="hook-header">
+      <div class="hook-num">02</div>
+      <div>
+        <div class="hook-type">Formel</div>
+        <div class="hook-name">Die Zahl</div>
+      </div>
+    </div>
+    <div class="hook-body">
+      <div class="hook-formula">[Überraschende konkrete Zahl] — und was sie für dich bedeutet.</div>
+      <div class="hook-example">„840€ steuerfrei. Jedes Jahr. Wenn du das hier machst."<br>„87.000 Stunden. In einem Jahr. Über eine App."</div>
+      <div class="hook-why">Zahlen unterbrechen das Scroll-Verhalten besonders wenn sie unerwartet sind. Das Gehirn stoppt bei Zahlen die nicht ins bisherige Weltbild passen. Konkret schlägt abstrakt in jedem A/B-Test.</div>
+    </div>
+  </div>
+
+  <div class="hook-card">
+    <div class="hook-header">
+      <div class="hook-num">03</div>
+      <div>
+        <div class="hook-type">Formel</div>
+        <div class="hook-name">Das „Ich hab X gemacht"</div>
+      </div>
+    </div>
+    <div class="hook-body">
+      <div class="hook-formula">Ich hab [unerwartete oder neugierig machende Aktion] gemacht. [Überraschendes Ergebnis].</div>
+      <div class="hook-example">„Ich hab KI gefragt welches Ehrenamt zu mir passt."<br>„Ich hab ein Wochenende komplett ohne Social Media verbracht. Stattdessen das hier."</div>
+      <div class="hook-why">Neugier + persönliche Perspektive ohne Gesicht. Das „Ich" schafft unmittelbare Identifikation. Funktioniert auch komplett ohne Kamera — Text-on-Screen reicht, weil die Neugier auf das Ergebnis trägt.</div>
+    </div>
+  </div>
+
+  <div class="hook-card">
+    <div class="hook-header">
+      <div class="hook-num">04</div>
+      <div>
+        <div class="hook-type">Formel</div>
+        <div class="hook-name">Der Vergleich</div>
+      </div>
+    </div>
+    <div class="hook-body">
+      <div class="hook-formula">[Allgemeine Erwartung] vs. [Überraschende Realität].</div>
+      <div class="hook-example">„Was Leute denken wie Ehrenamt aussieht vs. wie es wirklich ist."<br>„Was ChatGPT sagt vs. was die letsact App findet."</div>
+      <div class="hook-why">Expectation-vs-Reality ist eines der shareable-sten Formate auf Instagram. Der Kontrast ist sofort visuell verständlich und erzeugt eine binäre Spannung die zur nächsten Slide zieht. Besonders stark wenn die Realität deutlich besser ist als die Erwartung.</div>
+    </div>
+  </div>
+
+  <div class="hook-card">
+    <div class="hook-header">
+      <div class="hook-num">05</div>
+      <div>
+        <div class="hook-type">Formel</div>
+        <div class="hook-name">Die direkte Frage</div>
+      </div>
+    </div>
+    <div class="hook-body">
+      <div class="hook-formula">[Frage die die Zielgruppe sich selbst stellt aber selten laut ausspricht]?</div>
+      <div class="hook-example">„Du willst was verändern, aber weißt nicht wo anfangen?"<br>„Hast du das Gefühl, dass du mehr tun könntest als du gerade tust?"</div>
+      <div class="hook-why">Wenn der Hook die exakte innere Frage formuliert, fühlt sich die Person sofort gemeint. Das schafft eine emotionale Verbindung die stärker ist als jede externe Beschreibung. Der Scroll stoppt weil die Person denkt: „Das bin ich."</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:48px">3 Karussell-Vorlagen</h3>
+
+  <div class="carousel-template">
+    <div class="carousel-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(242,240,233,0.4);margin-bottom:4px">Vorlage</div>
+        <div class="carousel-letter">A</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-head);font-weight:700;font-size:18px">Der Nutzwert-Guide</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(242,240,233,0.5);margin-top:4px">Reichweite + Saves · lets count</div>
+      </div>
+    </div>
+    <div class="carousel-slides" style="grid-template-columns:repeat(5,1fr)">
+      <div class="carousel-slide"><div class="slide-n">01</div><div class="slide-desc">Hook: Überraschende Aussage oder konkrete Zahl</div></div>
+      <div class="carousel-slide"><div class="slide-n">02</div><div class="slide-desc">Kontext: Warum ist das relevant?</div></div>
+      <div class="carousel-slide" style="background:rgba(255,68,0,0.06)"><div class="slide-n">03–07</div><div class="slide-desc">5 Punkte je 1 Slide. Max 30–40 Wörter. Jede Slide eigenständig verständlich</div></div>
+      <div class="carousel-slide"><div class="slide-n">08–09</div><div class="slide-desc">Zusammenfassung + „Speicher dir das" + Share-Trigger</div></div>
+      <div class="carousel-slide" style="background:var(--primary);color:var(--paper)"><div class="slide-n" style="color:var(--accent)">10</div><div class="slide-desc" style="color:rgba(242,240,233,0.7)">Branding + Link in Bio</div></div>
+    </div>
+    <div style="padding:20px;border-top:1px solid rgba(15,40,32,0.12)">
+      <p style="font-size:12.5px;color:var(--stone);margin:0"><strong style="color:var(--primary)">Design-Prinzip:</strong> Jede Slide eigenständig verständlich. Große Schrift. Einheitliches Farbschema. Papier-Hintergrund (#F2F0E9) mit Signal Orange (#FF4400) Akzent. Keine Bilder — nur Typografie und Icons.</p>
+    </div>
+  </div>
+
+  <div class="carousel-template">
+    <div class="carousel-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(242,240,233,0.4);margin-bottom:4px">Vorlage</div>
+        <div class="carousel-letter">B</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-head);font-weight:700;font-size:18px">Die Story / Erfahrungsbericht</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(242,240,233,0.5);margin-top:4px">Vertrauen + Shares · lets start</div>
+      </div>
+    </div>
+    <div class="carousel-slides" style="grid-template-columns:repeat(5,1fr)">
+      <div class="carousel-slide"><div class="slide-n">01</div><div class="slide-desc">Hook: Zitat oder Ich-Aussage mit konkretem Detail (Zahl, Name, Ort)</div></div>
+      <div class="carousel-slide"><div class="slide-n">02</div><div class="slide-desc">Ausgangssituation: „So war es vorher"</div></div>
+      <div class="carousel-slide" style="background:rgba(255,68,0,0.06)"><div class="slide-n">03–06</div><div class="slide-desc">Wendepunkt · Erfahrung · Details + Emotionen</div></div>
+      <div class="carousel-slide"><div class="slide-n">07–09</div><div class="slide-desc">Ergebnis · Takeaway · „Erkennst du dich wieder?"</div></div>
+      <div class="carousel-slide" style="background:var(--primary);color:var(--paper)"><div class="slide-n" style="color:var(--accent)">10</div><div class="slide-desc" style="color:rgba(242,240,233,0.7)">CTA</div></div>
+    </div>
+    <div style="padding:20px;border-top:1px solid rgba(15,40,32,0.12)">
+      <p style="font-size:12.5px;color:var(--stone);margin:0"><strong style="color:var(--primary)">Design-Prinzip:</strong> Weniger Design, mehr Text. Kann wie ein persönlicher Brief aussehen. Anti-heroischer Ton (47 Minuten, Hund namens Bernd) — Authentizität schlägt Hochglanz. Gen Z traut dem Unvollkommenen.</p>
+    </div>
+  </div>
+
+  <div class="carousel-template">
+    <div class="carousel-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(242,240,233,0.4);margin-bottom:4px">Vorlage</div>
+        <div class="carousel-letter">C</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-head);font-weight:700;font-size:18px">Der lokale Engagement-Guide</div>
+        <div style="font-family:var(--font-mono);font-size:9px;color:rgba(242,240,233,0.5);margin-top:4px">Bindung + Kommentare · lets go</div>
+      </div>
+    </div>
+    <div class="carousel-slides" style="grid-template-columns:repeat(5,1fr)">
+      <div class="carousel-slide"><div class="slide-n">01</div><div class="slide-desc">Hook: „Dieses WE in [Stadt]: X Projekte, die [Benefit]"</div></div>
+      <div class="carousel-slide"><div class="slide-n">02–04</div><div class="slide-desc">Je 1 Projekt: WAS / WANN / WO / SKILLS. Steckbrief-Karten</div></div>
+      <div class="carousel-slide" style="background:rgba(44,85,69,0.08)"><div class="slide-n" style="color:var(--moss)">05–07</div><div class="slide-desc">Remote-Alternativen. Keine Ausrede mehr</div></div>
+      <div class="carousel-slide"><div class="slide-n">08–09</div><div class="slide-desc">Zusammenfassung + Kommentar-Trigger (Nummern 1–5)</div></div>
+      <div class="carousel-slide" style="background:var(--primary);color:var(--paper)"><div class="slide-n" style="color:var(--accent)">10</div><div class="slide-desc" style="color:rgba(242,240,233,0.7)">App-Verweis + Städte-Liste</div></div>
+    </div>
+    <div style="padding:20px;border-top:1px solid rgba(15,40,32,0.12)">
+      <p style="font-size:12.5px;color:var(--stone);margin:0"><strong style="color:var(--primary)">Wiederholfaktor:</strong> Gleiche Struktur, neue Stadt, neue Projekte. Inhalt kommt direkt aus der App. Recherche: 20–30 Minuten. Das effizienteste Format in diesem gesamten Plan.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:48px">Story-Sequenz-Vorlage</h3>
+  <p style="color:var(--stone);font-size:13px;margin-bottom:20px">Ein typischer Story-Tag in 5 Slides. Täglich anpassbar. Die Logik ist immer gleich: Interaktion → Nutzwert → Tiefe → Community → CTA.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--primary);border:2px solid var(--primary);margin:16px 0">
+    <div style="background:var(--paper);padding:20px;text-align:center">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:28px;color:var(--accent);line-height:1;margin-bottom:8px">01</div>
+      <div style="font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--stone);margin-bottom:8px">Einstieg</div>
+      <div style="font-size:11px;line-height:1.4">Umfrage oder Frage. Interaktion sofort erzeugen → Algorithmus rankt folgende Slides höher</div>
+    </div>
+    <div style="background:var(--paper);padding:20px;text-align:center">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:28px;color:var(--accent);line-height:1;margin-bottom:8px">02</div>
+      <div style="font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--stone);margin-bottom:8px">Inhalt</div>
+      <div style="font-size:11px;line-height:1.4">Konkreter Tipp, Fakt, oder Mini-Geschichte. Nutzwert liefern.</div>
+    </div>
+    <div style="background:var(--paper);padding:20px;text-align:center">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:28px;color:var(--accent);line-height:1;margin-bottom:8px">03</div>
+      <div style="font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--stone);margin-bottom:8px">Tiefe</div>
+      <div style="font-size:11px;line-height:1.4">Follow-up. Story-Completion-Rate erhöhen. Der Algorithmus bewertet wie viele Stories bis zum Ende geschaut werden.</div>
+    </div>
+    <div style="background:var(--paper);padding:20px;text-align:center">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:28px;color:var(--accent);line-height:1;margin-bottom:8px">04</div>
+      <div style="font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--stone);margin-bottom:8px">Community</div>
+      <div style="font-size:11px;line-height:1.4">Frage-Sticker, Quiz, oder Repost. DMs und Interaktionen generieren. Das stärkt die Account-Relevanz dauerhaft.</div>
+    </div>
+    <div style="background:var(--primary);padding:20px;text-align:center">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:28px;color:var(--accent);line-height:1;margin-bottom:8px">05</div>
+      <div style="font-family:var(--font-mono);font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.4);margin-bottom:8px">CTA</div>
+      <div style="font-size:11px;line-height:1.4;color:rgba(242,240,233,0.7)">Verweis auf Feed-Post, App, oder Link. Traffic auf die wichtigsten Ziele lenken.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:48px">Hashtag-Strategie</h3>
+  <p style="color:var(--stone);font-size:13px;margin-bottom:20px">8–12 Hashtags pro Post im ersten Kommentar (nicht im Post-Text). In drei Kategorien aufgeteilt.</p>
+
+  <div class="grid-3">
+    <div class="card">
+      <h4>Nischen-Tags (5–6 pro Post)</h4>
+      <p style="font-size:12px;color:var(--stone);margin-bottom:12px">Geringe Konkurrenz, hohe Relevanz. Immer dabei.</p>
+      <div class="hashtag-cloud">
+        <span class="hashtag">#ehrenamt</span>
+        <span class="hashtag">#ehrenamtlich</span>
+        <span class="hashtag">#freiwilligenarbeit</span>
+        <span class="hashtag">#sozialengagiert</span>
+        <span class="hashtag">#volunteerdeutschland</span>
+        <span class="hashtag">#gemeinsamgutestun</span>
+      </div>
+    </div>
+    <div class="card">
+      <h4>Themen-Tags (2–3, wechselnd)</h4>
+      <p style="font-size:12px;color:var(--stone);margin-bottom:12px">Passend zum jeweiligen Post-Thema.</p>
+      <div class="hashtag-cloud">
+        <span class="hashtag theme">#klimaschutz</span>
+        <span class="hashtag theme">#nachhaltigkeit</span>
+        <span class="hashtag theme">#tierschutz</span>
+        <span class="hashtag theme">#bildung</span>
+        <span class="hashtag theme">#genz</span>
+        <span class="hashtag theme">#sinnstiftend</span>
+        <span class="hashtag theme">#berlintipps</span>
+        <span class="hashtag theme">#steuertipps</span>
+      </div>
+    </div>
+    <div class="card">
+      <h4>Reichweiten-Tags (1–2, sparsam)</h4>
+      <p style="font-size:12px;color:var(--stone);margin-bottom:12px">Breitere Discovery. Sparsam einsetzen.</p>
+      <div class="hashtag-cloud">
+        <span class="hashtag reach">#inspiration</span>
+        <span class="hashtag reach">#impact</span>
+        <span class="hashtag reach">#macheinunterschied</span>
+      </div>
+      <div style="margin-top:16px">
+        <p style="font-size:11px;color:var(--stone);margin-bottom:8px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.1em">Sofort streichen:</p>
+        <div class="hashtag-cloud">
+          <span class="hashtag delete">#letsact</span>
+          <span class="hashtag delete">#letsactapp</span>
+          <span class="hashtag delete">#gemeinsameinfachgutestun</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:48px">Posting-Zeiten</h3>
+  <p style="color:var(--stone);font-size:13px;margin-bottom:20px">2026-Benchmarks für Zielgruppe 18–34, DACH. Nach 4 Wochen mit eigenen Insights-Daten verfeinern.</p>
+
+  <div class="timing-grid">
+    <div class="timing-cell">
+      <div class="timing-day">Montag</div>
+      <div class="timing-time">11:00</div>
+      <div class="timing-reason">Mittagspause beginnt. Hohe mobile Nutzung. Algorithmus bevorzugt frühe Engagement-Spikes.</div>
+    </div>
+    <div class="timing-cell">
+      <div class="timing-day">Mittwoch</div>
+      <div class="timing-time">18:00</div>
+      <div class="timing-reason">Feierabend-Scroll-Fenster. Entspannte Browsing-Phase. Menschen haben Zeit für 15-Sek-Reels.</div>
+    </div>
+    <div class="timing-cell">
+      <div class="timing-day">Freitag</div>
+      <div class="timing-time">10:00</div>
+      <div class="timing-reason">Wochenend-Planung beginnt freitags. Lokale Guides werden aktiv gesucht.</div>
+    </div>
+    <div class="timing-cell">
+      <div class="timing-day">Stories</div>
+      <div class="timing-time">08:00</div>
+      <div class="timing-reason">Morgen-Scroll. Stories bleiben 24h sichtbar — frühes Posting maximiert Sichtbarkeit über den ganzen Tag.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:48px">Wöchentlicher Batch-Produktions-Workflow</h3>
+  <div class="card">
+    <h4>Sonntag oder früher Montag — 3–4 Stunden</h4>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--primary);border:1px solid var(--primary);margin:16px 0">
+      <div style="background:var(--paper);padding:16px;text-align:center">
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:6px">Schritt 01</div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:4px">Karussell Mo.</div>
+        <div style="font-size:11px;color:var(--stone)">Text finalisieren, Design in Canva/Figma, Export</div>
+      </div>
+      <div style="background:var(--paper);padding:16px;text-align:center">
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:6px">Schritt 02</div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:4px">Reel Mi.</div>
+        <div style="font-size:11px;color:var(--stone)">Screenrecording + Text-Overlays + Audio, Export</div>
+      </div>
+      <div style="background:var(--paper);padding:16px;text-align:center">
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:6px">Schritt 03</div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:4px">Karussell Fr.</div>
+        <div style="font-size:11px;color:var(--stone)">lets go: App öffnen, Projekte recherchieren (30 Min)</div>
+      </div>
+      <div style="background:var(--primary);padding:16px;text-align:center">
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:6px">Schritt 04</div>
+        <div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--paper)">Scheduling</div>
+        <div style="font-size:11px;color:rgba(242,240,233,0.5)">In Meta Business Suite oder Later vorplanen</div>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--stone);margin:0">Wenn eine Woche intern brennt: <strong style="color:var(--primary)">2 statt 3 Posts sind akzeptabel. 0 ist nie akzeptabel.</strong> Stories spontan täglich — kein Vorlauf nötig. Konsistenz schlägt Perfektion in jeder Algorithmus-Wertung.</p>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 9: REALITY CHECK
+     ────────────────────────────────────────── -->
+<section id="reality" class="final-section">
+  <div class="section-header">
+    <div class="section-num" style="border-color:rgba(242,240,233,0.3);color:var(--accent)">09</div>
+    <div>
+      <div class="section-title" data-i18n="s9.title">Reality Check &amp;<br>Umsetzungsrisiken</div>
+      <div class="section-subtitle" style="color:rgba(242,240,233,0.5)" data-i18n="s9.sub">Die beste Strategie ist wertlos wenn sie an der Realität scheitert.</div>
+    </div>
+  </div>
+
+  <div class="risk-card">
+    <div class="risk-header">
+      <div class="risk-num">01</div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.4);margin-bottom:3px">Risiko</div>
+        <div class="risk-title">Content-Quellen fehlen</div>
+      </div>
+    </div>
+    <div class="risk-body">
+      <p style="font-size:13px;margin-bottom:0">Mehrere Pieces setzen Geschichten von Ehrenamtlichen oder ausreichend lokale Projekte voraus. Bei aktuell 250–300 Projekten könnte der Plan in Woche 2–3 ins Stocken geraten — nicht weil die Strategie falsch ist, sondern weil der Rohstoff fehlt.</p>
+      <div class="risk-counter">
+        <div class="risk-counter-label">Gegenmaßnahme A — Erfahrungsberichte</div>
+        <p style="font-size:12.5px;margin:0">Solange keine eigenen Ehrenamtlichen interviewbar sind: Öffentlich zugängliche Berichte recherchieren (App-Store-Bewertungen, NGO-Websites, Social-Media-Posts). Anonymisiert nacherzählen oder mit Quellverweis. Das ist Kuratierung, kein Fake. Parallel über Stories (Frage-Sticker, DMs) einen Community-Pool aufbauen.</p>
+      </div>
+      <div class="risk-counter" style="margin-top:8px">
+        <div class="risk-counter-label">Gegenmaßnahme B — Lokale Guides</div>
+        <p style="font-size:12.5px;margin:0">250–300 Projekte reichen. Wenn davon 30–40 in Berlin und 30–40 in München sind, gibt es Stoff für Monate. Filterprozess: App öffnen → Stadt + diese Woche aktiv → 3 spannendste nehmen → 20 Minuten Recherche.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-card">
+    <div class="risk-header">
+      <div class="risk-num">02</div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.4);margin-bottom:3px">Risiko</div>
+        <div class="risk-title">Andere Prioritäten verdrängen Content</div>
+      </div>
+    </div>
+    <div class="risk-body">
+      <p style="font-size:13px;margin-bottom:0">Fundraising, Partnerschaften, NGO-Onboarding — alles zieht Aufmerksamkeit vom Content ab. Das ist die häufigste Todesursache guter Strategien in Non-Profit-Organisationen.</p>
+      <div class="risk-counter">
+        <div class="risk-counter-label">Gegenmaßnahme — Batch-Produktion</div>
+        <p style="font-size:12.5px;margin:0">Einmal pro Woche alle 3 Feed-Posts produzieren und vorplanen. Wenn eine Woche brennt: 2 statt 3 Posts sind akzeptabel. 0 ist nie akzeptabel. Der Algorithmus braucht 4–6 Wochen konsistentes Posting um den Account neu einzustufen — eine Pause von 10 Tagen kann diesen Reset zurücksetzen.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="risk-card">
+    <div class="risk-header">
+      <div class="risk-num">03</div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.4);margin-bottom:3px">Risiko</div>
+        <div class="risk-title">Perfektion blockiert Ausführung</div>
+      </div>
+    </div>
+    <div class="risk-body">
+      <p style="font-size:13px;margin-bottom:0">Der erste Post dieser neuen Strategie wird nicht perfekt sein. Das ist nicht das Ziel. Kein einzelner Post entscheidet — das System entscheidet. Wer auf den perfekten Post wartet, postet nie.</p>
+      <div class="risk-counter">
+        <div class="risk-counter-label">Gegenmaßnahme — Minimalstandard</div>
+        <p style="font-size:12.5px;margin:0">Ein Karussell gilt als fertig wenn: Hook steht, 10 Slides getextet sind, CTA auf letzter Slide vorhanden. Design und Detailoptimierung sind Bonus, kein Pflichtprogramm für den Start.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="final-question">
+    „Wenn unser Instagram-Account eine Person wäre, die meine Zielgruppe auf einer Party trifft: Würden sie ihr <span>zuhören</span> wollen? Oder würden sie nach 30 Sekunden weiterziehen?"
+  </div>
+
+  <p style="color:rgba(242,240,233,0.6);font-size:15px;max-width:560px">Jeder Post muss diesen Test bestehen. Nicht: „Ist das wichtig für letsact?" Sondern: „Würde eine 25-Jährige das ihrer besten Freundin zeigen?"</p>
+
+  <div class="closing-line">
+    Die beste Strategie ist die, die du tatsächlich umsetzt.<br>
+    Nicht die cleverste.<br>
+    <span style="color:var(--accent)">Starte diesen Montag.</span>
+  </div>
+
+  <div style="margin-top:40px;padding-top:32px;border-top:1px solid rgba(242,240,233,0.1);font-family:var(--font-mono);font-size:10px;color:rgba(242,240,233,0.25);text-transform:uppercase;letter-spacing:0.15em">
+    letsact e.V. · Emil-Riedel-Straße 17, 80802 München · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="167f787079567a736265777562387273">[email&#160;protected]</a> · letsact.de · März 2026
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────
+     SECTION 10: BLOG & NEWSLETTER
+     ────────────────────────────────────────── -->
+<section id="blog">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div>
+      <div class="section-title" data-i18n="s10.title">Blog &amp;<br>Newsletter</div>
+      <div class="section-subtitle" data-i18n="s10.sub">Anchor-Content-System: Alles entsteht einmal und wird überall genutzt.</div>
+    </div>
+  </div>
+
+  <!-- OVERVIEW CADENCE TABLE -->
+  <h3 data-i18n="s10.h.overview">Redaktionsplan — Übersicht</h3>
+
+  <div class="de-only">
+  <table class="data-table">
+    <thead>
+      <tr><th>Format</th><th>Kadenz</th><th>Datum</th><th>Prep-Tag</th><th>Zielgruppe</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Blog</strong></td><td>2×/Monat</td><td>1. + 15. des Monats</td><td>—</td><td>Beide</td></tr>
+      <tr><td><strong>Newsletter — Volunteers</strong></td><td>Zweiwöchentlich (jeden 2. Donnerstag)</td><td>Jeden 2. Donnerstag</td><td>Mittwoch davor</td><td>Freiwillige</td></tr>
+      <tr><td><strong>Newsletter — NGOs</strong></td><td>Monatlich (letzter Donnerstag)</td><td>Letzter Donnerstag</td><td>Mittwoch davor</td><td>NGO-Partner</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="en-only">
+  <table class="data-table">
+    <thead>
+      <tr><th>Format</th><th>Cadence</th><th>Date</th><th>Prep Day</th><th>Audience</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Blog</strong></td><td>2×/month</td><td>1st + 15th of month</td><td>—</td><td>Both</td></tr>
+      <tr><td><strong>Newsletter — Volunteers</strong></td><td>Biweekly (every 2nd Thursday)</td><td>Every 2nd Thursday</td><td>Wednesday before</td><td>Volunteers</td></tr>
+      <tr><td><strong>Newsletter — NPOs</strong></td><td>Monthly (last Thursday)</td><td>Last Thursday</td><td>Wednesday before</td><td>NPO Partners</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- CONTENT RECYCLING -->
+  <h3 data-i18n="s10.h.recycling">Content-Recycling-Regeln</h3>
+  <p class="lead de-only">Der Blog ist dein Anker. Alles andere wird davon abgeleitet. So bleibt eine kleine Redaktion konsistent — ohne alles von Grund auf neu zu erstellen.</p>
+  <p class="lead en-only">The blog is your anchor. Everything else is derived from it. This is how a small team stays consistent without creating everything from scratch.</p>
+
+  <!-- RECYCLING RULES CARDS -->
+  <div class="de-only">
+  <div class="grid-2" style="margin-bottom:0">
+    <div class="card" style="border-top:3px solid var(--accent)">
+      <div class="card-tab">Regel 1</div>
+      <h4 style="margin-top:12px">Jeder Blog-Post produziert …</h4>
+      <p style="font-size:13px;margin-bottom:10px"><strong>Volunteer-Blog-Post:</strong></p>
+      <ul style="font-size:12.5px;padding-left:16px;line-height:2">
+        <li>3 Instagram-Ableitungen: 1 Quote-Card, 1 Karussell (5–7 Slides), 1 Reel (30 Sek Kernbotschaft)</li>
+        <li>1 Newsletter-Segment: Teaser-Absatz + „Mehr lesen"-Link</li>
+        <li>1 Instagram Story: Umfrage oder Frage zum Blog-Thema</li>
+      </ul>
+      <p style="font-size:13px;margin-top:12px;margin-bottom:10px"><strong>NPO-Blog-Post:</strong></p>
+      <ul style="font-size:12.5px;padding-left:16px;line-height:2">
+        <li>1 LinkedIn-Post: Kerninsight als Thought-Leadership-Post neu geframt</li>
+        <li>1 LinkedIn-Dokument/Karussell: Key-Takeaways im Slide-Format</li>
+        <li>1 Newsletter-NGO-Segment: Zusammenfassung + Link</li>
+        <li>Optional: 1 Instagram-Post wenn visueller Volunteer-Winkel vorhanden</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="card-tab">Regel 2</div>
+        <h4 style="margin-top:12px">Recyceln vor Neuerstellen</h4>
+        <p style="font-size:13px;margin:0">Vor jedem neuen Content-Piece fragen: Kann das aus etwas Bestehendem abgeleitet werden? Nur channel-originaler Content wenn kein Anchor-Content das Thema abdeckt.</p>
+      </div>
+      <div class="card">
+        <div class="card-tab">Regel 3</div>
+        <h4 style="margin-top:12px">Time Lag ist okay</h4>
+        <p style="font-size:13px;margin:0">Alle Ableitungen müssen nicht in derselben Woche erscheinen wie der Blog-Post. Strecken ist erlaubt. Ein Post vom 1. kann Instagram-Content für zwei Wochen liefern.</p>
+      </div>
+      <div class="card">
+        <div class="card-tab">Regel 4</div>
+        <h4 style="margin-top:12px">Adaptieren, nicht kopieren</h4>
+        <p style="font-size:13px;margin:0">Jeder Kanal hat andere Erwartungen. Ein LinkedIn-Post aus einem Blog-Post muss sich anfühlen als wäre er für LinkedIn geschrieben. Hook ändern, Ton anpassen, Länge kürzen. Niemals einfach einfügen.</p>
+      </div>
+      <div class="card">
+        <div class="card-tab">Regel 5</div>
+        <h4 style="margin-top:12px">Chain tracken</h4>
+        <p style="font-size:13px;margin:0">Im Content-Kalender das Feld „Recycled From" nutzen um abgeleiteten Content mit dem Anchor-Piece zu verknüpfen. So ist sichtbar welche Posts die meisten Ableitungen erzeugen.</p>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="en-only">
+  <div class="grid-2" style="margin-bottom:0">
+    <div class="card" style="border-top:3px solid var(--accent)">
+      <div class="card-tab">Rule 1</div>
+      <h4 style="margin-top:12px">Every Blog Post Produces …</h4>
+      <p style="font-size:13px;margin-bottom:10px"><strong>Volunteer-facing blog post:</strong></p>
+      <ul style="font-size:12.5px;padding-left:16px;line-height:2">
+        <li>3 Instagram derivatives: 1 quote card (key stat/takeaway), 1 carousel (5–7 slides), 1 Reel (30-sec key message)</li>
+        <li>1 Newsletter segment: Teaser paragraph + "Read more" link</li>
+        <li>1 Instagram Story: Poll or question related to the blog topic</li>
+      </ul>
+      <p style="font-size:13px;margin-top:12px;margin-bottom:10px"><strong>NPO-facing blog post:</strong></p>
+      <ul style="font-size:12.5px;padding-left:16px;line-height:2">
+        <li>1 LinkedIn post: Reframe the core insight as standalone thought leadership</li>
+        <li>1 LinkedIn document/carousel: Key takeaways in slide format</li>
+        <li>1 Newsletter NPO segment: Summary + link</li>
+        <li>Optional: 1 Instagram post if the topic has a visual volunteer angle</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="card-tab">Rule 2</div>
+        <h4 style="margin-top:12px">Repurpose Before You Create</h4>
+        <p style="font-size:13px;margin:0">Before starting any new piece, ask: Can this be derived from something that already exists? Only create channel-original content when no existing anchor content covers the topic.</p>
+      </div>
+      <div class="card">
+        <div class="card-tab">Rule 3</div>
+        <h4 style="margin-top:12px">Time Lag is Fine</h4>
+        <p style="font-size:13px;margin:0">You don't need to publish all derivatives the same week as the blog post. Space them out. A post published on the 1st can feed Instagram content for the next two weeks.</p>
+      </div>
+      <div class="card">
+        <div class="card-tab">Rule 4</div>
+        <h4 style="margin-top:12px">Adapt, Don't Copy-Paste</h4>
+        <p style="font-size:13px;margin:0">Every channel has different expectations. A LinkedIn post derived from a blog post should feel like it was written for LinkedIn. Change the hook, adjust the tone, cut the length. Never just paste a blog excerpt.</p>
+      </div>
+      <div class="card">
+        <div class="card-tab">Rule 5</div>
+        <h4 style="margin-top:12px">Track the Chain</h4>
+        <p style="font-size:13px;margin:0">In the content calendar, use the "Recycled From" field to link derived content back to its anchor piece. This helps you see which anchor content generates the most derivatives.</p>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- RECYCLING FLOW VISUAL -->
+  <div style="border:2px solid var(--primary);padding:28px;margin:32px 0;background:var(--white)">
+    <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:var(--accent);margin-bottom:16px" data-i18n="s10.flow.label">Content-Flow — Vom Blog zum Kanal</div>
+    <div style="display:flex;align-items:center;gap:0;flex-wrap:wrap;gap:8px">
+      <div style="background:var(--primary);color:var(--paper);padding:14px 20px;text-align:center;flex:0 0 auto">
+        <div style="font-family:var(--font-head);font-weight:800;font-size:16px" data-i18n="s10.flow.blog">Blog-Post</div>
+        <div style="font-family:var(--font-mono);font-size:8px;color:rgba(242,240,233,0.5);margin-top:3px" data-i18n="s10.flow.anchor">Anchor-Content</div>
+      </div>
+      <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent)">→</div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex:1;min-width:200px">
+        <div style="background:rgba(255,68,0,0.08);border:1px solid rgba(255,68,0,0.3);padding:8px 14px;font-size:12px"><strong>Instagram:</strong> <span data-i18n="s10.flow.ig">Quote-Card + Karussell + Reel + Story</span></div>
+        <div style="background:rgba(44,85,69,0.08);border:1px solid rgba(44,85,69,0.3);padding:8px 14px;font-size:12px"><strong>LinkedIn:</strong> <span data-i18n="s10.flow.li">Thought-Leadership-Post + Dokument-Karussell</span></div>
+        <div style="background:rgba(107,112,107,0.08);border:1px solid rgba(107,112,107,0.3);padding:8px 14px;font-size:12px"><strong>Newsletter:</strong> <span data-i18n="s10.flow.nl">Teaser-Segment + Link (Volunteer oder NPO)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOG SPECS -->
+  <h3 data-i18n="s10.h.blog">Blog (letsact.de)</h3>
+
+  <div class="grid-2" style="margin-bottom:0">
+    <!-- FORMAT SPECS -->
+    <div class="card">
+      <div class="card-tab" data-i18n="s10.blog.specs.tab">Format-Spezifikationen</div>
+      <h4 style="margin-top:12px" data-i18n="s10.blog.specs.h">Technische Vorgaben</h4>
+      <table class="data-table" style="margin:0">
+        <tbody>
+          <tr><td class="kpi-metric" data-i18n="s10.blog.vol.wc.label">Wortanzahl (Volunteer)</td><td data-i18n="s10.blog.vol.wc">800–1.500 Wörter</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.blog.npo.wc.label">Wortanzahl (NPO)</td><td data-i18n="s10.blog.npo.wc">1.000–2.000 Wörter</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.blog.img.label">Featured Image</td><td>1200 × 630 px</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.blog.headings.label">Struktur</td><td data-i18n="s10.blog.headings">H2 und H3 für Scannbarkeit</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.blog.links.label">Interne Links</td><td data-i18n="s10.blog.links">Zu App-Seiten oder anderen Blog-Posts</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.blog.meta.label">Meta-Beschreibung</td><td data-i18n="s10.blog.meta">Max. 160 Zeichen (SEO)</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.blog.cad.label">Kadenz</td><td data-i18n="s10.blog.cad">2×/Monat · 1. + 15.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- CONTENT RULES -->
+    <div class="card">
+      <div class="card-tab" data-i18n="s10.blog.rules.tab">Content-Regeln</div>
+      <h4 style="margin-top:12px" data-i18n="s10.blog.rules.h">Pflichtbestandteile</h4>
+      <ul style="font-size:12.5px;padding-left:0;list-style:none;line-height:1">
+        <li style="padding:8px 0;border-bottom:1px solid rgba(15,40,32,0.1);display:flex;gap:10px"><span style="color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:2px">01</span><span data-i18n="s10.blog.r1">Jeder Blog-Post = Anchor-Content der Social + Newsletter speist</span></li>
+        <li style="padding:8px 0;border-bottom:1px solid rgba(15,40,32,0.1);display:flex;gap:10px"><span style="color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:2px">02</span><span data-i18n="s10.blog.r2">Ein primäres Keyword pro Post (SEO-Fokus)</span></li>
+        <li style="padding:8px 0;border-bottom:1px solid rgba(15,40,32,0.1);display:flex;gap:10px"><span style="color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:2px">03</span><span data-i18n="s10.blog.r3">Mindestens ein klarer CTA (App downloaden, als NGO registrieren, Newsletter abonnieren)</span></li>
+        <li style="padding:8px 0;border-bottom:1px solid rgba(15,40,32,0.1);display:flex;gap:10px"><span style="color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:2px">04</span><span data-i18n="s10.blog.r4">Autorenname und Datum angeben</span></li>
+        <li style="padding:8px 0;display:flex;gap:10px"><span style="color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:2px">05</span><span data-i18n="s10.blog.r5">Posts älter als 12 Monate mit aktuellen Daten aktualisieren</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BLOG TONE -->
+  <div style="border:2px solid var(--primary);padding:0;overflow:hidden;margin:16px 0">
+    <div style="background:var(--primary);color:var(--paper);padding:14px 24px;display:flex;align-items:center;gap:16px">
+      <div style="font-family:var(--font-head);font-weight:800;font-size:20px;color:var(--accent)" data-i18n="s10.tone.label">Ton</div>
+      <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(242,240,233,0.5)" data-i18n="s10.tone.sub">Beide Personas — Kein Fluff, direkt zum Wert</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--primary)">
+      <div style="background:var(--paper);padding:20px 24px">
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:10px" data-i18n="s10.tone.vol.label">Volunteer-Posts</div>
+        <p style="font-size:13px;margin:0" data-i18n="s10.tone.vol">Locker, informativ, ermutigend · du-Form · Kein Fluff-Intro — direkt zum Wert im ersten Absatz</p>
+      </div>
+      <div style="background:var(--paper);padding:20px 24px">
+        <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);margin-bottom:10px" data-i18n="s10.tone.npo.label">NPO-Posts</div>
+        <p style="font-size:13px;margin:0" data-i18n="s10.tone.npo">Professionell, praktisch, lösungsorientiert · Sie-Form oder du-Form je nach Thema · Kein Fluff — direkt zum Wert</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER VOLUNTEERS -->
+  <h3 data-i18n="s10.h.nlvol">Newsletter — Freiwillige</h3>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-tab" data-i18n="s10.nl.vol.spec.tab">Eckdaten</div>
+      <h4 style="margin-top:12px" data-i18n="s10.nl.vol.spec.h">Technische Specs</h4>
+      <table class="data-table" style="margin:0">
+        <tbody>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.audience.label">Zielgruppe</td><td data-i18n="s10.nl.vol.audience">Registrierte Freiwillige, App-Nutzer, interessierte Unterstützer</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.cadence.label">Kadenz</td><td data-i18n="s10.nl.vol.cadence">Zweiwöchentlich (jeden 2. Donnerstag)</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.prepday.label">Prep-Tag</td><td data-i18n="s10.nl.vol.prep">Mittwoch davor</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.subject.label">Subject Line</td><td data-i18n="s10.nl.vol.subject">Max. 50 Zeichen, neugier- oder nutzengetrieben</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.preview.label">Preview Text</td><td data-i18n="s10.nl.vol.preview">Ergänzt Subject Line, max. 90 Zeichen</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.readtime.label">Lesezeit</td><td data-i18n="s10.nl.vol.readtime">Unter 3 Minuten</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.cta.label">Primärer CTA</td><td data-i18n="s10.nl.vol.cta">Einer pro E-Mail (weitere als sekundär)</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.form.label">Format</td><td data-i18n="s10.nl.vol.form">Mobile-optimiert · du-Form · warm und direkt</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-tab" data-i18n="s10.nl.vol.struct.tab">Struktur-Template</div>
+      <h4 style="margin-top:12px" data-i18n="s10.nl.vol.struct.h">Aufbau jeder Ausgabe</h4>
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(15,40,32,0.1);align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">1</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.vol.s1.title">Hook / Opening</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.vol.s1.desc">1–2 Sätze, persönlicher Ton, direkter Einstieg</div></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(15,40,32,0.1);align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">2</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.vol.s2.title">Featured Engagement Picks</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.vol.s2.desc">2–3 hervorgehobene Ehrenamt-Möglichkeiten</div></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(15,40,32,0.1);align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">3</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.vol.s3.title">Blog Highlight</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.vol.s3.desc">Teaser + Link zum neuesten Volunteer-Blog-Post</div></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(15,40,32,0.1);align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">4</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.vol.s4.title">Community Spotlight</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.vol.s4.desc">Freiwilligen-Shoutout, Karma-Meilenstein oder Challenge-Update</div></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 0;align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">5</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.vol.s5.title">CTA</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.vol.s5.desc">App downloaden, mit Freund:in teilen, Challenge beitreten</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTER NPOs -->
+  <h3 data-i18n="s10.h.nlnpo">Newsletter — NGO-Partner</h3>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-tab" data-i18n="s10.nl.npo.spec.tab">Eckdaten</div>
+      <h4 style="margin-top:12px" data-i18n="s10.nl.npo.spec.h">Technische Specs</h4>
+      <table class="data-table" style="margin:0">
+        <tbody>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.audience.label">Zielgruppe</td><td data-i18n="s10.nl.npo.audience">NGO-Partner, Volunteer-Koordinatoren, potenzielle Partner-Organisationen</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.cadence.label">Kadenz</td><td data-i18n="s10.nl.npo.cadence">Monatlich (letzter Donnerstag des Monats)</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.prepday.label">Prep-Tag</td><td data-i18n="s10.nl.npo.prep">Mittwoch davor</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.subject.label">Subject Line</td><td data-i18n="s10.nl.npo.subject">Nutzengetrieben, professionell</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.readtime.label">Lesezeit</td><td data-i18n="s10.nl.npo.readtime">Unter 5 Minuten</td></tr>
+          <tr><td class="kpi-metric" data-i18n="s10.nl.form.label">Format</td><td data-i18n="s10.nl.npo.form">Datenreicher als Volunteer-NL · Sie-Form · Quick Win inklusive</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-tab" data-i18n="s10.nl.npo.struct.tab">Struktur-Template</div>
+      <h4 style="margin-top:12px" data-i18n="s10.nl.npo.struct.h">Aufbau jeder Ausgabe</h4>
+      <div style="display:flex;flex-direction:column;gap:0">
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(15,40,32,0.1);align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">1</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.npo.s1.title">Plattform-Update</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.npo.s1.desc">Neue Features, Verbesserungen, Nutzungsstatistiken</div></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(15,40,32,0.1);align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">2</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.npo.s2.title">NGO-Erfolgsgeschichte</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.npo.s2.desc">Case Study mit konkreten Zahlen</div></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(15,40,32,0.1);align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">3</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.npo.s3.title">Praktischer Tipp</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.npo.s3.desc">Volunteer-Management, Listing-Optimierung, Engagement-Strategien</div></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid rgba(15,40,32,0.1);align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">4</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.npo.s4.title">Sektor-Daten / Trends</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.npo.s4.desc">Ehrenamts-Statistiken, Gen-Z-Engagement-Forschung</div></div>
+        </div>
+        <div style="display:flex;gap:14px;padding:10px 0;align-items:flex-start">
+          <div style="font-family:var(--font-head);font-weight:800;font-size:24px;color:var(--accent);line-height:1;min-width:30px">5</div>
+          <div><div style="font-size:12px;font-weight:600;margin-bottom:2px" data-i18n="s10.nl.npo.s5.title">CTA + Quick Win</div><div style="font-size:11.5px;color:var(--stone)" data-i18n="s10.nl.npo.s5.desc">Feature ausprobieren, Listings aktualisieren, andere NGO empfehlen. Immer einen Quick Win einbauen der sofort umsetzbar ist.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT CALENDAR VISUAL -->
+  <h3 data-i18n="s10.h.cal">Monatlicher Redaktionskalender</h3>
+  <div style="border:2px solid var(--primary);overflow:hidden;margin:16px 0">
+    <div style="background:var(--primary);color:var(--paper);padding:14px 24px;display:grid;grid-template-columns:120px 1fr 1fr 1fr 1fr;gap:1px">
+      <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.5)" data-i18n="s10.cal.week">KW / Tag</div>
+      <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.5)">Instagram</div>
+      <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.5)">LinkedIn</div>
+      <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.5)">Blog</div>
+      <div style="font-family:var(--font-mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;color:rgba(242,240,233,0.5)">Newsletter</div>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 1fr 1fr 1fr;gap:1px;background:var(--primary)">
+      <div style="background:var(--paper);padding:14px 16px;font-family:var(--font-mono);font-size:10px;color:var(--stone)" data-i18n="s10.cal.w1">KW 1 · 1.–7.</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px" data-i18n="s10.cal.w1.ig">Mo: Karussell (lets count)<br>Mi: Reel<br>Fr: lets go-Guide</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px" data-i18n="s10.cal.w1.li">Thought-Leadership aus letztem NPO-Blog</div>
+      <div style="background:rgba(255,68,0,0.06);padding:14px 16px;font-size:12px;font-weight:600" data-i18n="s10.cal.w1.blog">1. des Monats:<br>Volunteer-Blog-Post</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px;color:var(--stone)" data-i18n="s10.cal.w1.nl">—</div>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 1fr 1fr 1fr;gap:1px;background:var(--primary)">
+      <div style="background:var(--paper);padding:14px 16px;font-family:var(--font-mono);font-size:10px;color:var(--stone)" data-i18n="s10.cal.w2">KW 2 · 8.–14.</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px" data-i18n="s10.cal.w2.ig">Mo: lets meet<br>Mi: Reel<br>Fr: lets talk/start</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px" data-i18n="s10.cal.w2.li">LinkedIn-Karussell aus Blog-Post vom 1.</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px;color:var(--stone)" data-i18n="s10.cal.w2.blog">—</div>
+      <div style="background:rgba(255,68,0,0.06);padding:14px 16px;font-size:12px;font-weight:600" data-i18n="s10.cal.w2.nl">Do (2. Donnerstag):<br>Volunteer-Newsletter</div>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 1fr 1fr 1fr;gap:1px;background:var(--primary)">
+      <div style="background:var(--paper);padding:14px 16px;font-family:var(--font-mono);font-size:10px;color:var(--stone)" data-i18n="s10.cal.w3">KW 3 · 15.–21.</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px" data-i18n="s10.cal.w3.ig">Mo: lets count<br>Mi: Reel<br>Fr: lets go-Guide</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px" data-i18n="s10.cal.w3.li">Thought-Leadership aus NPO-Blog</div>
+      <div style="background:rgba(255,68,0,0.06);padding:14px 16px;font-size:12px;font-weight:600" data-i18n="s10.cal.w3.blog">15. des Monats:<br>NPO-Blog-Post</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px;color:var(--stone)" data-i18n="s10.cal.w3.nl">—</div>
+    </div>
+    <div style="display:grid;grid-template-columns:120px 1fr 1fr 1fr 1fr;gap:1px;background:var(--primary)">
+      <div style="background:var(--paper);padding:14px 16px;font-family:var(--font-mono);font-size:10px;color:var(--stone)" data-i18n="s10.cal.w4">KW 4 · 22.–31.</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px" data-i18n="s10.cal.w4.ig">Mo: lets meet<br>Mi: Reel<br>Fr: lets start</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px" data-i18n="s10.cal.w4.li">LinkedIn-Karussell aus Blog-Post vom 15.</div>
+      <div style="background:var(--paper);padding:14px 16px;font-size:12px;color:var(--stone)" data-i18n="s10.cal.w4.blog">—</div>
+      <div style="background:rgba(255,68,0,0.06);padding:14px 16px;font-size:12px;font-weight:600" data-i18n="s10.cal.w4.nl">Do (letzter Do):<br>Volunteer-NL + NGO-NL</div>
+    </div>
+  </div>
+
+  <!-- KEY PRINCIPLE -->
+  <blockquote style="margin-top:32px">
+    <span data-i18n="s10.quote">Der Blog ist dein Anker. Alles andere ist abgeleitet. Wer das versteht, schreibt einmal — und erscheint überall.</span>
+    <cite data-i18n="s10.quote.cite">Content-Recycling-Prinzip · letsact Redaktion 2026</cite>
+  </blockquote>
+</section>
+
+</main>
+
+<script>
+// ── TRANSLATIONS ──────────────────────────────────────────────────
+const i18n = {
+  de: {
+    "sidebar.meta": "Instagram Strategie 2026",
+    "sidebar.phase": "Phase 3 von 4",
+    "nav.s1": "Grundlagen",
+    "nav.exec": "Executive Summary",
+    "nav.audience": "Zielgruppe & Markt",
+    "nav.swot": "SWOT & Wettbewerb",
+    "nav.kpis": "Ziele & KPIs",
+    "nav.s2": "Strategie",
+    "nav.pillars": "Content-Säulen & Serien",
+    "nav.analysis": "Strategische Analyse",
+    "nav.s3": "4-Wochen-Plan",
+    "nav.w1": "Neustart",
+    "nav.w2": "Wert liefern",
+    "nav.w3": "Emotion",
+    "nav.w4": "System",
+    "nav.playbook": "Umsetzungs-Playbook",
+    "nav.reality": "Reality Check",
+    "nav.blog": "Blog & Newsletter",
+    "hero.eyebrow": "Instagram Content-Strategie · Erstellt März 2026 · @letsact_app",
+    "hero.h1": "Von Vereins-<br>newsletter zu<br><span class=\"outline\">Relevanz</span>",
+    "hero.sub": "Ein 4-Wochen-Plan, der den @letsact_app-Account zum relevantesten Ehrenamt-Account für junge Menschen in Deutschland macht.",
+    "hero.stat1": "Posts/Woche",
+    "hero.stat2": "Content-Serien",
+    "hero.stat3": "Feed-Posts",
+    "hero.stat4": "Algorithmus-Reset",
+    "s1.title": "Executive Summary<br>& Markenidentität",
+    "s1.sub": "Was letsact ist, was es verspricht, und warum Instagram der richtige Kanal ist.",
+    "s2.title": "Zielgruppe &amp;<br>Marktanalyse",
+    "s2.sub": "Wer letsact nutzt, was sie wirklich denken, und wie Content sie erreicht.",
+    "s3.title": "Wettbewerbs-<br>analyse &amp; SWOT",
+    "s3.sub": "Wo letsact steht, wer die Konkurrenten sind, und was den echten Vorteil ausmacht.",
+    "s4.title": "Ziele &amp;<br>KPIs",
+    "s4.sub": "Messbare Ziele für 4 Wochen und 3 Monate. Was Erfolg konkret bedeutet.",
+    "s5.title": "Content-Säulen<br>&amp; Serien",
+    "s5.sub": "5 wiederkehrende Serien, jede mit eigenem Format, Zweck und Algorithmus-Logik.",
+    "s6.title": "Strategische<br>Analyse",
+    "s6.sub": "Was gerade schiefläuft, warum es schiefläuft, und die 3 Hebel die das ändern.",
+    "s7.title": "4-Wochen<br>Content-Plan",
+    "s7.sub": "Jeder Post mit Thema, Format, Hook, Slides und Funnel-Logik.",
+    "s8.title": "Umsetzungs-<br>Playbook",
+    "s8.sub": "Formeln, Vorlagen und Systeme die für jede Woche wiederverwendbar sind.",
+    "s9.title": "Reality Check &amp;<br>Umsetzungsrisiken",
+    "s9.sub": "Die beste Strategie ist wertlos wenn sie an der Realität scheitert.",
+    "s10.title": "Blog &amp;<br>Newsletter",
+    "s10.sub": "Anchor-Content-System: Alles entsteht einmal und wird überall genutzt.",
+    "s10.h.overview": "Redaktionsplan — Übersicht",
+    "s10.h.recycling": "Content-Recycling-Regeln",
+    "s10.h.blog": "Blog (letsact.de)",
+    "s10.h.nlvol": "Newsletter — Freiwillige",
+    "s10.h.nlnpo": "Newsletter — NGO-Partner",
+    "s10.h.cal": "Monatlicher Redaktionskalender",
+    "s10.flow.label": "Content-Flow — Vom Blog zum Kanal",
+    "s10.flow.blog": "Blog-Post",
+    "s10.flow.anchor": "Anchor-Content",
+    "s10.flow.ig": "Quote-Card + Karussell + Reel + Story",
+    "s10.flow.li": "Thought-Leadership-Post + Dokument-Karussell",
+    "s10.flow.nl": "Teaser-Segment + Link (Volunteer oder NPO)",
+    "s10.tone.label": "Ton",
+    "s10.tone.sub": "Beide Personas — Kein Fluff, direkt zum Wert",
+    "s10.tone.vol.label": "Volunteer-Posts",
+    "s10.tone.vol": "Locker, informativ, ermutigend · du-Form · Kein Fluff-Intro — direkt zum Wert im ersten Absatz",
+    "s10.tone.npo.label": "NPO-Posts",
+    "s10.tone.npo": "Professionell, praktisch, lösungsorientiert · Sie-Form oder du-Form je nach Thema · Kein Fluff — direkt zum Wert",
+    "s10.blog.specs.tab": "Format-Spezifikationen",
+    "s10.blog.specs.h": "Technische Vorgaben",
+    "s10.blog.vol.wc.label": "Wortanzahl (Volunteer)",
+    "s10.blog.vol.wc": "800–1.500 Wörter",
+    "s10.blog.npo.wc.label": "Wortanzahl (NPO)",
+    "s10.blog.npo.wc": "1.000–2.000 Wörter",
+    "s10.blog.img.label": "Featured Image",
+    "s10.blog.headings.label": "Struktur",
+    "s10.blog.headings": "H2 und H3 für Scannbarkeit",
+    "s10.blog.links.label": "Interne Links",
+    "s10.blog.links": "Zu App-Seiten oder anderen Blog-Posts",
+    "s10.blog.meta.label": "Meta-Beschreibung",
+    "s10.blog.meta": "Max. 160 Zeichen (SEO)",
+    "s10.blog.cad.label": "Kadenz",
+    "s10.blog.cad": "2×/Monat · 1. + 15.",
+    "s10.blog.rules.tab": "Content-Regeln",
+    "s10.blog.rules.h": "Pflichtbestandteile",
+    "s10.blog.r1": "Jeder Blog-Post = Anchor-Content der Social + Newsletter speist",
+    "s10.blog.r2": "Ein primäres Keyword pro Post (SEO-Fokus)",
+    "s10.blog.r3": "Mindestens ein klarer CTA (App downloaden, als NGO registrieren, Newsletter abonnieren)",
+    "s10.blog.r4": "Autorenname und Datum angeben",
+    "s10.blog.r5": "Posts älter als 12 Monate mit aktuellen Daten aktualisieren",
+    "s10.nl.vol.spec.tab": "Eckdaten",
+    "s10.nl.vol.spec.h": "Technische Specs",
+    "s10.nl.audience.label": "Zielgruppe",
+    "s10.nl.vol.audience": "Registrierte Freiwillige, App-Nutzer, interessierte Unterstützer",
+    "s10.nl.cadence.label": "Kadenz",
+    "s10.nl.vol.cadence": "Zweiwöchentlich (jeden 2. Donnerstag)",
+    "s10.nl.prepday.label": "Prep-Tag",
+    "s10.nl.vol.prep": "Mittwoch davor",
+    "s10.nl.subject.label": "Subject Line",
+    "s10.nl.vol.subject": "Max. 50 Zeichen, neugier- oder nutzengetrieben",
+    "s10.nl.preview.label": "Preview Text",
+    "s10.nl.vol.preview": "Ergänzt Subject Line, max. 90 Zeichen",
+    "s10.nl.readtime.label": "Lesezeit",
+    "s10.nl.vol.readtime": "Unter 3 Minuten",
+    "s10.nl.cta.label": "Primärer CTA",
+    "s10.nl.vol.cta": "Einer pro E-Mail (weitere als sekundär)",
+    "s10.nl.form.label": "Format",
+    "s10.nl.vol.form": "Mobile-optimiert · du-Form · warm und direkt",
+    "s10.nl.vol.struct.tab": "Struktur-Template",
+    "s10.nl.vol.struct.h": "Aufbau jeder Ausgabe",
+    "s10.nl.vol.s1.title": "Hook / Opening",
+    "s10.nl.vol.s1.desc": "1–2 Sätze, persönlicher Ton, direkter Einstieg",
+    "s10.nl.vol.s2.title": "Featured Engagement Picks",
+    "s10.nl.vol.s2.desc": "2–3 hervorgehobene Ehrenamt-Möglichkeiten",
+    "s10.nl.vol.s3.title": "Blog Highlight",
+    "s10.nl.vol.s3.desc": "Teaser + Link zum neuesten Volunteer-Blog-Post",
+    "s10.nl.vol.s4.title": "Community Spotlight",
+    "s10.nl.vol.s4.desc": "Freiwilligen-Shoutout, Karma-Meilenstein oder Challenge-Update",
+    "s10.nl.vol.s5.title": "CTA",
+    "s10.nl.vol.s5.desc": "App downloaden, mit Freund:in teilen, Challenge beitreten",
+    "s10.nl.npo.spec.tab": "Eckdaten",
+    "s10.nl.npo.spec.h": "Technische Specs",
+    "s10.nl.npo.audience": "NGO-Partner, Volunteer-Koordinatoren, potenzielle Partner-Organisationen",
+    "s10.nl.npo.cadence": "Monatlich (letzter Donnerstag des Monats)",
+    "s10.nl.npo.prep": "Mittwoch davor",
+    "s10.nl.npo.subject": "Nutzengetrieben, professionell",
+    "s10.nl.npo.readtime": "Unter 5 Minuten",
+    "s10.nl.npo.form": "Datenreicher als Volunteer-NL · Sie-Form · Quick Win inklusive",
+    "s10.nl.npo.struct.tab": "Struktur-Template",
+    "s10.nl.npo.struct.h": "Aufbau jeder Ausgabe",
+    "s10.nl.npo.s1.title": "Plattform-Update",
+    "s10.nl.npo.s1.desc": "Neue Features, Verbesserungen, Nutzungsstatistiken",
+    "s10.nl.npo.s2.title": "NGO-Erfolgsgeschichte",
+    "s10.nl.npo.s2.desc": "Case Study mit konkreten Zahlen",
+    "s10.nl.npo.s3.title": "Praktischer Tipp",
+    "s10.nl.npo.s3.desc": "Volunteer-Management, Listing-Optimierung, Engagement-Strategien",
+    "s10.nl.npo.s4.title": "Sektor-Daten / Trends",
+    "s10.nl.npo.s4.desc": "Ehrenamts-Statistiken, Gen-Z-Engagement-Forschung",
+    "s10.nl.npo.s5.title": "CTA + Quick Win",
+    "s10.nl.npo.s5.desc": "Feature ausprobieren, Listings aktualisieren, andere NGO empfehlen. Immer einen Quick Win einbauen der sofort umsetzbar ist.",
+    "s10.cal.week": "KW / Tag",
+    "s10.cal.w1": "KW 1 · 1.–7.",
+    "s10.cal.w1.ig": "Mo: Karussell (lets count)<br>Mi: Reel<br>Fr: lets go-Guide",
+    "s10.cal.w1.li": "Thought-Leadership aus letztem NPO-Blog",
+    "s10.cal.w1.blog": "1. des Monats:<br>Volunteer-Blog-Post",
+    "s10.cal.w1.nl": "—",
+    "s10.cal.w2": "KW 2 · 8.–14.",
+    "s10.cal.w2.ig": "Mo: lets meet<br>Mi: Reel<br>Fr: lets talk/start",
+    "s10.cal.w2.li": "LinkedIn-Karussell aus Blog-Post vom 1.",
+    "s10.cal.w2.blog": "—",
+    "s10.cal.w2.nl": "Do (2. Donnerstag):<br>Volunteer-Newsletter",
+    "s10.cal.w3": "KW 3 · 15.–21.",
+    "s10.cal.w3.ig": "Mo: lets count<br>Mi: Reel<br>Fr: lets go-Guide",
+    "s10.cal.w3.li": "Thought-Leadership aus NPO-Blog",
+    "s10.cal.w3.blog": "15. des Monats:<br>NPO-Blog-Post",
+    "s10.cal.w3.nl": "—",
+    "s10.cal.w4": "KW 4 · 22.–31.",
+    "s10.cal.w4.ig": "Mo: lets meet<br>Mi: Reel<br>Fr: lets start",
+    "s10.cal.w4.li": "LinkedIn-Karussell aus Blog-Post vom 15.",
+    "s10.cal.w4.blog": "—",
+    "s10.cal.w4.nl": "Do (letzter Do):<br>Volunteer-NL + NGO-NL",
+    "s10.quote": "Der Blog ist dein Anker. Alles andere ist abgeleitet. Wer das versteht, schreibt einmal — und erscheint überall.",
+    "s10.quote.cite": "Content-Recycling-Prinzip · letsact Redaktion 2026"
+  },
+  en: {
+    "sidebar.meta": "Instagram Strategy 2026",
+    "sidebar.phase": "Phase 3 of 4",
+    "nav.s1": "Foundations",
+    "nav.exec": "Executive Summary",
+    "nav.audience": "Target Audience & Market",
+    "nav.swot": "SWOT & Competition",
+    "nav.kpis": "Goals & KPIs",
+    "nav.s2": "Strategy",
+    "nav.pillars": "Content Pillars & Series",
+    "nav.analysis": "Strategic Analysis",
+    "nav.s3": "4-Week Plan",
+    "nav.w1": "Restart",
+    "nav.w2": "Deliver Value",
+    "nav.w3": "Emotion",
+    "nav.w4": "System",
+    "nav.playbook": "Execution Playbook",
+    "nav.reality": "Reality Check",
+    "nav.blog": "Blog & Newsletter",
+    "hero.eyebrow": "Instagram Content Strategy · Created March 2026 · @letsact_app",
+    "hero.h1": "From association<br>newsletter to<br><span class=\"outline\">Relevance</span>",
+    "hero.sub": "A 4-week plan to make @letsact_app the most relevant volunteering account for young people in Germany.",
+    "hero.stat1": "Posts/Week",
+    "hero.stat2": "Content Series",
+    "hero.stat3": "Feed Posts",
+    "hero.stat4": "Algorithm Reset",
+    "s1.title": "Executive Summary<br>& Brand Identity",
+    "s1.sub": "What letsact is, what it promises, and why Instagram is the right channel.",
+    "s2.title": "Target Audience &amp;<br>Market Analysis",
+    "s2.sub": "Who uses letsact, what they really think, and how content reaches them.",
+    "s3.title": "Competitive<br>Analysis &amp; SWOT",
+    "s3.sub": "Where letsact stands, who the competitors are, and what creates the real advantage.",
+    "s4.title": "Goals &amp;<br>KPIs",
+    "s4.sub": "Measurable targets for 4 weeks and 3 months. What success looks like in concrete terms.",
+    "s5.title": "Content Pillars<br>&amp; Series",
+    "s5.sub": "5 recurring series, each with its own format, purpose, and algorithm logic.",
+    "s6.title": "Strategic<br>Analysis",
+    "s6.sub": "What's going wrong, why it's going wrong, and the 3 levers to change it.",
+    "s7.title": "4-Week<br>Content Plan",
+    "s7.sub": "Every post with topic, format, hook, slides, and funnel logic.",
+    "s8.title": "Execution<br>Playbook",
+    "s8.sub": "Formulas, templates, and systems reusable every week.",
+    "s9.title": "Reality Check &amp;<br>Execution Risks",
+    "s9.sub": "The best strategy is worthless if it breaks against reality.",
+    "s10.title": "Blog &amp;<br>Newsletter",
+    "s10.sub": "Anchor content system: create once, distribute everywhere.",
+    "s10.h.overview": "Editorial Calendar — Overview",
+    "s10.h.recycling": "Content Recycling Rules",
+    "s10.h.blog": "Blog (letsact.de)",
+    "s10.h.nlvol": "Newsletter — Volunteers",
+    "s10.h.nlnpo": "Newsletter — NPO Partners",
+    "s10.h.cal": "Monthly Editorial Calendar",
+    "s10.flow.label": "Content Flow — From Blog to Channel",
+    "s10.flow.blog": "Blog Post",
+    "s10.flow.anchor": "Anchor Content",
+    "s10.flow.ig": "Quote Card + Carousel + Reel + Story",
+    "s10.flow.li": "Thought Leadership Post + Document Carousel",
+    "s10.flow.nl": "Teaser Segment + Link (Volunteer or NPO)",
+    "s10.tone.label": "Tone",
+    "s10.tone.sub": "Both Personas — No Fluff, Direct to Value",
+    "s10.tone.vol.label": "Volunteer Posts",
+    "s10.tone.vol": "Casual, informative, encouraging · du-Form · No fluff intro — get to the value in the first paragraph",
+    "s10.tone.npo.label": "NPO Posts",
+    "s10.tone.npo": "Professional, practical, solution-oriented · Sie-Form or du-Form depending on topic · No fluff — direct to value",
+    "s10.blog.specs.tab": "Format Specifications",
+    "s10.blog.specs.h": "Technical Requirements",
+    "s10.blog.vol.wc.label": "Word Count (Volunteer)",
+    "s10.blog.vol.wc": "800–1,500 words",
+    "s10.blog.npo.wc.label": "Word Count (NPO)",
+    "s10.blog.npo.wc": "1,000–2,000 words",
+    "s10.blog.img.label": "Featured Image",
+    "s10.blog.headings.label": "Structure",
+    "s10.blog.headings": "H2 and H3 subheadings for scannability",
+    "s10.blog.links.label": "Internal Links",
+    "s10.blog.links": "To app pages or other blog posts",
+    "s10.blog.meta.label": "Meta Description",
+    "s10.blog.meta": "Max. 160 characters (SEO)",
+    "s10.blog.cad.label": "Cadence",
+    "s10.blog.cad": "2×/month · 1st + 15th",
+    "s10.blog.rules.tab": "Content Rules",
+    "s10.blog.rules.h": "Mandatory Elements",
+    "s10.blog.r1": "Every blog post = anchor content that feeds social + newsletter",
+    "s10.blog.r2": "One primary keyword per post (SEO focus)",
+    "s10.blog.r3": "At least one clear CTA (download app, sign up as NPO, subscribe to newsletter)",
+    "s10.blog.r4": "Include author name and date",
+    "s10.blog.r5": "Update posts older than 12 months with current data",
+    "s10.nl.vol.spec.tab": "Key Data",
+    "s10.nl.vol.spec.h": "Technical Specs",
+    "s10.nl.audience.label": "Audience",
+    "s10.nl.vol.audience": "Registered volunteers, app users, interested supporters",
+    "s10.nl.cadence.label": "Cadence",
+    "s10.nl.vol.cadence": "Biweekly (every 2nd Thursday)",
+    "s10.nl.prepday.label": "Prep Day",
+    "s10.nl.vol.prep": "Wednesday before send",
+    "s10.nl.subject.label": "Subject Line",
+    "s10.nl.vol.subject": "Max. 50 characters, curiosity- or benefit-driven",
+    "s10.nl.preview.label": "Preview Text",
+    "s10.nl.vol.preview": "Complements subject line, max. 90 characters",
+    "s10.nl.readtime.label": "Read Time",
+    "s10.nl.vol.readtime": "Under 3 minutes",
+    "s10.nl.cta.label": "Primary CTA",
+    "s10.nl.vol.cta": "One per email (others as secondary)",
+    "s10.nl.form.label": "Format",
+    "s10.nl.vol.form": "Mobile-optimized · du-Form · warm and direct",
+    "s10.nl.vol.struct.tab": "Structure Template",
+    "s10.nl.vol.struct.h": "Layout of Every Issue",
+    "s10.nl.vol.s1.title": "Hook / Opening",
+    "s10.nl.vol.s1.desc": "1–2 sentences, personal tone, direct start",
+    "s10.nl.vol.s2.title": "Featured Engagement Picks",
+    "s10.nl.vol.s2.desc": "2–3 highlighted volunteer opportunities",
+    "s10.nl.vol.s3.title": "Blog Highlight",
+    "s10.nl.vol.s3.desc": "Teaser + link to latest volunteer-facing blog post",
+    "s10.nl.vol.s4.title": "Community Spotlight",
+    "s10.nl.vol.s4.desc": "Volunteer shoutout, karma milestone, or challenge update",
+    "s10.nl.vol.s5.title": "CTA",
+    "s10.nl.vol.s5.desc": "Download app, share with a friend, join a challenge",
+    "s10.nl.npo.spec.tab": "Key Data",
+    "s10.nl.npo.spec.h": "Technical Specs",
+    "s10.nl.npo.audience": "NPO partners, volunteer coordinators, potential partner organizations",
+    "s10.nl.npo.cadence": "Monthly (last Thursday of the month)",
+    "s10.nl.npo.prep": "Wednesday before send",
+    "s10.nl.npo.subject": "Benefit-driven, professional",
+    "s10.nl.npo.readtime": "Under 5 minutes",
+    "s10.nl.npo.form": "More data-heavy than volunteer NL · Sie-Form · Quick win included",
+    "s10.nl.npo.struct.tab": "Structure Template",
+    "s10.nl.npo.struct.h": "Layout of Every Issue",
+    "s10.nl.npo.s1.title": "Platform Update",
+    "s10.nl.npo.s1.desc": "New features, improvements, usage statistics",
+    "s10.nl.npo.s2.title": "NPO Success Story",
+    "s10.nl.npo.s2.desc": "Case study with concrete numbers",
+    "s10.nl.npo.s3.title": "Practical Tip",
+    "s10.nl.npo.s3.desc": "Volunteer management, listing optimization, engagement strategies",
+    "s10.nl.npo.s4.title": "Sector Data / Trends",
+    "s10.nl.npo.s4.desc": "Volunteering statistics, Gen Z engagement research",
+    "s10.nl.npo.s5.title": "CTA + Quick Win",
+    "s10.nl.npo.s5.desc": "Try a feature, update listings, refer another NPO. Always include a quick win they can implement immediately.",
+    "s10.cal.week": "Week / Day",
+    "s10.cal.w1": "Week 1 · 1st–7th",
+    "s10.cal.w1.ig": "Mon: Carousel (lets count)<br>Wed: Reel<br>Fri: lets go Guide",
+    "s10.cal.w1.li": "Thought leadership from last NPO blog post",
+    "s10.cal.w1.blog": "1st of month:<br>Volunteer Blog Post",
+    "s10.cal.w1.nl": "—",
+    "s10.cal.w2": "Week 2 · 8th–14th",
+    "s10.cal.w2.ig": "Mon: lets meet<br>Wed: Reel<br>Fri: lets talk/start",
+    "s10.cal.w2.li": "LinkedIn carousel from blog post of the 1st",
+    "s10.cal.w2.blog": "—",
+    "s10.cal.w2.nl": "Thu (2nd Thursday):<br>Volunteer Newsletter",
+    "s10.cal.w3": "Week 3 · 15th–21st",
+    "s10.cal.w3.ig": "Mon: lets count<br>Wed: Reel<br>Fri: lets go Guide",
+    "s10.cal.w3.li": "Thought leadership from NPO blog",
+    "s10.cal.w3.blog": "15th of month:<br>NPO Blog Post",
+    "s10.cal.w3.nl": "—",
+    "s10.cal.w4": "Week 4 · 22nd–31st",
+    "s10.cal.w4.ig": "Mon: lets meet<br>Wed: Reel<br>Fri: lets start",
+    "s10.cal.w4.li": "LinkedIn carousel from blog post of the 15th",
+    "s10.cal.w4.blog": "—",
+    "s10.cal.w4.nl": "Thu (last Thu):<br>Volunteer NL + NPO NL",
+    "s10.quote": "The blog is your anchor. Everything else is derived from it. Understand this, write once — appear everywhere.",
+    "s10.quote.cite": "Content Recycling Principle · letsact Editorial 2026"
+  }
+};
+
+// ── LANGUAGE SWITCHER ──────────────────────────────────────────────
+function setLang(lang) {
+  document.documentElement.className = lang === 'en' ? 'lang-en' : '';
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === lang);
+  });
+  const dict = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+  localStorage.setItem('letsact-lang', lang);
+}
+
+// Restore saved language on load
+const savedLang = localStorage.getItem('letsact-lang') || 'de';
+if (savedLang === 'en') setLang('en');
+
+// ── PROGRESS BAR ──────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY;
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progress-bar').style.width = (scrolled / total * 100) + '%';
+});
+
+// ── SECTION REVEAL ────────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('section').forEach(s => observer.observe(s));
+
+// ── ACTIVE NAV ────────────────────────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+}, { passive: true });
+
+// Close sidebar on mobile nav click
+navLinks.forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
