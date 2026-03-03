@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Forge — letsact! Styled QR Generator</title>
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.8.4/lib/qr-code-styling.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Public+Sans:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0F2820;
+    --paper: #F2F0E9;
+    --accent: #ea5627;
+    --surface: #FFFFFF;
+    --muted: #6B706B;
+    --moss: #2C5545;
+    --border-light: rgba(15, 40, 32, 0.12);
+    --border-mid: rgba(15, 40, 32, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Public Sans', -apple-system, sans-serif;
+    background: var(--paper);
+    color: var(--primary);
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.3;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+  }
+  .app { position: relative; z-index: 1; max-width: 1240px; margin: 0 auto; padding: 48px 32px 80px; }
+
+  header {
+    margin-bottom: 48px;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 24px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 38px;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  header h1 .outline {
+    -webkit-text-stroke: 1.5px var(--primary);
+    color: transparent;
+  }
+  header h1 .accent-dot { color: var(--accent); }
+  header .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--muted);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 920px) {
+    .layout { grid-template-columns: 1fr; }
+    .preview-panel { order: -1; }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border-mid);
+    padding: 24px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .card:hover { border-color: var(--primary); }
+  .card-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent);
+    background: var(--paper);
+    border: 1px solid var(--border-mid);
+    padding: 4px 12px;
+    position: absolute;
+    top: -13px;
+    left: 16px;
+  }
+
+  label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  input[type="text"], input[type="url"], input[type="number"], select {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--paper);
+    border: 1px solid var(--border-light);
+    color: var(--primary);
+    font-family: 'Public Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input:focus, select:focus {
+    border-color: var(--primary);
+    box-shadow: inset 0 0 0 1px var(--primary);
+  }
+
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .color-field { display: flex; align-items: center; gap: 8px; }
+  .color-field input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--primary);
+    cursor: pointer;
+    background: none;
+    padding: 2px;
+  }
+  .color-field input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  .color-field input[type="color"]::-webkit-color-swatch { border: none; }
+  .color-field input[type="text"] {
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .style-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+  .style-chip {
+    padding: 6px 12px;
+    background: var(--paper);
+    border: 1px solid var(--border-light);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.1s;
+    user-select: none;
+  }
+  .style-chip:hover { border-color: var(--primary); color: var(--primary); }
+  .style-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--paper);
+  }
+
+  .upload-zone {
+    border: 2px dashed var(--border-mid);
+    padding: 28px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--accent);
+    border-style: solid;
+  }
+  .upload-zone input { display: none; }
+  .upload-zone .upload-icon {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .upload-zone .upload-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+  }
+  .upload-zone .upload-text strong { color: var(--accent); }
+  .upload-zone.has-image { padding: 8px; }
+  .upload-zone.has-image img { max-width: 100%; max-height: 120px; }
+  .upload-zone .remove-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    border: none;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+  .upload-zone.has-image .remove-btn { display: flex; }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--border-mid);
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    background: var(--primary);
+    cursor: pointer;
+    border: 2px solid var(--paper);
+    box-shadow: 0 0 0 1px var(--primary);
+  }
+  .range-row { display: flex; align-items: center; gap: 12px; }
+  .range-row input[type="range"] { flex: 1; }
+  .range-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .toggle-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .toggle-field label { margin-bottom: 0; }
+  .toggle { position: relative; width: 40px; height: 22px; }
+  .toggle input { display: none; }
+  .toggle-slider {
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+    border: 2px solid var(--border-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 2px;
+    top: 2px;
+    background: var(--muted);
+    transition: all 0.15s;
+  }
+  .toggle input:checked + .toggle-slider { background: var(--primary); border-color: var(--primary); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(18px); background: var(--paper); }
+
+  .preview-panel { position: sticky; top: 32px; }
+  .preview-card {
+    background: var(--surface);
+    border: 2px solid var(--primary);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  .preview-stamp {
+    position: absolute;
+    top: -14px;
+    right: 20px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    background: var(--accent);
+    color: white;
+    padding: 4px 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  #qr-canvas {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    min-height: 300px;
+    align-items: center;
+    background:
+      linear-gradient(45deg, rgba(15,40,32,0.03) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(15,40,32,0.03) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(15,40,32,0.03) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(15,40,32,0.03) 75%);
+    background-size: 12px 12px;
+    background-position: 0 0, 0 6px, 6px -6px, -6px 0px;
+    border: 1px solid var(--border-light);
+  }
+  #qr-canvas canvas, #qr-canvas img { max-width: 100%; }
+
+  .format-toggle {
+    display: flex;
+    width: 100%;
+    border: 1px solid var(--border-mid);
+    margin-bottom: 14px;
+  }
+  .format-toggle button {
+    flex: 1;
+    padding: 8px;
+    background: var(--paper);
+    border: none;
+    border-right: 1px solid var(--border-light);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+  .format-toggle button:last-child { border-right: none; }
+  .format-toggle button:hover { color: var(--primary); }
+  .format-toggle button.active { background: var(--primary); color: var(--paper); }
+
+  .btn-row { display: flex; gap: 8px; width: 100%; }
+  .btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--primary);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.1s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-primary { background: var(--primary); color: var(--paper); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-1px); }
+  .btn-secondary { background: var(--surface); color: var(--primary); }
+  .btn-secondary:hover { background: var(--paper); border-color: var(--accent); color: var(--accent); }
+
+  .hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .presets-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-light);
+    align-items: center;
+  }
+  .presets-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .preset-pill {
+    padding: 5px 12px;
+    border: 1px solid var(--border-mid);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--muted);
+    transition: all 0.1s;
+  }
+  .preset-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Swatch row for brand palette */
+  .swatch-row {
+    display: flex;
+    gap: 4px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-light);
+    align-items: center;
+  }
+  .swatch-row-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-right: 6px;
+    white-space: nowrap;
+  }
+  .swatch {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-mid);
+    cursor: pointer;
+    transition: all 0.1s;
+    position: relative;
+  }
+  .swatch:hover {
+    transform: scale(1.2);
+    border-color: var(--primary);
+    z-index: 2;
+  }
+  .swatch[title]::after {
+    content: attr(title);
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    background: var(--primary);
+    color: var(--paper);
+    padding: 3px 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.5px;
+  }
+  .swatch:hover::after { display: block; }
+
+  /* UTM section */
+  .utm-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .utm-grid .field-full {
+    grid-column: 1 / -1;
+  }
+  .utm-quick-fills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+  .utm-pill {
+    padding: 4px 10px;
+    border: 1px solid var(--border-mid);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--muted);
+    transition: all 0.1s;
+  }
+  .utm-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .utm-pill.active { background: #1f4043; color: #f3f3f3; border-color: #1f4043; }
+
+  .generated-url-box {
+    margin-top: 14px;
+    padding: 12px;
+    background: var(--paper);
+    border: 1px solid var(--border-mid);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    word-break: break-all;
+    color: var(--primary);
+    line-height: 1.6;
+    position: relative;
+    min-height: 44px;
+  }
+  .generated-url-box .copy-url-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    padding: 3px 10px;
+    background: var(--primary);
+    color: var(--paper);
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .generated-url-box .copy-url-btn:hover { background: var(--accent); }
+  .url-base { color: var(--muted); }
+  .url-param-key { color: #2c5b5e; }
+  .url-param-val { color: var(--accent); }
+
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-light);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>QR <span class="outline">Forge</span><span class="accent-dot">.</span></h1>
+    <span class="tagline">Styled QR Code Generator / v1.1</span>
+  </header>
+
+  <div class="layout">
+    <div class="controls-panel">
+
+      <!-- 01 Content + UTM -->
+      <div class="card">
+        <div class="card-label">01 &mdash; Content &amp; Tracking</div>
+        <div class="field" style="margin-top:8px;">
+          <label>Base URL</label>
+          <input type="url" id="qr-data" value="https://letsact.de" placeholder="https://your-link.com">
+        </div>
+
+        <div class="toggle-field">
+          <label>Enable UTM Tracking</label>
+          <div class="toggle">
+            <input type="checkbox" id="utm-toggle">
+            <span class="toggle-slider"></span>
+          </div>
+        </div>
+
+        <div id="utm-section" style="display:none;">
+          <div class="field">
+            <label>Quick Fill &mdash; Common Campaigns</label>
+            <div class="utm-quick-fills" id="utm-quick-fills">
+              <button class="utm-pill" data-source="newsletter" data-medium="email" data-campaign="newsletter" data-content="">Newsletter</button>
+              <button class="utm-pill" data-source="flyer" data-medium="print" data-campaign="flyer" data-content="qr-code">Flyer</button>
+              <button class="utm-pill" data-source="poster" data-medium="print" data-campaign="poster" data-content="qr-code">Poster</button>
+              <button class="utm-pill" data-source="sticker" data-medium="print" data-campaign="sticker" data-content="qr-code">Sticker</button>
+              <button class="utm-pill" data-source="business-card" data-medium="print" data-campaign="business-card" data-content="qr-code">Business Card</button>
+              <button class="utm-pill" data-source="instagram" data-medium="social" data-campaign="social" data-content="bio-link">Instagram</button>
+              <button class="utm-pill" data-source="linkedin" data-medium="social" data-campaign="social" data-content="post">LinkedIn</button>
+              <button class="utm-pill" data-source="event" data-medium="offline" data-campaign="event" data-content="badge-qr">Event Badge</button>
+              <button class="utm-pill" data-source="packaging" data-medium="product" data-campaign="packaging" data-content="qr-code">Packaging</button>
+            </div>
+          </div>
+          <div class="utm-grid">
+            <div class="field">
+              <label>utm_source *</label>
+              <input type="text" id="utm-source" placeholder="e.g. newsletter, flyer, instagram">
+            </div>
+            <div class="field">
+              <label>utm_medium *</label>
+              <input type="text" id="utm-medium" placeholder="e.g. email, print, social">
+            </div>
+            <div class="field">
+              <label>utm_campaign</label>
+              <input type="text" id="utm-campaign" placeholder="e.g. spring-2026, launch">
+            </div>
+            <div class="field">
+              <label>utm_content</label>
+              <input type="text" id="utm-content" placeholder="e.g. qr-code, header-cta">
+            </div>
+            <div class="field field-full">
+              <label>utm_term (optional)</label>
+              <input type="text" id="utm-term" placeholder="e.g. keyword or variant">
+            </div>
+          </div>
+          <div class="generated-url-box" id="generated-url-box">
+            <button class="copy-url-btn" id="copy-url-btn">Copy</button>
+            <span id="generated-url-display">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 Colors -->
+      <div class="card">
+        <div class="card-label">02 &mdash; Colors</div>
+        <div class="row" style="margin-top:8px;">
+          <div class="field">
+            <label>Dots</label>
+            <div class="color-field">
+              <input type="color" id="dots-color" value="#1f4043">
+              <input type="text" id="dots-color-text" value="#1f4043">
+            </div>
+          </div>
+          <div class="field">
+            <label>Background</label>
+            <div class="color-field">
+              <input type="color" id="bg-color" value="#f3f3f3">
+              <input type="text" id="bg-color-text" value="#f3f3f3">
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px;">
+          <div class="field">
+            <label>Corner Squares</label>
+            <div class="color-field">
+              <input type="color" id="corner-sq-color" value="#1f4043">
+              <input type="text" id="corner-sq-color-text" value="#1f4043">
+            </div>
+          </div>
+          <div class="field">
+            <label>Corner Dots</label>
+            <div class="color-field">
+              <input type="color" id="corner-dot-color" value="#1f4043">
+              <input type="text" id="corner-dot-color-text" value="#1f4043">
+            </div>
+          </div>
+        </div>
+        <div class="toggle-field" style="margin-top:14px;">
+          <label>Transparent BG</label>
+          <div class="toggle">
+            <input type="checkbox" id="transparent-bg">
+            <span class="toggle-slider"></span>
+          </div>
+        </div>
+
+        <!-- Brand swatches for quick pick -->
+        <div class="swatch-row" id="dot-swatches">
+          <span class="swatch-row-label">Dots:</span>
+          <div class="swatch" style="background:#1f4043;" data-target="dots" data-color="#1f4043" title="#1f4043 Dark Teal"></div>
+          <div class="swatch" style="background:#2c5b5e;" data-target="dots" data-color="#2c5b5e" title="#2c5b5e Teal"></div>
+          <div class="swatch" style="background:#000000;" data-target="dots" data-color="#000000" title="#000000 Black"></div>
+          <div class="swatch" style="background:#ea5627;" data-target="dots" data-color="#ea5627" title="#ea5627 Orange-Red"></div>
+          <div class="swatch" style="background:#c1e0cc;" data-target="dots" data-color="#c1e0cc" title="#c1e0cc Sage"></div>
+          <div class="swatch" style="background:#ffffff;border-color:#ccc;" data-target="dots" data-color="#ffffff" title="#ffffff White"></div>
+        </div>
+        <div class="swatch-row" id="bg-swatches">
+          <span class="swatch-row-label">BG:</span>
+          <div class="swatch" style="background:#f3f3f3;" data-target="bg" data-color="#f3f3f3" title="#f3f3f3 Light Gray"></div>
+          <div class="swatch" style="background:#ffffff;border-color:#ccc;" data-target="bg" data-color="#ffffff" title="#ffffff White"></div>
+          <div class="swatch" style="background:#c1e0cc;" data-target="bg" data-color="#c1e0cc" title="#c1e0cc Sage"></div>
+          <div class="swatch" style="background:#1f4043;" data-target="bg" data-color="#1f4043" title="#1f4043 Dark Teal"></div>
+          <div class="swatch" style="background:#2c5b5e;" data-target="bg" data-color="#2c5b5e" title="#2c5b5e Teal"></div>
+          <div class="swatch" style="background:#000000;" data-target="bg" data-color="#000000" title="#000000 Black"></div>
+        </div>
+        <div class="swatch-row" id="corner-swatches">
+          <span class="swatch-row-label">Corners:</span>
+          <div class="swatch" style="background:#1f4043;" data-target="corner" data-color="#1f4043" title="#1f4043 Dark Teal"></div>
+          <div class="swatch" style="background:#2c5b5e;" data-target="corner" data-color="#2c5b5e" title="#2c5b5e Teal"></div>
+          <div class="swatch" style="background:#ea5627;" data-target="corner" data-color="#ea5627" title="#ea5627 Orange-Red"></div>
+          <div class="swatch" style="background:#000000;" data-target="corner" data-color="#000000" title="#000000 Black"></div>
+          <div class="swatch" style="background:#c1e0cc;" data-target="corner" data-color="#c1e0cc" title="#c1e0cc Sage"></div>
+          <div class="swatch" style="background:#ffffff;border-color:#ccc;" data-target="corner" data-color="#ffffff" title="#ffffff White"></div>
+        </div>
+
+        <div class="presets-row">
+          <span class="presets-label">Presets:</span>
+          <button class="preset-pill" data-preset="brand">Brand Default</button>
+          <button class="preset-pill" data-preset="dark-teal">Dark Teal</button>
+          <button class="preset-pill" data-preset="sage">Sage Light</button>
+          <button class="preset-pill" data-preset="fire">Signal Fire</button>
+          <button class="preset-pill" data-preset="mono-dark">Mono Dark</button>
+          <button class="preset-pill" data-preset="mono-light">Mono Light</button>
+          <button class="preset-pill" data-preset="teal-accent">Teal + Orange</button>
+        </div>
+      </div>
+
+      <!-- 03 Dot Style -->
+      <div class="card">
+        <div class="card-label">03 &mdash; Dot Pattern</div>
+        <div class="field" style="margin-top:8px;">
+          <label>Shape</label>
+          <div class="style-chips" id="dot-style-chips">
+            <div class="style-chip active" data-value="rounded">Rounded</div>
+            <div class="style-chip" data-value="dots">Dots</div>
+            <div class="style-chip" data-value="classy">Classy</div>
+            <div class="style-chip" data-value="classy-rounded">Classy Rnd</div>
+            <div class="style-chip" data-value="square">Square</div>
+            <div class="style-chip" data-value="extra-rounded">Extra Rnd</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 Corner Style -->
+      <div class="card">
+        <div class="card-label">04 &mdash; Corners</div>
+        <div class="row" style="margin-top:8px;">
+          <div class="field">
+            <label>Outer Shape</label>
+            <div class="style-chips" id="corner-sq-style-chips">
+              <div class="style-chip active" data-value="extra-rounded">Rounded</div>
+              <div class="style-chip" data-value="square">Square</div>
+              <div class="style-chip" data-value="dot">Dot</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Inner Shape</label>
+            <div class="style-chips" id="corner-dot-style-chips">
+              <div class="style-chip active" data-value="dot">Dot</div>
+              <div class="style-chip" data-value="square">Square</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 Logo -->
+      <div class="card">
+        <div class="card-label">05 &mdash; Logo Overlay</div>
+        <div class="field" style="margin-top:8px;">
+          <div class="upload-zone" id="upload-zone">
+            <button class="remove-btn" id="remove-logo" title="Remove">&times;</button>
+            <div class="upload-placeholder">
+              <div class="upload-icon">+</div>
+              <div class="upload-text">Drop image or <strong>browse</strong></div>
+            </div>
+            <input type="file" id="logo-input" accept="image/*">
+          </div>
+        </div>
+        <div class="field">
+          <label>Logo Size</label>
+          <div class="range-row">
+            <input type="range" id="logo-size" min="0.1" max="0.5" step="0.01" value="0.25">
+            <span class="range-value" id="logo-size-val">25%</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Logo Margin (px)</label>
+          <div class="range-row">
+            <input type="range" id="logo-margin" min="0" max="30" step="1" value="8">
+            <span class="range-value" id="logo-margin-val">8</span>
+          </div>
+        </div>
+        <div class="toggle-field">
+          <label>Hide Dots Behind Logo</label>
+          <div class="toggle">
+            <input type="checkbox" id="logo-hide-dots" checked>
+            <span class="toggle-slider"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 Output -->
+      <div class="card">
+        <div class="card-label">06 &mdash; Output</div>
+        <div class="row" style="margin-top:8px;">
+          <div class="field">
+            <label>Size (px)</label>
+            <input type="number" id="qr-size" value="1024" min="256" max="4096" step="64">
+          </div>
+          <div class="field">
+            <label>Error Correction</label>
+            <select id="error-correction">
+              <option value="L">Low &mdash; 7%</option>
+              <option value="M">Medium &mdash; 15%</option>
+              <option value="Q" selected>Quartile &mdash; 25%</option>
+              <option value="H">High &mdash; 30%</option>
+            </select>
+            <div class="hint">Use H when adding large logos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="preview-panel">
+      <div class="preview-card">
+        <div class="preview-stamp">Preview</div>
+        <div id="qr-canvas"></div>
+        <div class="format-toggle">
+          <button class="active" data-format="png">PNG</button>
+          <button data-format="svg">SVG</button>
+          <button data-format="jpeg">JPEG</button>
+          <button data-format="webp">WEBP</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="download-btn">&darr; Download</button>
+          <button class="btn btn-secondary" id="regenerate-btn">&circlearrowleft; Refresh</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>QR Forge &mdash; Built for letsact!</span>
+    <span>Powered by qr-code-styling</span>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ---- Brand color presets ----
+  var PRESETS = {
+    'brand':       { dots: '#1f4043', bg: '#f3f3f3', csq: '#1f4043', cdot: '#1f4043' },
+    'dark-teal':   { dots: '#c1e0cc', bg: '#1f4043', csq: '#2c5b5e', cdot: '#c1e0cc' },
+    'sage':        { dots: '#1f4043', bg: '#c1e0cc', csq: '#2c5b5e', cdot: '#1f4043' },
+    'fire':        { dots: '#1f4043', bg: '#f3f3f3', csq: '#ea5627', cdot: '#ea5627' },
+    'mono-dark':   { dots: '#ffffff', bg: '#000000', csq: '#ffffff', cdot: '#ffffff' },
+    'mono-light':  { dots: '#000000', bg: '#ffffff', csq: '#000000', cdot: '#000000' },
+    'teal-accent': { dots: '#2c5b5e', bg: '#f3f3f3', csq: '#ea5627', cdot: '#2c5b5e' }
+  };
+
+  var state = {
+    data: 'https://letsact.de',
+    dotsColor: '#1f4043',
+    bgColor: '#f3f3f3',
+    transparentBg: false,
+    cornerSquareColor: '#1f4043',
+    cornerDotColor: '#1f4043',
+    dotType: 'rounded',
+    cornerSquareType: 'extra-rounded',
+    cornerDotType: 'dot',
+    logo: null,
+    logoSize: 0.25,
+    logoMargin: 8,
+    logoHideDots: true,
+    size: 1024,
+    errorCorrection: 'Q',
+    format: 'png'
+  };
+
+  var qrCode = null;
+  var debounceTimer = null;
+
+  // ---- UTM ----
+  function buildFinalUrl() {
+    var base = document.getElementById('qr-data').value.trim() || 'https://letsact.de';
+    var utmEnabled = document.getElementById('utm-toggle').checked;
+    if (!utmEnabled) return base;
+
+    var params = [];
+    var src = document.getElementById('utm-source').value.trim();
+    var med = document.getElementById('utm-medium').value.trim();
+    var camp = document.getElementById('utm-campaign').value.trim();
+    var cont = document.getElementById('utm-content').value.trim();
+    var term = document.getElementById('utm-term').value.trim();
+
+    if (src) params.push('utm_source=' + encodeURIComponent(src));
+    if (med) params.push('utm_medium=' + encodeURIComponent(med));
+    if (camp) params.push('utm_campaign=' + encodeURIComponent(camp));
+    if (cont) params.push('utm_content=' + encodeURIComponent(cont));
+    if (term) params.push('utm_term=' + encodeURIComponent(term));
+
+    if (params.length === 0) return base;
+    var sep = base.indexOf('?') !== -1 ? '&' : '?';
+    return base + sep + params.join('&');
+  }
+
+  function updateUrlDisplay() {
+    var display = document.getElementById('generated-url-display');
+    var url = buildFinalUrl();
+    var base = document.getElementById('qr-data').value.trim() || 'https://letsact.de';
+
+    if (url === base || !document.getElementById('utm-toggle').checked) {
+      display.innerHTML = url;
+      return;
+    }
+
+    // Colorize the URL display
+    var idx = url.indexOf('?');
+    if (idx === -1) { idx = url.indexOf('&'); }
+    if (idx === -1) { display.textContent = url; return; }
+
+    var basePart = url.substring(0, idx);
+    var paramsPart = url.substring(idx);
+    var html = '<span class="url-base">' + escHtml(basePart) + '</span>';
+    // colorize params
+    var parts = paramsPart.split('&');
+    for (var i = 0; i < parts.length; i++) {
+      var sep = i === 0 ? '' : '&';
+      var eqIdx = parts[i].indexOf('=');
+      if (eqIdx !== -1) {
+        var k = parts[i].substring(0, eqIdx + 1);
+        var v = parts[i].substring(eqIdx + 1);
+        // first part has ? or & at start
+        html += escHtml(sep) + '<span class="url-param-key">' + escHtml(k) + '</span><span class="url-param-val">' + escHtml(v) + '</span>';
+      } else {
+        html += escHtml(sep + parts[i]);
+      }
+    }
+    display.innerHTML = html;
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // ---- Color sync helpers ----
+  function syncColors(colorId, textId) {
+    var ci = document.getElementById(colorId);
+    var ti = document.getElementById(textId);
+    ci.addEventListener('input', function() { ti.value = ci.value; scheduleRender(); });
+    ti.addEventListener('input', function() {
+      if (/^#[0-9a-fA-F]{6}$/.test(ti.value)) { ci.value = ti.value; scheduleRender(); }
+    });
+    ti.addEventListener('blur', function() {
+      var v = ti.value.trim();
+      if (!v.startsWith('#')) v = '#' + v;
+      if (/^#[0-9a-fA-F]{6}$/.test(v)) { ti.value = v; ci.value = v; scheduleRender(); }
+      else { ti.value = ci.value; }
+    });
+  }
+
+  function setColorPair(colorId, textId, value) {
+    document.getElementById(colorId).value = value;
+    document.getElementById(textId).value = value;
+  }
+
+  function setupChips(containerId, stateKey) {
+    var c = document.getElementById(containerId);
+    c.addEventListener('click', function(e) {
+      var chip = e.target.closest('.style-chip');
+      if (!chip) return;
+      c.querySelectorAll('.style-chip').forEach(function(x) { x.classList.remove('active'); });
+      chip.classList.add('active');
+      state[stateKey] = chip.dataset.value;
+      scheduleRender();
+    });
+  }
+
+  function gatherState() {
+    state.data = buildFinalUrl();
+    state.dotsColor = document.getElementById('dots-color').value;
+    state.bgColor = document.getElementById('bg-color').value;
+    state.transparentBg = document.getElementById('transparent-bg').checked;
+    state.cornerSquareColor = document.getElementById('corner-sq-color').value;
+    state.cornerDotColor = document.getElementById('corner-dot-color').value;
+    state.logoSize = parseFloat(document.getElementById('logo-size').value);
+    state.logoMargin = parseInt(document.getElementById('logo-margin').value, 10);
+    state.logoHideDots = document.getElementById('logo-hide-dots').checked;
+    state.size = Math.max(256, Math.min(4096, parseInt(document.getElementById('qr-size').value, 10) || 1024));
+    state.errorCorrection = document.getElementById('error-correction').value;
+  }
+
+  function render() {
+    gatherState();
+    updateUrlDisplay();
+    var container = document.getElementById('qr-canvas');
+    container.innerHTML = '';
+
+    var options = {
+      width: state.size,
+      height: state.size,
+      data: state.data,
+      type: 'canvas',
+      qrOptions: { errorCorrectionLevel: state.errorCorrection },
+      dotsOptions: { color: state.dotsColor, type: state.dotType },
+      backgroundOptions: state.transparentBg ? { color: 'transparent' } : { color: state.bgColor },
+      cornersSquareOptions: { color: state.cornerSquareColor, type: state.cornerSquareType },
+      cornersDotOptions: { color: state.cornerDotColor, type: state.cornerDotType }
+    };
+
+    if (state.logo) {
+      options.image = state.logo;
+      options.imageOptions = {
+        crossOrigin: 'anonymous',
+        imageSize: state.logoSize,
+        margin: state.logoMargin,
+        hideBackgroundDots: state.logoHideDots
+      };
+    }
+
+    qrCode = new QRCodeStyling(options);
+    qrCode.append(container);
+  }
+
+  function scheduleRender() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(render, 180);
+  }
+
+  function download() {
+    if (!qrCode) return;
+    var name = 'qr-forge-' + Date.now();
+    qrCode.download({ name: name, extension: state.format });
+  }
+
+  function setupLogoUpload() {
+    var zone = document.getElementById('upload-zone');
+    var input = document.getElementById('logo-input');
+    var removeBtn = document.getElementById('remove-logo');
+
+    zone.addEventListener('click', function(e) {
+      if (e.target === removeBtn || removeBtn.contains(e.target)) return;
+      input.click();
+    });
+    zone.addEventListener('dragover', function(e) { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', function() { zone.classList.remove('dragover'); });
+    zone.addEventListener('drop', function(e) {
+      e.preventDefault(); zone.classList.remove('dragover');
+      var file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) handleLogoFile(file);
+    });
+    input.addEventListener('change', function() { if (input.files[0]) handleLogoFile(input.files[0]); });
+    removeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      state.logo = null;
+      zone.classList.remove('has-image');
+      zone.querySelector('.upload-placeholder').style.display = '';
+      var img = zone.querySelector('img');
+      if (img) img.remove();
+      input.value = '';
+      scheduleRender();
+    });
+  }
+
+  function handleLogoFile(file) {
+    if (file.size > 5 * 1024 * 1024) { alert('Max 5 MB'); return; }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      state.logo = e.target.result;
+      var zone = document.getElementById('upload-zone');
+      zone.classList.add('has-image');
+      zone.querySelector('.upload-placeholder').style.display = 'none';
+      var existing = zone.querySelector('img');
+      if (existing) existing.remove();
+      var img = document.createElement('img');
+      img.src = e.target.result;
+      zone.insertBefore(img, zone.querySelector('.remove-btn').nextSibling);
+      scheduleRender();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function setupFormatToggle() {
+    var buttons = document.querySelectorAll('.format-toggle button');
+    buttons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        buttons.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        state.format = btn.dataset.format;
+      });
+    });
+  }
+
+  function setupRange(id, displayId, suffix, stateKey) {
+    var input = document.getElementById(id);
+    var display = document.getElementById(displayId);
+    input.addEventListener('input', function() {
+      var val = parseFloat(input.value);
+      display.textContent = suffix === '%' ? Math.round(val * 100) + '%' : val + (suffix || '');
+      state[stateKey] = val;
+      scheduleRender();
+    });
+  }
+
+  function setupPresets() {
+    document.querySelectorAll('.preset-pill').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var p = PRESETS[btn.dataset.preset];
+        if (!p) return;
+        setColorPair('dots-color', 'dots-color-text', p.dots);
+        setColorPair('bg-color', 'bg-color-text', p.bg);
+        setColorPair('corner-sq-color', 'corner-sq-color-text', p.csq);
+        setColorPair('corner-dot-color', 'corner-dot-color-text', p.cdot);
+        scheduleRender();
+      });
+    });
+  }
+
+  function setupSwatches() {
+    document.querySelectorAll('.swatch').forEach(function(s) {
+      s.addEventListener('click', function() {
+        var target = s.dataset.target;
+        var color = s.dataset.color;
+        if (target === 'dots') {
+          setColorPair('dots-color', 'dots-color-text', color);
+        } else if (target === 'bg') {
+          setColorPair('bg-color', 'bg-color-text', color);
+        } else if (target === 'corner') {
+          setColorPair('corner-sq-color', 'corner-sq-color-text', color);
+          setColorPair('corner-dot-color', 'corner-dot-color-text', color);
+        }
+        scheduleRender();
+      });
+    });
+  }
+
+  function setupUtm() {
+    var toggle = document.getElementById('utm-toggle');
+    var section = document.getElementById('utm-section');
+
+    toggle.addEventListener('change', function() {
+      section.style.display = toggle.checked ? 'block' : 'none';
+      scheduleRender();
+    });
+
+    // Quick fill buttons
+    document.querySelectorAll('.utm-pill').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        // Highlight active pill
+        document.querySelectorAll('.utm-pill').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+
+        document.getElementById('utm-source').value = btn.dataset.source || '';
+        document.getElementById('utm-medium').value = btn.dataset.medium || '';
+        document.getElementById('utm-campaign').value = btn.dataset.campaign || '';
+        document.getElementById('utm-content').value = btn.dataset.content || '';
+        document.getElementById('utm-term').value = '';
+        scheduleRender();
+      });
+    });
+
+    // UTM field changes trigger re-render
+    ['utm-source', 'utm-medium', 'utm-campaign', 'utm-content', 'utm-term'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', function() {
+        // Deselect quick-fill pills when user manually edits
+        document.querySelectorAll('.utm-pill').forEach(function(b) { b.classList.remove('active'); });
+        scheduleRender();
+      });
+    });
+
+    // Copy button
+    document.getElementById('copy-url-btn').addEventListener('click', function() {
+      var url = buildFinalUrl();
+      navigator.clipboard.writeText(url).then(function() {
+        var btn = document.getElementById('copy-url-btn');
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+      });
+    });
+  }
+
+  function init() {
+    syncColors('dots-color', 'dots-color-text');
+    syncColors('bg-color', 'bg-color-text');
+    syncColors('corner-sq-color', 'corner-sq-color-text');
+    syncColors('corner-dot-color', 'corner-dot-color-text');
+    setupChips('dot-style-chips', 'dotType');
+    setupChips('corner-sq-style-chips', 'cornerSquareType');
+    setupChips('corner-dot-style-chips', 'cornerDotType');
+    setupLogoUpload();
+    setupFormatToggle();
+    setupRange('logo-size', 'logo-size-val', '%', 'logoSize');
+    setupRange('logo-margin', 'logo-margin-val', '', 'logoMargin');
+    setupPresets();
+    setupSwatches();
+    setupUtm();
+
+    ['qr-data', 'qr-size', 'error-correction'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', scheduleRender);
+    });
+    document.getElementById('transparent-bg').addEventListener('change', scheduleRender);
+    document.getElementById('logo-hide-dots').addEventListener('change', scheduleRender);
+    document.getElementById('download-btn').addEventListener('click', download);
+    document.getElementById('regenerate-btn').addEventListener('click', render);
+
+    render();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
